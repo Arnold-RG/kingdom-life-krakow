@@ -12,7 +12,7 @@ The church meets every Sunday, 12:00–14:00, inside Hotel Centrum, Osiedle Cent
 
 | Page | Purpose |
 | --- | --- |
-| `index.html` | Home. Sunday times, Kingdom gallery, in-page sermons, pastor, daily verse, reviews, map, FAQ. |
+| `index.html` | Home. Sunday times, people-only Kingdom gallery, Worship section with every film, pastor, daily verse, reviews, map, FAQ. |
 | `about.html` | Published church facts, campuses, leadership, and the sermon players. |
 | `events.html` | Weekly Kraków meetings and family conference posters. |
 | `teaching.html` | Daily Bible verse and the full sermon set. |
@@ -99,7 +99,7 @@ Pages serves https://arnold-rg.github.io/kingdom-life-krakow/ after the push. A 
 
 ## Photographs
 
-Gallery and portrait images are real photographs from the church archive, the Kraków Instagram account, and the Hotel Centrum website. Event posters stay on the events page and are not mixed into the people gallery.
+The home gallery is photographs of people only: gatherings and member portraits from the church archive and the Kraków Instagram account. YouTube films are in the Worship section, not the gallery. Event posters stay on the events page. The Hotel Centrum building photo is in Find Us.
 
 ## Forms
 
