@@ -48,7 +48,7 @@ On arrival, look for Kingdom Life posters and banners inside the hotel. They lea
 - Daily Bible verse.
 - Ask the Pastor, written to the campus email.
 - Events and family conference posters.
-- A books page of full covers on love, faith, the Bible, who Jesus is, daily life, habits, and purpose.
+- A four-shelf reading library. Covers stay at their real shape.
 - A join form for membership and the Kraków WhatsApp group. The group link is not published. The campus sends it.
 
 ## Pages
@@ -59,7 +59,7 @@ On arrival, look for Kingdom Life posters and banners inside the hotel. They lea
 | `about.html` | Church facts, campuses, leadership, and the films. |
 | `events.html` | Weekly Kraków meetings and conference posters. |
 | `teaching.html` | Daily verse and the full film set. |
-| `books.html` | Full covers on love, the Bible, who Jesus is, daily life, habits, and purpose. |
+| `books.html` | A four-shelf library. Covers stay at their real shape. |
 | `pastor.html` | Ask Dr. Tammy Gbolubo. |
 | `join.html` | Membership and WhatsApp request, plus the films. |
 | `css/site.css` | Layout and the video player. |
