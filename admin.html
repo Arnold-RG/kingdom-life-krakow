@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site admin | Kingdom Life Kraków</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <div class="topbar"><div class="wrap">Site admin · only the repository owner can save changes</div></div>
+  <header class="site-header">
+    <div class="wrap nav-row">
+      <a class="logo" href="index.html"><img src="assets/logo-black.png" alt="Kingdom Life"><span class="logo-campus">Kraków campus</span></a>
+      <a href="index.html">Back to the site</a>
+    </div>
+  </header>
+  <main class="wrap section">
+    <p class="kicker">Creator only</p>
+    <h1>Add a photo, file, or link</h1>
+    <p>Visitors can read the site. Saving anything here is checked by GitHub. Only a token that can edit <strong>Arnold-RG/kingdom-life-krakow</strong> is accepted. The token stays in this browser tab. It is not stored in the website.</p>
+
+    <form id="gate" class="card">
+      <label for="token">GitHub token with permission to edit this repository</label>
+      <input id="token" type="password" autocomplete="off" required>
+      <p class="small muted">On GitHub: Settings → Developer settings → Personal access tokens. Give it access to this repository’s contents.</p>
+      <p><button class="btn" type="submit">Unlock admin</button></p>
+      <p id="gate-msg" class="small" role="status"></p>
+    </form>
+
+    <div id="tools" hidden>
+      <p id="who" class="small muted"></p>
+      <div class="grid-2">
+        <form id="photo-form" class="card">
+          <h2>Photo</h2>
+          <label for="photo">Image file</label>
+          <input id="photo" type="file" accept="image/*" required>
+          <label for="photo-cap">Caption</label>
+          <input id="photo-cap" required placeholder="Who is in the photo">
+          <p><button class="btn" type="submit">Add to the gallery</button></p>
+        </form>
+        <form id="link-form" class="card">
+          <h2>Link</h2>
+          <label for="link-label">Label</label>
+          <input id="link-label" required>
+          <label for="link-url">Web address</label>
+          <input id="link-url" type="url" required placeholder="https://">
+          <p><button class="btn" type="submit">Add the link</button></p>
+        </form>
+        <form id="file-form" class="card">
+          <h2>File</h2>
+          <label for="file">File</label>
+          <input id="file" type="file" required>
+          <label for="file-label">Label</label>
+          <input id="file-label" required>
+          <p><button class="btn" type="submit">Add the file</button></p>
+        </form>
+      </div>
+      <p id="save-msg" class="small" role="status"></p>
+    </div>
+  </main>
+  <script>
+    var REPO = "Arnold-RG/kingdom-life-krakow";
+    var token = "";
+
+    function api(path, options) {
+      options = options || {};
+      options.headers = options.headers || {};
+      options.headers.Authorization = "Bearer " + token;
+      options.headers.Accept = "application/vnd.github+json";
+      return fetch("https://api.github.com" + path, options).then(function (response) {
+        return response.json().then(function (body) {
+          if (!response.ok) throw new Error(body.message || "GitHub refused the request");
+          return body;
+        });
+      });
+    }
+
+    function safeName(name) {
+      return String(name || "file").replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80) || "file";
+    }
+
+    function readFile(file) {
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function () {
+          var text = String(reader.result || "");
+          var comma = text.indexOf(",");
+          resolve(comma >= 0 ? text.slice(comma + 1) : text);
+        };
+        reader.onerror = function () { reject(new Error("Could not read the file")); };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function loadAdditions() {
+      return api("/repos/" + REPO + "/contents/content/additions.json?ref=main").then(function (file) {
+        var binary = atob(file.content.replace(/\n/g, ""));
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        var json = JSON.parse(new TextDecoder().decode(bytes));
+        json.images = json.images || [];
+        json.links = json.links || [];
+        json.files = json.files || [];
+        return { data: json, sha: file.sha };
+      });
+    }
+
+    function saveAdditions(record, message) {
+      return api("/repos/" + REPO + "/contents/content/additions.json", {
+        method: "PUT",
+        body: JSON.stringify({
+          message: message,
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(record.data, null, 2) + "\n"))),
+          sha: record.sha,
+          branch: "main"
+        })
+      });
+    }
+
+    function putFile(path, base64, message) {
+      return api("/repos/" + REPO + "/contents/" + path, {
+        method: "PUT",
+        body: JSON.stringify({
+          message: message,
+          content: base64,
+          branch: "main"
+        })
+      });
+    }
+
+    document.getElementById("gate").addEventListener("submit", function (event) {
+      event.preventDefault();
+      token = document.getElementById("token").value.trim();
+      var msg = document.getElementById("gate-msg");
+      msg.textContent = "Checking permission…";
+      api("/repos/" + REPO).then(function (repo) {
+        if (!repo.permissions || !repo.permissions.push) {
+          throw new Error("This token cannot edit the repository.");
+        }
+        return api("/user");
+      }).then(function (user) {
+        document.getElementById("tools").hidden = false;
+        document.getElementById("who").textContent = "Signed in as " + user.login + ". GitHub confirmed this account can edit the site.";
+        msg.textContent = "";
+      }).catch(function (error) {
+        token = "";
+        msg.textContent = error.message;
+      });
+    });
+
+    document.getElementById("photo-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var input = document.getElementById("photo");
+      var file = input.files[0];
+      var caption = document.getElementById("photo-cap").value.trim();
+      var status = document.getElementById("save-msg");
+      if (!file || file.size > 4000000) {
+        status.textContent = "Choose an image under 4 MB.";
+        return;
+      }
+      status.textContent = "Saving the photo…";
+      var path = "assets/uploads/" + Date.now() + "-" + safeName(file.name);
+      readFile(file).then(function (base64) {
+        return putFile(path, base64, "Add gallery photo from site admin").then(function () {
+          return loadAdditions();
+        }).then(function (record) {
+          record.data.images.push({ src: path, caption: caption });
+          return saveAdditions(record, "List the new gallery photo");
+        });
+      }).then(function () {
+        status.textContent = "The photo is saved. It appears in the gallery after GitHub Pages refreshes.";
+        event.target.reset();
+      }).catch(function (error) {
+        status.textContent = error.message;
+      });
+    });
+
+    document.getElementById("link-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var status = document.getElementById("save-msg");
+      status.textContent = "Saving the link…";
+      loadAdditions().then(function (record) {
+        record.data.links.push({
+          label: document.getElementById("link-label").value.trim(),
+          url: document.getElementById("link-url").value.trim()
+        });
+        return saveAdditions(record, "Add a link from site admin");
+      }).then(function () {
+        status.textContent = "The link is saved. It appears under the gallery after GitHub Pages refreshes.";
+        event.target.reset();
+      }).catch(function (error) {
+        status.textContent = error.message;
+      });
+    });
+
+    document.getElementById("file-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var input = document.getElementById("file");
+      var file = input.files[0];
+      var status = document.getElementById("save-msg");
+      if (!file || file.size > 4000000) {
+        status.textContent = "Choose a file under 4 MB.";
+        return;
+      }
+      status.textContent = "Saving the file…";
+      var path = "assets/uploads/" + Date.now() + "-" + safeName(file.name);
+      readFile(file).then(function (base64) {
+        return putFile(path, base64, "Add a file from site admin").then(function () {
+          return loadAdditions();
+        }).then(function (record) {
+          record.data.files.push({
+            label: document.getElementById("file-label").value.trim(),
+            url: path
+          });
+          return saveAdditions(record, "List the new file");
+        });
+      }).then(function () {
+        status.textContent = "The file is saved. It appears under the gallery after GitHub Pages refreshes.";
+        event.target.reset();
+      }).catch(function (error) {
+        status.textContent = error.message;
+      });
+    });
+  </script>
+</body>
+</html>

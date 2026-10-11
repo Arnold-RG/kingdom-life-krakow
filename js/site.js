@@ -118,6 +118,45 @@ document.addEventListener("DOMContentLoaded", function () {
     mount.appendChild(menu);
   });
 
+  fetch("content/additions.json")
+    .then(function (response) { return response.ok ? response.json() : null; })
+    .then(function (data) {
+      if (!data) return;
+      var gallery = document.querySelector(".gallery");
+      (data.images || []).forEach(function (item) {
+        if (!gallery || !item.src) return;
+        var figure = document.createElement("figure");
+        var img = document.createElement("img");
+        img.src = item.src;
+        img.alt = item.caption || "Kingdom Life";
+        var cap = document.createElement("figcaption");
+        cap.textContent = item.caption || "Kingdom Life family";
+        figure.appendChild(img);
+        figure.appendChild(cap);
+        gallery.appendChild(figure);
+      });
+      function fillList(selector, items, title) {
+        var mount = document.querySelector(selector);
+        if (!mount || !items || !items.length) return;
+        var heading = document.createElement("h3");
+        heading.textContent = title;
+        mount.appendChild(heading);
+        items.forEach(function (item) {
+          if (!item.url) return;
+          var link = document.createElement("a");
+          link.href = item.url;
+          link.textContent = item.label || item.url;
+          if (/^https?:/i.test(item.url)) link.target = "_blank";
+          link.rel = "noopener";
+          mount.appendChild(link);
+        });
+        mount.hidden = false;
+      }
+      fillList("[data-admin-links]", data.links, "Links");
+      fillList("[data-admin-files]", data.files, "Files");
+    })
+    .catch(function () {});
+
   document.querySelectorAll("form[data-mailto]").forEach(function (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();

@@ -130,6 +130,10 @@ git push origin main
 
 Wait a short time, then refresh the live address. A hard refresh (Ctrl+F5) loads the new pages if the browser kept the old ones.
 
+## Admin
+
+`admin.html` is for the person who can edit this GitHub repository. A visitor can open the page, but GitHub rejects the save unless the token is allowed to change `Arnold-RG/kingdom-life-krakow`. The token is kept in that browser tab only. Added photos go into the gallery. Added links and files are listed under the gallery.
+
 ## Forms and WhatsApp
 
 Ask the Pastor and the join form use `mailto:`. They open the visitor’s email program. Nothing is stored in this repository.
