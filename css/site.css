@@ -174,27 +174,73 @@ p { margin: 0 0 1rem; }
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.55rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1rem;
+  align-items: start;
 }
-.gallery figure { margin: 0; }
-.gallery img,
-.gallery iframe { width: 100%; height: 170px; object-fit: cover; border: 0; display: block; }
+.gallery figure {
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  padding: 0.45rem 0.45rem 0.55rem;
+}
+.gallery img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: #efe8dc;
+  display: block;
+}
 .gallery figcaption {
   font-size: 0.78rem;
   color: var(--mute);
-  margin-top: 0.3rem;
+  margin-top: 0.4rem;
 }
-.gallery figure:nth-child(1) img,
-.gallery figure:nth-child(7) img { height: 360px; }
-.gallery figure:nth-child(1),
-.gallery figure:nth-child(7) { grid-row: span 2; }
-.gallery .gal-video { grid-column: span 2; }
-.gallery .gal-video iframe { height: 260px; }
 .find-photos { display: grid; gap: 0.8rem; }
-.find-photos img { width: 100%; height: 200px; object-fit: cover; }
-.sermons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
-.sermon h3 { margin: 0.75rem 0 0.2rem; font-size: 1.05rem; }
+.find-photos img { width: 100%; height: auto; object-fit: contain; background: #efe8dc; }
+.worship-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(220px, 0.8fr);
+  gap: 0.8rem 1rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+.worship-stage .player { grid-column: 1; grid-row: 1; }
+.worship-now {
+  grid-column: 1;
+  margin: 0;
+}
+.worship-now strong { display: block; font-family: Lora, Georgia, serif; font-size: 1.15rem; }
+.worship-list {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: min(70vh, 540px);
+  overflow: auto;
+  background: var(--card);
+  border: 1px solid var(--rule);
+}
+.worship-list button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.7rem 0.85rem;
+  cursor: pointer;
+}
+.worship-list button:hover { background: #f3eee4; }
+.worship-list button[aria-current="true"] {
+  background: #e7efe9;
+  box-shadow: inset 3px 0 0 var(--forest);
+}
+.worship-title { display: block; font-weight: 700; }
+.worship-who { display: block; color: var(--mute); font-size: 0.85rem; margin-top: 0.15rem; }
 .player {
   position: relative;
   width: 100%;
@@ -310,21 +356,20 @@ form input, form textarea, form select {
   }
   .nav-links.open { display: flex; }
   .nav-row { flex-wrap: wrap; }
-  .hero, .split, .people, .photos, .bulletin, .grid-3, .grid-2, .foot-grid, .gallery, .team {
+  .hero, .split, .people, .photos, .bulletin, .grid-3, .grid-2, .foot-grid, .team {
     grid-template-columns: 1fr 1fr;
   }
-  .photos img { height: 220px; }
-  .gallery figure:nth-child(1),
-  .gallery figure:nth-child(7) { grid-row: auto; }
-  .gallery .gal-video { grid-column: span 2; }
-  .gallery img,
-  .gallery iframe,
-  .gallery figure:nth-child(1) img,
-  .gallery figure:nth-child(7) img { height: 180px; }
+  .photos img { height: auto; }
+  .worship-stage { grid-template-columns: 1fr; }
+  .worship-list {
+    grid-column: 1;
+    grid-row: auto;
+    max-height: 16rem;
+  }
 }
 @media (max-width: 560px) {
-  .hero, .split, .people, .photos, .bulletin, .grid-3, .grid-2, .foot-grid, .gallery, .team, .sermons {
+  .hero, .split, .people, .photos, .bulletin, .grid-3, .grid-2, .foot-grid, .team {
     grid-template-columns: 1fr;
   }
-  .gallery .gal-video { grid-column: auto; }
+  .gallery { grid-template-columns: 1fr; }
 }

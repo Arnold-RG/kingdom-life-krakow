@@ -48,35 +48,74 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  document.querySelectorAll("[data-sermons]").forEach(function (grid) {
-    var list = window.KL.sermons || [];
-    var limit = grid.getAttribute("data-sermons");
+  document.querySelectorAll("[data-sermons]").forEach(function (mount) {
+    var list = (window.KL.sermons || []).slice();
+    var limit = mount.getAttribute("data-sermons");
     if (limit && limit !== "all") {
       var count = parseInt(limit, 10);
       if (!isNaN(count)) list = list.slice(0, count);
     }
-    list.forEach(function (sermon, index) {
-      var article = document.createElement("article");
-      article.className = "card sermon";
-      var player = document.createElement("div");
-      player.className = "player";
-      var frame = document.createElement("iframe");
+    if (!list.length) return;
+
+    mount.classList.add("worship-stage");
+
+    var player = document.createElement("div");
+    player.className = "player";
+    var frame = document.createElement("iframe");
+    frame.title = list[0].title;
+    frame.src = "https://www.youtube-nocookie.com/embed/" + list[0].id + "?rel=0";
+    frame.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+    frame.setAttribute("allowfullscreen", "");
+    player.appendChild(frame);
+
+    var now = document.createElement("p");
+    now.className = "worship-now";
+    var nowTitle = document.createElement("strong");
+    var nowWho = document.createElement("span");
+    nowWho.className = "worship-who";
+    now.appendChild(nowTitle);
+    now.appendChild(nowWho);
+
+    var menu = document.createElement("ol");
+    menu.className = "worship-list";
+    var buttons = [];
+
+    function show(index, autoplay) {
+      var sermon = list[index];
       frame.title = sermon.title;
-      frame.src = "https://www.youtube-nocookie.com/embed/" + sermon.id + "?rel=0";
-      frame.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
-      frame.setAttribute("allowfullscreen", "");
-      frame.loading = index < 2 ? "eager" : "lazy";
-      player.appendChild(frame);
-      var heading = document.createElement("h3");
-      heading.textContent = sermon.title;
-      var who = document.createElement("p");
-      who.className = "small muted";
+      frame.src = "https://www.youtube-nocookie.com/embed/" + sermon.id + "?rel=0" + (autoplay ? "&autoplay=1" : "");
+      nowTitle.textContent = sermon.title;
+      nowWho.textContent = sermon.speaker;
+      buttons.forEach(function (button, i) {
+        if (i === index) button.setAttribute("aria-current", "true");
+        else button.removeAttribute("aria-current");
+      });
+    }
+
+    list.forEach(function (sermon, index) {
+      var item = document.createElement("li");
+      var button = document.createElement("button");
+      button.type = "button";
+      var title = document.createElement("span");
+      title.className = "worship-title";
+      title.textContent = sermon.title;
+      var who = document.createElement("span");
+      who.className = "worship-who";
       who.textContent = sermon.speaker;
-      article.appendChild(player);
-      article.appendChild(heading);
-      article.appendChild(who);
-      grid.appendChild(article);
+      button.appendChild(title);
+      button.appendChild(who);
+      button.addEventListener("click", function () {
+        show(index, true);
+      });
+      buttons.push(button);
+      item.appendChild(button);
+      menu.appendChild(item);
     });
+
+    show(0, false);
+    mount.appendChild(player);
+    mount.appendChild(now);
+    mount.appendChild(menu);
   });
 
   document.querySelectorAll("form[data-mailto]").forEach(function (form) {

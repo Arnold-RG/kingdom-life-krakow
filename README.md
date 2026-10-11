@@ -71,7 +71,9 @@ On arrival, look for Kingdom Life posters and banners inside the hotel. They lea
 
 ## Worship films
 
-Films are listed once, in `js/site.js`, under `sermons`. Home, About, Daily Word, and Join render that list inside the page. Pressing play does not send the visitor to YouTube.
+Films are listed once, in `js/site.js`, under `sermons`. Home, About, Daily Word, and Join show one player and a list of titles. Choosing another title stops the film that is playing and starts the new one in the same player. Pressing play does not send the visitor to YouTube.
+
+Gallery photographs keep their real shape on every screen size. They are not cropped to a short strip.
 
 The gallery on the home page does not contain these players.
 
