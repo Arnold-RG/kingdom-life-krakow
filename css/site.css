@@ -17,8 +17,10 @@ body {
   color: var(--ink);
   background: var(--paper);
   font-family: "Source Sans 3", "Segoe UI", sans-serif;
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  text-align: left;
+  text-rendering: optimizeLegibility;
 }
 img { max-width: 100%; display: block; }
 a { color: var(--leaf); }
@@ -27,8 +29,19 @@ h1, h2, h3, h4 {
   font-family: "Lora", Georgia, serif;
   font-weight: 600;
   line-height: 1.25;
+  letter-spacing: -0.015em;
   margin: 0 0 0.6rem;
+  text-align: left;
+  text-wrap: balance;
 }
+p, li, dd, dt, figcaption, label, th, td, blockquote { text-align: left; }
+.hero p,
+.section p,
+.card p,
+.shelf-head p,
+.verse-box p,
+main > p { max-width: 66ch; }
+.section-gap { margin-top: 2rem; }
 p { margin: 0 0 1rem; }
 .wrap { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; }
 .muted { color: var(--mute); }
@@ -182,7 +195,7 @@ p { margin: 0 0 1rem; }
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   align-items: start;
 }
@@ -215,15 +228,43 @@ p { margin: 0 0 1rem; }
   align-items: start;
   margin-top: 1rem;
 }
-.worship-stage .player { grid-column: 1; grid-row: 1; }
+.worship-filters {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.worship-filters button {
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+}
+.worship-filters button[aria-current="true"] {
+  background: var(--forest);
+  color: #fff;
+  border-color: var(--forest);
+}
+.worship-group {
+  padding: 0.75rem 0.85rem 0.2rem;
+  font-family: "Lora", Georgia, serif;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+.worship-stage .player { grid-column: 1; grid-row: 2; }
 .worship-now {
   grid-column: 1;
+  grid-row: 3;
   margin: 0;
 }
 .worship-now strong { display: block; font-family: Lora, Georgia, serif; font-size: 1.15rem; }
 .worship-list {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 2 / span 2;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -357,7 +398,7 @@ form input, form textarea, form select {
   font-size: 1.35rem;
   color: var(--gold);
 }
-.shelf-head h2 { margin: 0; }
+.shelf-head h2, .shelf-head h3 { margin: 0; font-size: 1.45rem; }
 .shelf-head p { margin: 0.15rem 0 0; color: var(--mute); }
 .cover-grid {
   display: grid;
@@ -417,11 +458,15 @@ form input, form textarea, form select {
   .photos img,
   .photos figure:first-child img { height: auto; }
   .worship-stage { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: 1fr 1fr; }
+  .worship-filters,
+  .worship-stage .player,
+  .worship-now,
   .worship-list {
     grid-column: 1;
     grid-row: auto;
-    max-height: 16rem;
   }
+  .worship-list { max-height: 50vh; }
   .cover-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
