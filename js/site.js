@@ -2023,4 +2023,36 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     revealNodes.forEach(function (node) { node.classList.add("is-visible"); });
   }
+
+  /* Mobile/tablet: auto horizontal photo slides */
+  (function () {
+    var mq = window.matchMedia("(max-width: 1024px)");
+    var timers = [];
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function stop() {
+      timers.forEach(function (id) { clearInterval(id); });
+      timers = [];
+    }
+
+    function start() {
+      stop();
+      if (!mq.matches || reduce.matches) return;
+      document.querySelectorAll(".photo-grid, .team-pastors, .team-deacons").forEach(function (track) {
+        if (!track || track.children.length < 2) return;
+        var id = setInterval(function () {
+          if (!mq.matches) return;
+          var step = Math.max(track.clientWidth * 0.82, 220);
+          var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 12;
+          if (atEnd) track.scrollTo({ left: 0, behavior: "smooth" });
+          else track.scrollBy({ left: step, behavior: "smooth" });
+        }, 3400);
+        timers.push(id);
+      });
+    }
+
+    start();
+    if (mq.addEventListener) mq.addEventListener("change", start);
+    else if (mq.addListener) mq.addListener(start);
+  })();
 });

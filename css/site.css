@@ -1,21 +1,21 @@
-/* Kingdom Life Kraków — Coastal glass
-   Mist air · sea ink · clay warmth · bottom glass dock */
+/* Kingdom Life Kraków — Sea glass
+   Sage mist page · deep teal · clay · top nav on desktop · dock on phones */
 
 :root {
-  --ink: #152028;
-  --forest: #164f55;
-  --leaf: #1f6d75;
-  --paper: #eef3f6;
-  --paper-deep: #e0e8ee;
-  --card: #ffffff;
-  --rule: #d0dae3;
-  --gold: #c45d3e;
-  --gold-soft: #e07a5f;
-  --mute: #5f6d78;
-  --footer: #101820;
-  --sea: #1f6d75;
-  --sea-deep: #164f55;
-  --clay: #c45d3e;
+  --ink: #0d1b1e;
+  --forest: #0f4c51;
+  --leaf: #137a7f;
+  --paper: #c9d8d4;
+  --paper-deep: #b5c8c3;
+  --card: #f4f8f7;
+  --rule: #8faba5;
+  --gold: #d3542f;
+  --gold-soft: #e9784f;
+  --mute: #3d5553;
+  --footer: #0a1618;
+  --sea: #137a7f;
+  --sea-deep: #0f4c51;
+  --clay: #d3542f;
   --max: 1120px;
   --measure: 66ch;
   --space-xs: 0.4rem;
@@ -24,7 +24,7 @@
   --space-lg: 2.25rem;
   --space-xl: 3.5rem;
   --radius: 10px;
-  --dock-pad: 5.75rem;
+  --dock-pad: 0;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --font-body: "Manrope", "Segoe UI", sans-serif;
@@ -52,10 +52,10 @@ body {
   text-rendering: optimizeLegibility;
   background-color: var(--paper);
   background-image:
-    radial-gradient(110% 70% at 12% -10%, rgba(255, 255, 255, 0.95) 0%, transparent 55%),
-    radial-gradient(80% 50% at 100% 0%, rgba(31, 109, 117, 0.1) 0%, transparent 48%),
-    radial-gradient(70% 45% at 80% 100%, rgba(196, 93, 62, 0.08) 0%, transparent 45%),
-    linear-gradient(180deg, #f7fafb 0%, var(--paper) 40%, var(--paper-deep) 100%);
+    radial-gradient(100% 70% at 10% 0%, rgba(244, 248, 247, 0.75) 0%, transparent 50%),
+    radial-gradient(80% 55% at 100% 15%, rgba(19, 122, 127, 0.22) 0%, transparent 50%),
+    radial-gradient(70% 50% at 70% 100%, rgba(211, 84, 47, 0.14) 0%, transparent 48%),
+    linear-gradient(180deg, #d7e5e1 0%, var(--paper) 45%, var(--paper-deep) 100%);
   background-attachment: scroll;
   padding-bottom: var(--dock-pad);
 }
@@ -182,14 +182,14 @@ main,
 }
 .skip:focus { top: 0.6rem; }
 
-/* —— Topbar + logo strip —— */
+/* —— Topbar —— */
 .topbar {
-  background: transparent;
-  color: var(--mute);
+  background: rgba(15, 76, 81, 0.92);
+  color: #e7f2f1;
   font-size: 0.84rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  padding: 0.65rem 0 0;
+  padding: 0.5rem 0;
 }
 .topbar .wrap {
   display: flex;
@@ -203,22 +203,26 @@ main,
   max-width: 100%;
   overflow-wrap: anywhere;
 }
-.topbar a { color: var(--sea-deep); text-decoration: none; font-weight: 600; }
-.topbar a:hover { color: var(--clay); }
+.topbar a { color: #fff; text-decoration: none; font-weight: 600; }
+.topbar a:hover { color: #ffd2c0; }
 .topbar-break { display: none; }
 
+/* Desktop: glass top bar. Phone/tablet: logo only + bottom dock */
 .site-header {
-  background: transparent;
-  border-bottom: 0;
-  position: relative;
-  z-index: 20;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(244, 248, 247, 0.72);
+  border-bottom: 1px solid rgba(143, 171, 165, 0.45);
+  backdrop-filter: blur(16px) saturate(1.35);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
 }
 .nav-row {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 1rem;
-  padding: 0.85rem 0 0.35rem;
+  padding: 0.7rem 0;
 }
 .logo {
   text-decoration: none;
@@ -235,29 +239,44 @@ main,
   color: var(--clay);
   margin-top: 0.12rem;
 }
-.nav-links,
+.nav-links {
+  display: flex;
+  gap: 0.35rem 1.1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.nav-links a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"] { color: var(--sea-deep); }
+.nav-links a.btn { color: #fff; }
+.nav-links a.btn:hover { color: #fff; }
 .menu-btn { display: none !important; }
 
-/* —— iPhone-style glass dock —— */
+/* Bottom glass dock — phones & tablets only */
 .dock {
+  display: none;
   position: fixed;
   left: 50%;
-  bottom: max(0.85rem, env(safe-area-inset-bottom));
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
   transform: translateX(-50%);
   z-index: 60;
-  display: flex;
   align-items: stretch;
   gap: 0.2rem;
-  width: min(28rem, calc(100% - 1.5rem));
+  width: min(28rem, calc(100% - 1.25rem));
   padding: 0.4rem;
   border-radius: 1.45rem;
-  background: rgba(255, 255, 255, 0.48);
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(13, 40, 44, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   box-shadow:
-    0 10px 28px rgba(21, 32, 40, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(22px) saturate(1.55);
-  -webkit-backdrop-filter: blur(22px) saturate(1.55);
+    0 12px 32px rgba(8, 20, 22, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
 }
 .dock-item {
   flex: 1 1 0;
@@ -265,32 +284,32 @@ main,
   align-items: center;
   justify-content: center;
   min-height: 2.7rem;
-  padding: 0.45rem 0.35rem;
+  padding: 0.45rem 0.3rem;
   border-radius: 1.1rem;
-  color: var(--ink);
+  color: #f2f7f6;
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-align: center;
   line-height: 1.15;
-  transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
 }
 .dock-item:hover {
-  background: rgba(255, 255, 255, 0.55);
-  color: var(--sea-deep);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
 }
 .dock-item[aria-current="page"] {
-  background: rgba(31, 109, 117, 0.14);
-  color: var(--sea-deep);
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 .dock-join {
-  background: rgba(196, 93, 62, 0.12);
-  color: var(--clay);
+  background: rgba(211, 84, 47, 0.85);
+  color: #fff;
 }
 .dock-join:hover,
 .dock-join[aria-current="page"] {
-  background: var(--clay);
+  background: #e9784f;
   color: #fff;
 }
 
@@ -303,7 +322,7 @@ main,
 .home-jump a {
   text-decoration: none;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(244, 248, 247, 0.85);
   border: 1px solid var(--rule);
   padding: 0.45rem 0.8rem;
   border-radius: 999px;
@@ -486,9 +505,9 @@ main,
   position: relative;
 }
 .section.alt {
-  background: linear-gradient(180deg, rgba(31, 109, 117, 0.06) 0%, rgba(224, 232, 238, 0.55) 100%);
-  border-top: 1px solid rgba(208, 218, 227, 0.9);
-  border-bottom: 1px solid rgba(208, 218, 227, 0.9);
+  background: linear-gradient(180deg, rgba(15, 76, 81, 0.1) 0%, rgba(181, 200, 195, 0.55) 100%);
+  border-top: 1px solid rgba(143, 171, 165, 0.65);
+  border-bottom: 1px solid rgba(143, 171, 165, 0.65);
 }
 .section > .wrap > h2,
 .section > .wrap > .kicker + h2 { max-width: 28ch; }
@@ -1099,6 +1118,55 @@ form select:focus {
   }
   .photo-tile:hover .photo-frame img,
   .team-card:hover .team-photo img { transform: none; }
+}
+
+/* —— Phones & tablets: bottom dock + auto photo slides —— */
+@media (max-width: 1024px) {
+  :root { --dock-pad: 5.9rem; }
+  .nav-links { display: none !important; }
+  .dock { display: flex; }
+  .site-header {
+    background: rgba(201, 216, 212, 0.78);
+  }
+
+  .photo-grid,
+  .team-pastors,
+  .team-deacons {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.15rem 0.1rem 0.65rem;
+    margin-inline: -0.15rem;
+  }
+  .photo-grid::-webkit-scrollbar,
+  .team-pastors::-webkit-scrollbar,
+  .team-deacons::-webkit-scrollbar { height: 4px; }
+  .photo-grid::-webkit-scrollbar-thumb,
+  .team-pastors::-webkit-scrollbar-thumb,
+  .team-deacons::-webkit-scrollbar-thumb {
+    background: rgba(15, 76, 81, 0.35);
+    border-radius: 4px;
+  }
+
+  .photo-grid .photo-tile,
+  .photo-grid .photo-tile--wide,
+  .team-pastors .team-card,
+  .team-deacons .team-card {
+    flex: 0 0 min(82vw, 17.5rem);
+    width: min(82vw, 17.5rem);
+    max-width: 17.5rem;
+    grid-column: auto;
+    margin: 0;
+    scroll-snap-align: center;
+  }
+  .photo-grid .photo-tile--wide { flex-basis: min(90vw, 20rem); width: min(90vw, 20rem); max-width: 20rem; }
+  .photo-frame { aspect-ratio: 3 / 4; }
+  .photo-tile:nth-child(3n) { margin-top: 0; }
 }
 
 /* —— Responsive —— */
