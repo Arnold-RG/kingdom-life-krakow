@@ -1959,16 +1959,21 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(function (response) { return response.ok ? response.json() : null; })
     .then(function (data) {
       if (!data) return;
-      var gallery = document.querySelector("[data-gallery-add]") || document.querySelector(".gallery");
+      var gallery = document.querySelector("[data-gallery-add]") || document.querySelector(".photo-grid");
       (data.images || []).forEach(function (item) {
         if (!gallery || !item.src) return;
         var figure = document.createElement("figure");
+        figure.className = "photo-tile";
+        var frame = document.createElement("div");
+        frame.className = "photo-frame";
         var img = document.createElement("img");
         img.src = item.src;
         img.alt = item.caption || "Kingdom Life";
+        img.loading = "lazy";
         var cap = document.createElement("figcaption");
         cap.textContent = item.caption || "Kingdom Life family";
-        figure.appendChild(img);
+        frame.appendChild(img);
+        figure.appendChild(frame);
         figure.appendChild(cap);
         gallery.appendChild(figure);
       });
