@@ -19,7 +19,7 @@
   <meta name="ICBM" content="50.0705027, 20.0396688">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
   <script type="application/ld+json">
   {
@@ -89,7 +89,7 @@
   <a class="skip" href="#main">Skip to content</a>
   <div class="topbar">
     <div class="wrap">
-      <span>Sunday English service · 12:00–14:00 · Hotel Centrum, Nowa Huta</span>
+      <span>Sunday English service · 12:00–14:00<br class="topbar-break"> Hotel Centrum, Nowa Huta</span>
       <span><a href="https://www.google.com/maps/dir/?api=1&destination=50.0705027,20.0396688">Get directions</a> · <a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a></span>
     </div>
   </div>
@@ -115,24 +115,29 @@
   </header>
 
   <main id="main">
-    <section class="wrap hero">
-      <div>
-        <p class="kicker">English-speaking church in Kraków</p>
-        <h1>An international church meeting every Sunday.</h1>
-        <p>Kingdom Life Kraków is a Church of Christ campus for English speakers, students, families, and anyone still asking questions about God. We worship, hear the Word, and stay for fellowship.</p>
-        <p class="muted">Szukasz angielskiego kościoła w Krakowie? Zapraszamy w niedzielę o 12:00 do Hotelu Centrum.</p>
-        <p>
-          <a class="btn" href="#sundays">Plan this Sunday</a>
-          <a class="btn ghost" href="join.html">Join the community</a>
-        </p>
-        <p class="small muted">5.0 on Google Maps · 5 reviews · <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">See the listing</a></p>
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="kicker">Kingdom Life Kraków</p>
+          <h1>An international church meeting every Sunday.</h1>
+          <p class="hero-lede">A Church of Christ campus for English speakers, students, families, and anyone still asking questions about God.</p>
+          <p class="hero-actions">
+            <a class="btn" href="#sundays">Plan this Sunday</a>
+            <a class="btn ghost" href="join.html">Join the community</a>
+          </p>
+        </div>
+        <figure class="hero-mark">
+          <img src="assets/favicon.png" alt="Kingdom Life crown symbol">
+        </figure>
       </div>
-      <figure class="hero-photo hero-mark">
-        <img src="assets/favicon.png" alt="Kingdom Life crown symbol">
-      </figure>
     </section>
 
-    <div class="wrap" id="sundays">
+    <div class="wrap hero-meta">
+      <p class="muted">Szukasz angielskiego kościoła w Krakowie? Zapraszamy w niedzielę o 12:00 do Hotelu Centrum.</p>
+      <p class="small muted">5.0 on Google Maps · 5 reviews · <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">See the listing</a></p>
+    </div>
+
+    <div class="wrap bulletin-band reveal" id="sundays">
       <div class="bulletin">
         <div>
           <h2>This Sunday</h2>
@@ -152,7 +157,7 @@
       </div>
     </div>
 
-    <section class="section alt">
+    <section class="section alt welcome-split reveal">
       <div class="wrap split">
         <div>
           <p class="kicker">If you already believe</p>
@@ -167,11 +172,13 @@
       </div>
     </section>
 
-            <section class="section" id="gallery">
+    <section class="section reveal" id="gallery">
       <div class="wrap">
-        <p class="kicker">People of the church</p>
-        <h2>Kingdom Life team</h2>
-        <div class="team-roster" id="gal-team">
+        <div class="gallery-intro">
+          <p class="kicker">People of the church</p>
+          <h2>Kingdom Life team</h2>
+        </div>
+        <div class="team-pastors" id="gal-team">
           <article class="team-card">
             <div class="team-photo"><img src="assets/pastor-precious.jpg" alt="Dr. Precious Anoshiri"></div>
             <h3>Dr. Precious Anoshiri</h3>
@@ -184,6 +191,8 @@
             <div class="team-photo"><img src="assets/pastor-tammy.jpg" alt="Dr. Tammy Gbolubo"></div>
             <h3>Dr. Tammy Gbolubo</h3>
           </article>
+        </div>
+        <div class="team-deacons">
           <article class="team-card">
             <div class="team-photo"><img src="assets/dcn-belinda.jpg" alt="Dcn. Belinda Mavuwa"></div>
           </article>
@@ -197,8 +206,12 @@
             <div class="team-photo"><img src="assets/dcn-samy.jpg" alt="Dcn. Samy"></div>
           </article>
         </div>
+        <div class="life-heading">
+          <p class="kicker">Gatherings</p>
+          <h2>Life of the church</h2>
+        </div>
         <div class="photo-grid" id="gal-life" data-gallery-add>
-          <figure class="photo-tile">
+          <figure class="photo-tile photo-tile--wide">
             <div class="photo-frame"><img src="assets/ig-krk-2.jpg" alt="Teaching from the lectern at Kingdom Life Kraków" loading="lazy"></div>
           </figure>
           <figure class="photo-tile">
@@ -219,14 +232,14 @@
           <figure class="photo-tile">
             <div class="photo-frame"><img src="assets/pl-lectern.jpg" alt="Sunday teaching at the lectern" loading="lazy"></div>
           </figure>
+          <figure class="photo-tile photo-tile--wide">
+            <div class="photo-frame"><img src="assets/pl-raised-hands.jpg" alt="The congregation worshiping with hands raised" loading="lazy"></div>
+          </figure>
           <figure class="photo-tile">
             <div class="photo-frame"><img src="assets/pl-teaching.jpg" alt="Teaching during a Kingdom Life gathering" loading="lazy"></div>
           </figure>
           <figure class="photo-tile">
             <div class="photo-frame"><img src="assets/pl-praise.jpg" alt="Hands raised during the service" loading="lazy"></div>
-          </figure>
-          <figure class="photo-tile">
-            <div class="photo-frame"><img src="assets/pl-raised-hands.jpg" alt="The congregation worshiping with hands raised" loading="lazy"></div>
           </figure>
           <figure class="photo-tile">
             <div class="photo-frame"><img src="assets/ig/pl-DeOvbu5iiF_-01.jpg" alt="Worship under flags at a Kingdom Life gathering" loading="lazy"></div>
@@ -291,7 +304,7 @@
           <figure class="photo-tile">
             <div class="photo-frame"><img src="assets/gathering-3.jpg" alt="Sunday teaching at Kingdom Life" loading="lazy"></div>
           </figure>
-          <figure class="photo-tile">
+          <figure class="photo-tile photo-tile--wide">
             <div class="photo-frame"><img src="assets/gathering-2.jpg" alt="Worship during a Kingdom Life service" loading="lazy"></div>
           </figure>
           <figure class="photo-tile">
@@ -333,7 +346,7 @@
       </div>
     </section>
 
-<section class="section alt" id="worship">
+    <section class="section alt reveal" id="worship">
       <div class="wrap">
         <p class="kicker">Worship</p>
         <h2>Worship</h2>
@@ -351,8 +364,8 @@
       </div>
     </section>
 
-    <section class="section alt" id="pastor">
-      <div class="wrap people">
+    <section class="section reveal" id="pastor">
+      <div class="wrap pastor-strip people">
         <img src="assets/pastor-tammy.jpg" alt="Dr. Tammy Gbolubo, Resident Pastor of the Krakow campus">
         <div>
           <p class="kicker">Kraków campus</p>
@@ -363,7 +376,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section alt reveal">
       <div class="wrap split">
         <div class="verse-box">
           <p class="kicker">Daily Bible verse</p>
@@ -383,7 +396,7 @@
       </div>
     </section>
 
-    <section class="section alt">
+    <section class="section reveal">
       <div class="wrap">
         <p class="kicker">Voices from Google</p>
         <h2>What visitors have said.</h2>
@@ -404,7 +417,7 @@
       </div>
     </section>
 
-    <section class="section" id="find-us">
+    <section class="section alt reveal" id="find-us">
       <div class="wrap split">
         <div>
           <p class="kicker">Find the English church in Krakow</p>
@@ -428,7 +441,7 @@
       </div>
     </section>
 
-    <section class="section alt" id="about-short">
+    <section class="section reveal" id="about-short">
       <div class="wrap split">
         <div>
           <p class="kicker">Church facts</p>
@@ -449,7 +462,7 @@
       </div>
     </section>
 
-    <section class="section faq">
+    <section class="section alt faq reveal">
       <div class="wrap">
         <h2>Questions people type into Google</h2>
         <details open>
