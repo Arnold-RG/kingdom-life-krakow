@@ -1970,11 +1970,8 @@ document.addEventListener("DOMContentLoaded", function () {
         img.src = item.src;
         img.alt = item.caption || "Kingdom Life";
         img.loading = "lazy";
-        var cap = document.createElement("figcaption");
-        cap.textContent = item.caption || "Kingdom Life family";
         frame.appendChild(img);
         figure.appendChild(frame);
-        figure.appendChild(cap);
         gallery.appendChild(figure);
       });
       function fillList(selector, items, title) {
