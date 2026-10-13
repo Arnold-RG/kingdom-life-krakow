@@ -1816,61 +1816,17 @@ window.KL = {
   ]
 };
 
-function toneAt(x, y) {
-  if (y < 0 || y > window.innerHeight) return "light";
-  var el = document.elementFromPoint(x, y);
-  if (!el || el.closest(".site-header, .topbar, .dock, .nav-links")) return "light";
-  if (el.closest("img, .photo-frame, .hero-photo, .team-photo, .player-poster")) return "light";
-  var band = el.closest(".hero, .page-mast, .site-footer, .bulletin-band, .section");
-  if (!band || band.classList.contains("bulletin-band")) return "light";
-  if (band.classList.contains("hero") || band.classList.contains("page-mast") || band.classList.contains("site-footer")) return "dark";
-  var parent = band.parentElement;
-  if (parent && parent.tagName === "MAIN" && band.classList.contains("section")) {
-    var index = Array.prototype.indexOf.call(parent.children, band);
-    return index % 2 === 0 ? "dark" : "light";
-  }
-  return "light";
-}
-
-function bandIsDark(y) {
-  var marks = [0.18, 0.5, 0.82];
-  var dark = true;
-  for (var i = 0; i < marks.length; i++) {
-    if (toneAt(window.innerWidth * marks[i], y) !== "dark") dark = false;
-  }
-  return dark;
-}
-
 function syncChrome() {
   var topbar = document.querySelector(".topbar");
   var header = document.querySelector(".site-header");
-  var dock = document.querySelector(".dock");
   var topH = topbar ? topbar.offsetHeight : 0;
   var headH = header ? header.offsetHeight : 0;
   document.documentElement.style.setProperty("--topbar-h", topH + "px");
   document.documentElement.style.setProperty("--chrome-h", (topH + headH) + "px");
-  if (header) {
-    var below = header.getBoundingClientRect().bottom + 8;
-    document.body.classList.toggle("chrome-dark", bandIsDark(below));
-  }
-  if (dock && window.getComputedStyle(dock).display !== "none") {
-    var above = dock.getBoundingClientRect().top - 8;
-    document.body.classList.toggle("dock-dark", bandIsDark(above));
-  }
-}
-
-var chromeFrame = 0;
-function queueChrome() {
-  if (chromeFrame) return;
-  chromeFrame = window.requestAnimationFrame(function () {
-    chromeFrame = 0;
-    syncChrome();
-  });
 }
 
 syncChrome();
-window.addEventListener("scroll", queueChrome, { passive: true });
-window.addEventListener("resize", queueChrome);
+window.addEventListener("resize", syncChrome);
 
 document.addEventListener("DOMContentLoaded", function () {
   var btn = document.querySelector(".menu-btn");
