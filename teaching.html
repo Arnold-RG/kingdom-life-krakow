@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Daily Bible Verse & Teaching | English Church in Krakow</title>
-  <meta name="description" content="Today’s Bible verse and a short teaching from Kingdom Life Kraków, plus recent sermons from Kingdom Life Poland on YouTube.">
+  <meta name="description" content="Today’s Bible verse and a short teaching from Kingdom Life Kraków, linked to the Bible App for reading more.">
   <link rel="canonical" href="https://arnold-rg.github.io/kingdom-life-krakow/teaching.html">
   <link rel="icon" href="assets/logo-black.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/site.css?v=20261013q">
 </head>
-<body>
+<body class="page-teaching">
   <div class="topbar"><div class="wrap">Daily Word · English church in Krakow</div></div>
   <header class="site-header">
     <div class="wrap nav-row">
@@ -31,23 +31,33 @@
   <main class="wrap section">
     <p class="kicker">Daily teaching</p>
     <h1>A verse for today.</h1>
-    <p>The verse changes with the date. It is Scripture, then a short pastoral note — not a replacement for Sunday, just something to carry into the day.</p>
+    <p>Scripture for this date loads live on the page, with a short pastoral note from Kraków. When you want to read more of the passage, open it in the Bible App.</p>
+    <div class="bible-banner">
+      <div>
+        <p class="kicker">Bible App</p>
+        <p>Today’s word is linked to the YouVersion Bible App. Read the verse here, then continue in your own Bible on your phone.</p>
+      </div>
+      <div class="bible-actions">
+        <a class="btn" data-bible-app href="https://apps.apple.com/app/id282935706" target="_blank" rel="noopener">Get the Bible App</a>
+        <a class="btn ghost" data-bible-votd href="https://www.bible.com/verse-of-the-day" target="_blank" rel="noopener">Verse of the Day</a>
+      </div>
+    </div>
     <div class="verse-box">
       <p class="small muted" data-verse-date></p>
       <blockquote data-verse-text></blockquote>
       <p><strong data-verse-ref></strong></p>
       <p data-verse-note></p>
+      <div class="bible-actions verse-actions">
+        <a class="btn" data-bible-more href="https://www.bible.com/verse-of-the-day" target="_blank" rel="noopener">Read more in Bible App</a>
+        <a class="btn ghost" data-bible-app href="https://apps.apple.com/app/id282935706" target="_blank" rel="noopener">Open Bible App</a>
+      </div>
     </div>
 
-    <h2 class="section-gap">Sermons on this page</h2>
-    <p>A few recent films play here. The full Kraków and Warsaw library is on the <a href="index.html#worship">home page</a>.</p>
-    <div class="sermons" data-sermons="6"></div>
-    <p style="margin-top:1rem"><a href="https://www.instagram.com/kingdomlifekrakow/">Instagram @kingdomlifekrakow</a> · <a href="https://www.tiktok.com/@kingdomlifepl">TikTok</a></p>
-    <p style="margin-top:1.2rem">If a verse raises a question, <a href="pastor.html">ask the pastor</a>.</p>
+    <p class="stack-links section-gap"><a href="https://www.instagram.com/kingdomlifekrakow/">Instagram @kingdomlifekrakow</a> · <a href="https://www.tiktok.com/@kingdomlifepl">TikTok</a></p>
+    <p>Watch sermons on the <a href="index.html#worship">home page</a>. If a verse raises a question, <a href="pastor.html">ask the pastor</a>. For more reading plans, visit the <a href="books.html">Bible App library</a>.</p>
   </main>
-  <footer class="site-footer">
-    <div class="wrap"><p>Kingdom Life Kraków · <a href="index.html#worship">Worship</a> · <a href="index.html">Home</a></p></div>
-  </footer>
+  <footer class="site-footer"></footer>
+  <script src="js/bible.js"></script>
   <script src="js/site.js"></script>
   <script src="js/verse.js"></script>
 
