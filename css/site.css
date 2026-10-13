@@ -468,16 +468,14 @@ p:last-child { margin-bottom: 0; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* —— Sunday strip (keep wrap centering) —— */
+/* —— Sunday strip (never clobber .wrap centering) —— */
 .wrap.bulletin-band,
 .bulletin-band.wrap {
-  margin-inline: auto;
-  margin-top: 0;
-  margin-bottom: var(--space-xl);
+  margin: 0 auto var(--space-xl);
   padding-top: 0.5rem;
 }
 .bulletin-band:not(.wrap) {
-  margin-bottom: var(--space-xl);
+  margin: 0 0 var(--space-xl);
   padding: clamp(1.5rem, 4vw, 2.5rem) 0;
 }
 
@@ -691,6 +689,7 @@ p:last-child { margin-bottom: 0; }
 
 /* —— Worship —— */
 .worship-stage {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(16rem, 0.85fr);
   gap: 0.9rem 1.2rem;
@@ -801,13 +800,22 @@ p:last-child { margin-bottom: 0; }
   grid-row: 3 / span 2;
   list-style: none;
   margin: 0;
-  padding: 0;
-  max-height: min(70vh, 36rem);
+  padding: 0 0 1.75rem;
+  max-height: min(68vh, 32.5rem);
   overflow: auto;
   background: var(--card);
   border: 1px solid var(--rule);
-  -webkit-mask-image: linear-gradient(#000 0%, #000 calc(100% - 2.75rem), transparent 100%);
-  mask-image: linear-gradient(#000 0%, #000 calc(100% - 2.75rem), transparent 100%);
+  scrollbar-gutter: stable;
+}
+.worship-list::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  display: block;
+  height: 2.5rem;
+  margin: -2.5rem 0 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(247, 243, 236, 0), var(--card));
 }
 .worship-group {
   padding: 0.85rem 0.85rem 0.25rem;
