@@ -10,6 +10,7 @@ import {
 } from "./vendor/anime.esm.js";
 
 (function () {
+  try {
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (reduce.matches) {
     document.documentElement.classList.remove("anime-scroll");
@@ -89,7 +90,6 @@ import {
     scrub(bulletin.children, {
       opacity: [0, 1],
       y: [80, 0],
-      rotate: [1.5, 0],
       delay: stagger(140),
       ease: "out(3)",
     }, {
@@ -232,4 +232,13 @@ import {
     }
   }
 
+  } catch (err) {
+    console.error("[scroll-motion]", err);
+    document.documentElement.classList.remove("anime-scroll");
+    document.querySelectorAll(".reveal").forEach(function (n) {
+      n.classList.add("is-visible");
+      n.style.opacity = "1";
+      n.style.transform = "none";
+    });
+  }
 })();
