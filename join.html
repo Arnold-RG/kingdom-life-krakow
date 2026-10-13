@@ -3,93 +3,115 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Join Kingdom Life Krakow | WhatsApp, YouTube, Instagram, Facebook</title>
-  <meta name="description" content="Join the Kingdom Life Kraków membership community. Request the WhatsApp group and follow the church on YouTube, Instagram, Facebook, TikTok, and Google Maps.">
+  <title>Join Kingdom Life Kraków</title>
+  <meta name="description" content="Request membership and the Kraków WhatsApp group. Follow Kingdom Life on YouTube, Instagram, Facebook, TikTok, and Google Maps.">
   <link rel="canonical" href="https://arnold-rg.github.io/kingdom-life-krakow/join.html">
-  <link rel="icon" href="assets/logo-black.png">
+  <meta name="theme-color" content="#14110f">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Join Kingdom Life Kraków">
+  <meta property="og:description" content="Ask the campus for the membership and WhatsApp community. Come on Sunday if you can.">
+  <meta property="og:url" content="https://arnold-rg.github.io/kingdom-life-krakow/join.html">
+  <meta property="og:image" content="https://arnold-rg.github.io/kingdom-life-krakow/assets/pl-raised-hands.jpg">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Join Kingdom Life Kraków">
+  <meta name="twitter:description" content="Ask the campus for the membership and WhatsApp community. Come on Sunday if you can.">
+  <meta name="twitter:image" content="https://arnold-rg.github.io/kingdom-life-krakow/assets/pl-raised-hands.jpg">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-  <div class="topbar"><div class="wrap">Membership · WhatsApp · social family</div></div>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="topbar"><div class="wrap"><span>Membership · Sunday 12:00 at Hotel Centrum</span><span><a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a></span></div></div>
   <header class="site-header">
     <div class="wrap nav-row">
-      <a class="logo" href="index.html">
-        <img src="assets/logo-black.png" alt="Kingdom Life">
-        <span class="logo-campus">Kraków campus</span>
-      </a>
-      <nav class="nav-links" aria-label="Main desktop">
-        <a href="index.html">Home</a>
-        <a href="books.html">Books</a>
-        <a href="pastor.html">Ask Pastor</a>
-        <a class="btn" href="join.html" aria-current="page">Join us</a>
-      </nav>
+      <a class="logo" href="index.html"><img src="assets/logo-black.png" alt="Kingdom Life" width="1024" height="377"><span class="logo-campus">Kraków campus</span></a>
+      <div class="nav-end">
+        <span class="nav-here">Join us</span>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-label">Menu</span></button>
+        <nav id="site-nav" class="nav-links" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="events.html">Events</a>
+          <a href="teaching.html">Daily Word</a>
+          <a href="books.html">Books</a>
+          <a href="pastor.html">Ask Pastor</a>
+          <a class="nav-join" href="join.html" aria-current="page">Join us</a>
+        </nav>
+      </div>
     </div>
   </header>
-  <main class="wrap section">
-    <p class="kicker">Join the membership group</p>
-    <h1>Belong here, not only visit.</h1>
-    <p>Come on Sunday first if you can. Then ask to be added to the Krakow membership community. The public church pages are listed below. The WhatsApp group is given by the campus team so the room stays pastoral, not random.</p>
-
-    <div class="split" id="whatsapp">
-      <div class="card">
-        <h2>WhatsApp community</h2>
-        <p>There is no public invite sitting on the open internet — that is on purpose. Send your name and we will reply with the current Krakow group link.</p>
-        <p><a class="btn wa" data-whatsapp href="#whatsapp-form" data-whatsapp-ready="Open the WhatsApp group">Request the WhatsApp link</a></p>
-        <p class="small muted">If the church later publishes a standing invite, it can be added in js/site.js as <code>whatsappGroup</code>.</p>
-      </div>
-      <form id="whatsapp-form" class="card" data-mailto="krakow@kingdomlifeonline.org" data-subject="Join Kingdom Life Krakow — membership / WhatsApp">
-        <label for="name">Name</label>
-        <input id="name" name="Name" required>
-        <label for="email">Email</label>
-        <input id="email" name="Email" type="email" required>
-        <label for="phone">WhatsApp number</label>
-        <input id="phone" name="WhatsApp number" placeholder="+48 …">
-        <label for="want">I would like</label>
-        <select id="want" name="Request">
-          <option>The Krakow WhatsApp group</option>
-          <option>Membership / to belong to the church</option>
-          <option>Both — WhatsApp and membership</option>
-          <option>Just a visit this Sunday</option>
-        </select>
-        <label for="note">Anything we should know</label>
-        <textarea id="note" name="Note" rows="4"></textarea>
-        <p><button class="btn" type="submit">Send the request</button></p>
-      </form>
+  <header class="page-mast">
+    <div class="wrap">
+      <p class="kicker">Join the membership group</p>
+      <h1>Belong here, not only visit.</h1>
+      <p class="lede">Come on Sunday first if you can. Then ask to be added to the Kraków membership community. The public church pages are listed below. The campus sends the WhatsApp link, so the room stays pastoral.</p>
     </div>
+  </header>
+  <main id="main" class="section">
+    <div class="wrap">
+      <div class="split" id="whatsapp">
+        <div class="card">
+          <h2>WhatsApp community</h2>
+          <p>There is no public invite on the open internet. That is on purpose. Send your name and the campus will reply with the current Kraków group link.</p>
+          <p><a class="btn wa" data-whatsapp href="#whatsapp-form" data-whatsapp-ready="Open the WhatsApp group">Request the WhatsApp link</a></p>
+        </div>
+        <form id="whatsapp-form" class="card" data-mailto="krakow@kingdomlifeonline.org" data-subject="Join Kingdom Life Krakow — membership / WhatsApp">
+          <label for="name">Name</label>
+          <input id="name" name="Name" autocomplete="name" required>
+          <label for="email">Email</label>
+          <input id="email" name="Email" type="email" autocomplete="email" required>
+          <label for="phone">WhatsApp number</label>
+          <input id="phone" name="WhatsApp number" type="tel" inputmode="tel" autocomplete="tel" placeholder="+48 …">
+          <label for="want">I would like</label>
+          <select id="want" name="Request">
+            <option>The Kraków WhatsApp group</option>
+            <option>Membership / to belong to the church</option>
+            <option>Both — WhatsApp and membership</option>
+            <option>Just a visit this Sunday</option>
+          </select>
+          <label for="note">Anything we should know</label>
+          <textarea id="note" name="Note" rows="4"></textarea>
+          <p class="actions"><button class="btn" type="submit">Send the request</button></p>
+          <p class="small muted">This opens your email app. Nothing is stored on the website.</p>
+        </form>
+      </div>
 
-    <h2 class="section-gap">Watch with us here</h2>
-    <p>Recent films play on this page. The full library, arranged by Kraków and Warsaw, is on the <a href="index.html#worship">home page</a>.</p>
-    <div class="sermons" data-sermons="6"></div>
+      <h2 class="section-gap">Watch with us here</h2>
+      <p>Recent films play on this page. The full library is on the <a href="index.html#worship">home page</a>.</p>
+      <div class="sermons" data-sermons="6"></div>
 
-    <h2 style="margin-top:2rem">Official church pages</h2>
-    <p>These are the real Kingdom Life Poland accounts linked from kingdomlifeonline.org.</p>
-    <div class="socials">
-      <a href="https://www.instagram.com/kingdomlifekrakow/">Instagram · @kingdomlifekrakow</a>
-      <a href="https://www.instagram.com/kingdomlifepl/">Poland family · @kingdomlifepl</a>
-      <a href="https://www.facebook.com/kingdomlifepl">Facebook · kingdomlifepl</a>
-      <a href="https://www.tiktok.com/@kingdomlifepl">TikTok · @kingdomlifepl</a>
-      <a href="https://twitter.com/KingdomlifePL">X · @KingdomlifePL</a>
-      <a href="https://kingdomlifeonline.org/">Website · kingdomlifeonline.org</a>
-      <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps · Kingdom Life Krakow</a>
+      <h2 class="section-gap">Official church pages</h2>
+      <p>These are the Kingdom Life Poland accounts linked from kingdomlifeonline.org.</p>
+      <div class="socials">
+        <a href="https://www.instagram.com/kingdomlifekrakow/">Instagram · @kingdomlifekrakow</a>
+        <a href="https://www.instagram.com/kingdomlifepl/">Poland family · @kingdomlifepl</a>
+        <a href="https://www.facebook.com/kingdomlifepl">Facebook · kingdomlifepl</a>
+        <a href="https://www.tiktok.com/@kingdomlifepl">TikTok · @kingdomlifepl</a>
+        <a href="https://twitter.com/KingdomlifePL">X · @KingdomlifePL</a>
+        <a href="https://kingdomlifeonline.org/">Website · kingdomlifeonline.org</a>
+        <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps · Kingdom Life Krakow</a>
+      </div>
     </div>
   </main>
   <footer class="site-footer">
     <div class="wrap">
       <p>Kingdom Life Kraków · Hotel Centrum, Osiedle Centrum E 12, 31-934 Kraków</p>
       <p><a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a></p>
+      <p class="legal">© <span data-year></span></p>
     </div>
   </footer>
   <script src="js/site.js"></script>
-
-  <nav class="dock" aria-label="Main">
+  <nav class="dock" aria-label="Shortcuts">
     <a class="dock-item" href="index.html">Home</a>
     <a class="dock-item" href="books.html">Books</a>
     <a class="dock-item" href="pastor.html">Ask Pastor</a>
     <a class="dock-item dock-join" href="join.html" aria-current="page">Join us</a>
   </nav>
-
 </body>
 </html>

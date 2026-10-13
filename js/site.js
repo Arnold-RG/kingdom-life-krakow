@@ -1820,20 +1820,49 @@ document.addEventListener("DOMContentLoaded", function () {
   var btn = document.querySelector(".menu-btn");
   var links = document.querySelector(".nav-links");
   if (btn && links) {
-    btn.addEventListener("click", function () {
-      var open = links.classList.toggle("open");
+    var label = btn.querySelector(".menu-label");
+    function setOpen(open) {
+      links.classList.toggle("open", open);
       btn.setAttribute("aria-expanded", open ? "true" : "false");
+      document.body.classList.toggle("nav-open", open);
+      if (label) label.textContent = open ? "Close" : "Menu";
+    }
+    btn.addEventListener("click", function () {
+      var open = !links.classList.contains("open");
+      setOpen(open);
+      if (open) {
+        var first = links.querySelector("a");
+        if (first) first.focus();
+      }
     });
+    links.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { setOpen(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && links.classList.contains("open")) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+    var desktop = window.matchMedia("(min-width: 1040px)");
+    function closeIfDesktop() {
+      if (desktop.matches) setOpen(false);
+    }
+    if (desktop.addEventListener) desktop.addEventListener("change", closeIfDesktop);
+    else if (desktop.addListener) desktop.addListener(closeIfDesktop);
   }
 
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = String(new Date().getFullYear());
   });
 
-  var wa = document.querySelectorAll("[data-whatsapp]");
-  wa.forEach(function (el) {
+  document.querySelectorAll("[data-whatsapp]").forEach(function (el) {
     if (window.KL.whatsappGroup) {
       el.setAttribute("href", window.KL.whatsappGroup);
+      if (/^https?:/i.test(window.KL.whatsappGroup)) {
+        el.setAttribute("target", "_blank");
+        el.setAttribute("rel", "noopener");
+      }
       el.textContent = el.getAttribute("data-whatsapp-ready") || "Join the WhatsApp group";
     } else {
       el.setAttribute("href", "join.html#whatsapp");
@@ -1850,21 +1879,52 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!list.length) return;
 
     mount.classList.add("worship-stage");
+    var activeGroup = "All";
+    var query = "";
+    var current = 0;
 
     var filters = document.createElement("div");
     filters.className = "worship-filters";
+    filters.setAttribute("role", "group");
+    filters.setAttribute("aria-label", "Film shelves");
+
     var groups = [];
     list.forEach(function (sermon) {
       if (sermon.group && groups.indexOf(sermon.group) === -1) groups.push(sermon.group);
     });
 
+    var tools = document.createElement("div");
+    tools.className = "worship-tools";
+    var searchLabel = document.createElement("label");
+    searchLabel.className = "worship-search";
+    searchLabel.appendChild(document.createTextNode("Search"));
+    var search = document.createElement("input");
+    search.type = "search";
+    search.placeholder = "Title or speaker";
+    searchLabel.appendChild(search);
+    var tally = document.createElement("p");
+    tally.className = "worship-count";
+    tally.setAttribute("aria-live", "polite");
+    tools.appendChild(searchLabel);
+    tools.appendChild(tally);
+
     var player = document.createElement("div");
     player.className = "player";
+    var poster = document.createElement("button");
+    poster.type = "button";
+    poster.className = "player-poster";
+    var posterImg = document.createElement("img");
+    posterImg.alt = "";
+    var posterText = document.createElement("span");
+    posterText.textContent = "Play";
+    poster.appendChild(posterImg);
+    poster.appendChild(posterText);
     var frame = document.createElement("iframe");
-    frame.title = list[0].title;
-    frame.src = "https://www.youtube-nocookie.com/embed/" + list[0].id + "?rel=0";
+    frame.hidden = true;
     frame.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
     frame.setAttribute("allowfullscreen", "");
+    frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    player.appendChild(poster);
     player.appendChild(frame);
 
     var now = document.createElement("p");
@@ -1875,31 +1935,68 @@ document.addEventListener("DOMContentLoaded", function () {
     now.appendChild(nowTitle);
     now.appendChild(nowWho);
 
+    var empty = document.createElement("p");
+    empty.className = "worship-empty";
+    empty.hidden = true;
+    empty.textContent = "Nothing matches that search.";
+
     var menu = document.createElement("ol");
     menu.className = "worship-list";
     var buttons = [];
-    var rows = [];
 
-    function applyFilter(group) {
-      rows.forEach(function (row) {
-        row.hidden = group !== "All" && row.getAttribute("data-group") !== group;
-      });
-      filters.querySelectorAll("button").forEach(function (button) {
-        if (button.getAttribute("data-filter") === group) button.setAttribute("aria-current", "true");
-        else button.removeAttribute("aria-current");
-      });
+    function setPoster(sermon) {
+      posterImg.hidden = false;
+      posterImg.src = "https://i.ytimg.com/vi/" + sermon.id + "/hqdefault.jpg";
+      poster.setAttribute("aria-label", "Play " + sermon.title);
     }
+
+    posterImg.addEventListener("error", function () { posterImg.hidden = true; });
 
     function show(index, autoplay) {
       var sermon = list[index];
-      frame.title = sermon.title;
-      frame.src = "https://www.youtube-nocookie.com/embed/" + sermon.id + "?rel=0" + (autoplay ? "&autoplay=1" : "");
+      if (!sermon) return;
+      current = index;
       nowTitle.textContent = sermon.title;
-      nowWho.textContent = sermon.speaker;
+      nowWho.textContent = sermon.speaker || "";
       buttons.forEach(function (button, i) {
         if (i === index) button.setAttribute("aria-current", "true");
         else button.removeAttribute("aria-current");
       });
+      if (autoplay) {
+        frame.hidden = false;
+        poster.hidden = true;
+        frame.title = sermon.title;
+        frame.src = "https://www.youtube-nocookie.com/embed/" + sermon.id + "?rel=0&autoplay=1";
+      } else {
+        frame.removeAttribute("src");
+        frame.hidden = true;
+        poster.hidden = false;
+        setPoster(sermon);
+      }
+    }
+
+    function applyView() {
+      var q = query.trim().toLowerCase();
+      var visible = 0;
+      Array.prototype.forEach.call(menu.children, function (row) {
+        if (row.classList.contains("worship-group")) return;
+        var groupOk = activeGroup === "All" || row.getAttribute("data-group") === activeGroup;
+        var match = !q || row.textContent.toLowerCase().indexOf(q) !== -1;
+        var showRow = groupOk && match;
+        row.hidden = !showRow;
+        if (showRow) visible += 1;
+      });
+      Array.prototype.forEach.call(menu.querySelectorAll(".worship-group"), function (label) {
+        var n = label.nextElementSibling;
+        var any = false;
+        while (n && !n.classList.contains("worship-group")) {
+          if (!n.hidden) any = true;
+          n = n.nextElementSibling;
+        }
+        label.hidden = !any;
+      });
+      tally.textContent = visible === 1 ? "1 film" : visible + " films";
+      empty.hidden = visible !== 0;
     }
 
     if (groups.length > 1 && list.length > 8) {
@@ -1907,8 +2004,14 @@ document.addEventListener("DOMContentLoaded", function () {
         var filter = document.createElement("button");
         filter.type = "button";
         filter.textContent = group;
-        filter.setAttribute("data-filter", group);
-        filter.addEventListener("click", function () { applyFilter(group); });
+        filter.setAttribute("aria-pressed", group === "All" ? "true" : "false");
+        filter.addEventListener("click", function () {
+          activeGroup = group;
+          Array.prototype.forEach.call(filters.children, function (button) {
+            button.setAttribute("aria-pressed", button === filter ? "true" : "false");
+          });
+          applyView();
+        });
         filters.appendChild(filter);
       });
     }
@@ -1919,9 +2022,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var label = document.createElement("li");
         label.className = "worship-group";
         label.textContent = sermon.group;
-        label.setAttribute("data-group", sermon.group);
         menu.appendChild(label);
-        rows.push(label);
         lastGroup = sermon.group;
       }
       var item = document.createElement("li");
@@ -1933,27 +2034,84 @@ document.addEventListener("DOMContentLoaded", function () {
       title.textContent = sermon.title;
       var who = document.createElement("span");
       who.className = "worship-who";
-      who.textContent = sermon.speaker;
+      who.textContent = sermon.speaker || "";
       button.appendChild(title);
       button.appendChild(who);
-      button.addEventListener("click", function () {
-        show(index, true);
-      });
+      button.addEventListener("click", function () { show(index, true); });
       buttons.push(button);
       item.appendChild(button);
       menu.appendChild(item);
-      rows.push(item);
     });
 
+    search.addEventListener("input", function () {
+      query = search.value;
+      applyView();
+    });
+    poster.addEventListener("click", function () { show(current, true); });
+
     show(0, false);
-    if (filters.childElementCount) {
-      mount.appendChild(filters);
-      applyFilter("All");
-    }
+    if (filters.childElementCount) mount.appendChild(filters);
+    if (list.length > 8) mount.appendChild(tools);
     mount.appendChild(player);
     mount.appendChild(now);
+    mount.appendChild(empty);
     mount.appendChild(menu);
+    applyView();
   });
+
+  function bindLightbox() {
+    if (document.querySelector(".lightbox")) return;
+    var dialog = document.createElement("dialog");
+    dialog.className = "lightbox";
+    dialog.innerHTML = '<div class="lightbox-bar"><button type="button" class="lightbox-close">Close</button></div><p class="lightbox-cap"></p><div class="lightbox-nav"><button type="button" data-dir="-1">Previous</button><button type="button" data-dir="1">Next</button></div>';
+    document.body.appendChild(dialog);
+    var picture = document.createElement("img");
+    picture.alt = "";
+    dialog.querySelector(".lightbox-bar").insertAdjacentElement("afterend", picture);
+    var cap = dialog.querySelector(".lightbox-cap");
+    var sources = [];
+    var index = 0;
+
+    function show(i) {
+      if (!sources.length) return;
+      index = (i + sources.length) % sources.length;
+      picture.src = sources[index].src;
+      picture.alt = sources[index].alt;
+      cap.textContent = sources[index].alt;
+    }
+
+    document.querySelectorAll(".photo-grid, .team-pastors, .team-deacons, .team-roster").forEach(function (group) {
+      var imgs = Array.prototype.slice.call(group.querySelectorAll("img"));
+      imgs.forEach(function (node, i) {
+        if (node.closest(".photo-open")) return;
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "photo-open";
+        button.setAttribute("aria-label", "View larger: " + (node.alt || "photograph"));
+        node.parentNode.insertBefore(button, node);
+        button.appendChild(node);
+        button.addEventListener("click", function () {
+          sources = imgs;
+          show(i);
+          dialog.showModal();
+        });
+      });
+    });
+
+    dialog.querySelector(".lightbox-close").addEventListener("click", function () { dialog.close(); });
+    dialog.querySelectorAll("[data-dir]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        show(index + parseInt(button.getAttribute("data-dir"), 10));
+      });
+    });
+    dialog.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { e.preventDefault(); show(index + 1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); show(index - 1); }
+    });
+    dialog.addEventListener("click", function (e) {
+      if (e.target === dialog) dialog.close();
+    });
+  }
 
   fetch("content/additions.json")
     .then(function (response) { return response.ok ? response.json() : null; })
@@ -1975,26 +2133,29 @@ document.addEventListener("DOMContentLoaded", function () {
         gallery.appendChild(figure);
       });
       function fillList(selector, items, title) {
-        var mount = document.querySelector(selector);
-        if (!mount || !items || !items.length) return;
+        var host = document.querySelector(selector);
+        if (!host || !items || !items.length) return;
         var heading = document.createElement("h3");
         heading.textContent = title;
-        mount.appendChild(heading);
+        host.appendChild(heading);
         items.forEach(function (item) {
           if (!item.url) return;
           var link = document.createElement("a");
           link.href = item.url;
           link.textContent = item.label || item.url;
-          if (/^https?:/i.test(item.url)) link.target = "_blank";
-          link.rel = "noopener";
-          mount.appendChild(link);
+          if (/^https?:/i.test(item.url)) {
+            link.target = "_blank";
+            link.rel = "noopener";
+          }
+          host.appendChild(link);
         });
-        mount.hidden = false;
+        host.hidden = false;
       }
       fillList("[data-admin-links]", data.links, "Links");
       fillList("[data-admin-files]", data.files, "Files");
     })
-    .catch(function () {});
+    .catch(function () {})
+    .then(function () { bindLightbox(); });
 
   document.querySelectorAll("form[data-mailto]").forEach(function (form) {
     form.addEventListener("submit", function (e) {
@@ -2005,54 +2166,22 @@ document.addEventListener("DOMContentLoaded", function () {
       new FormData(form).forEach(function (value, key) {
         parts.push(key + ": " + value);
       });
-      var href = "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(parts.join("\n"));
-      window.location.href = href;
+      window.location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(parts.join("\n"));
     });
   });
 
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   var revealNodes = document.querySelectorAll(".reveal");
-  if (revealNodes.length && "IntersectionObserver" in window) {
+  if (revealNodes.length && !reduce.matches && "IntersectionObserver" in window) {
     var revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         entry.target.classList.add("is-visible");
         revealObserver.unobserve(entry.target);
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
     revealNodes.forEach(function (node) { revealObserver.observe(node); });
   } else {
     revealNodes.forEach(function (node) { node.classList.add("is-visible"); });
   }
-
-  /* Mobile/tablet: auto horizontal photo slides */
-  (function () {
-    var mq = window.matchMedia("(max-width: 1024px)");
-    var timers = [];
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    function stop() {
-      timers.forEach(function (id) { clearInterval(id); });
-      timers = [];
-    }
-
-    function start() {
-      stop();
-      if (!mq.matches || reduce.matches) return;
-      document.querySelectorAll(".photo-grid, .team-pastors, .team-deacons").forEach(function (track) {
-        if (!track || track.children.length < 2) return;
-        var id = setInterval(function () {
-          if (!mq.matches) return;
-          var step = Math.max(track.clientWidth * 0.82, 220);
-          var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 12;
-          if (atEnd) track.scrollTo({ left: 0, behavior: "smooth" });
-          else track.scrollBy({ left: step, behavior: "smooth" });
-        }, 3400);
-        timers.push(id);
-      });
-    }
-
-    start();
-    if (mq.addEventListener) mq.addEventListener("change", start);
-    else if (mq.addListener) mq.addListener(start);
-  })();
 });

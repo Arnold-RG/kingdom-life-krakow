@@ -71,9 +71,11 @@ On arrival, look for Kingdom Life posters and banners inside the hotel. They lea
 
 ## Worship films
 
-Films are listed once, in `js/site.js`, under `sermons`. Home, About, Daily Word, and Join show one player and a list of titles. Choosing another title stops the film that is playing and starts the new one in the same player. Pressing play does not send the visitor to YouTube.
+Films are listed once, in `js/site.js`, under `sermons`. Home and About show the full list, with shelves and a search box. Daily Word and Join show the first six. Choosing a title plays it in the same player and stops the film already playing. Pressing play does not send the visitor to YouTube. The player waits until someone presses play, so the page does not load a film in the background.
 
-Gallery photographs keep their real shape on every screen size. They are not cropped to a short strip.
+Gallery photographs keep their real proportions on every screen size. Select one to see it larger. They are not cropped into a short strip.
+
+The phone menu lists every page. The bar along the bottom is a shortcut to Home, Books, Ask the pastor, and Join. On a wide screen those pages, plus About, Events, and Daily Word, sit in the top bar.
 
 The gallery on the home page does not contain these players.
 
@@ -102,15 +104,17 @@ Gallery photographs are real pictures of people from the church archive and `@ki
 
 ## How the site is published
 
-This is a static site. There is no build, no database, and no server app.
+This is a static site. There is no build step, no database, and no server app.
 
-GitHub Pages publishes the `main` branch from the repository root. The file `.nojekyll` tells GitHub to publish the files as they are.
-
-After a push to `main`, GitHub rebuilds the public site at:
+The public address is:
 
 https://arnold-rg.github.io/kingdom-life-krakow/
 
-That address works in Chrome, Edge, Firefox, Safari, and on a phone. It is not limited to the computer that created the site.
+That address works in Chrome, Edge, Firefox, Safari, and on a phone. Anyone can open it. No login is required.
+
+`.github/workflows/pages.yml` publishes the site with GitHub Actions when `main` changes. In the repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**. Until that switch is made, GitHub can keep publishing the `main` branch from the repository root. `.nojekyll` tells GitHub not to run Jekyll.
+
+After a push to `main`, wait a short time and refresh. A hard refresh (Ctrl+F5) loads the new pages if the browser kept the old ones.
 
 ## Open it on your own computer
 
