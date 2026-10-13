@@ -7,7 +7,7 @@
   <meta name="description" content="Kingdom Life Kraków is an English-speaking Church of Christ. Sundays 12:00–14:00 inside Hotel Centrum, Osiedle Centrum E 12, Nowa Huta.">
   <meta name="keywords" content="English church in Krakow, English speaking church Krakow, international church Krakow, Church of Christ Krakow, Kingdom Life Krakow, church Nowa Huta, Hotel Centrum church">
   <link rel="canonical" href="https://arnold-rg.github.io/kingdom-life-krakow/">
-  <meta name="theme-color" content="#fbfaf7">
+  <meta name="theme-color" content="#efeae2">
   <meta property="og:type" content="website">
   <meta property="og:title" content="English Church in Krakow | Kingdom Life Kraków">
   <meta property="og:description" content="Sundays 12:00–14:00 at Hotel Centrum, Osiedle Centrum E 12, Kraków.">
@@ -29,10 +29,15 @@
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="image" href="assets/pl-raised-hands.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/gathering-2.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+  document.documentElement.classList.add("js");
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("anime-scroll");
+  }
+</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -137,27 +142,30 @@
 
   <main id="main">
     <section class="hero">
-      <div class="hero-copy">
-        <p class="kicker">Kingdom Life Kraków</p>
-        <h1>An English-speaking church in Kraków.</h1>
-        <p class="tagline">Embracing God’s Love and Living His Light</p>
-        <p class="hero-lede">Sundays from 12:00 to 14:00, inside Hotel Centrum in Nowa Huta. A Church of Christ campus for students, families, and anyone who still has questions about God.</p>
-        <p class="hero-actions">
-          <a class="btn" href="#sundays">Plan this Sunday</a>
-          <a class="btn ghost" href="join.html">Join the community</a>
-        </p>
-        <p class="hero-note" lang="pl">Szukasz angielskiego kościoła w Krakowie? Zapraszamy w niedzielę o 12:00 do Hotelu Centrum.</p>
-        <p class="small muted">5.0 on Google Maps · 5 reviews · <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">See the listing</a></p>
+      <div class="hero-bg" aria-hidden="true">
+        <img src="assets/gathering-2.jpg" alt="" width="768" height="1152" decoding="async" fetchpriority="high">
       </div>
-      <figure class="hero-photo">
-        <img src="assets/pl-raised-hands.jpg" alt="The congregation worshiping with hands raised" width="1620" height="1080" fetchpriority="high">
-        <figcaption>Sunday worship</figcaption>
-      </figure>
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <img class="hero-crown" src="assets/favicon.png" alt="" width="52" height="52">
+          <p class="kicker">Kingdom Life Kraków</p>
+          <h1>An English-speaking church in Kraków.</h1>
+          <p class="hero-lede">Sundays from 12:00 to 14:00, inside Hotel Centrum in Nowa Huta. A Church of Christ campus for students, families, and anyone who still has questions about God.</p>
+          <p class="hero-actions">
+            <a class="btn" href="#sundays">Plan this Sunday</a>
+            <a class="btn ghost" href="join.html">Join the community</a>
+          </p>
+        </div>
+      </div>
     </section>
 
-    <div class="bulletin-band">
-      <div class="wrap">
-      <section class="bulletin" id="sundays" aria-label="This Sunday">
+    <div class="wrap hero-meta">
+      <p class="hero-note" lang="pl">Szukasz angielskiego kościoła w Krakowie? Zapraszamy w niedzielę o 12:00 do Hotelu Centrum.</p>
+      <p class="small muted">5.0 on Google Maps · 5 reviews · <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">See the listing</a></p>
+    </div>
+
+    <div class="wrap bulletin-band" id="sundays">
+      <section class="bulletin" aria-label="This Sunday">
         <div>
           <p class="bulletin-label">This Sunday</p>
           <strong>12:00–14:00</strong>
@@ -182,7 +190,6 @@
         <a href="about.html">About</a>
         <a href="events.html">Events</a>
       </nav>
-      </div>
     </div>
 
     <section class="section welcome-split reveal">
@@ -328,7 +335,7 @@
 
     <section class="section reveal" id="worship">
       <div class="wrap">
-        <p class="kicker">Worship</p>
+        <p class="kicker">Kingdom Life Poland channel</p>
         <h2>Every film plays on this page.</h2>
         <p>Kraków and Warsaw share the Kingdom Life Poland channel. Choose a shelf, then a title. One film plays here, and choosing another title stops the one already playing.</p>
         <div class="sermons" data-sermons="all"></div>
@@ -371,7 +378,9 @@
           <h2>Meetings, prayer, and family events.</h2>
           <p>Sundays and weekly prayer happen here in Kraków. Larger conferences — Harvest, Kingdom Women, His Presence — are shared with the Warsaw family.</p>
           <p class="actions"><a class="btn" href="events.html">See programs and events</a></p>
-          <img src="assets/event-women.png" alt="Kingdom Women Conference 2026 poster" width="1024" height="576">
+          <figure class="poster-mat">
+            <img src="assets/event-women.png" alt="Kingdom Women Conference 2026 poster" width="1024" height="576">
+          </figure>
         </div>
       </div>
     </section>
@@ -490,7 +499,6 @@
           <a href="index.html#worship">Worship</a><br>
           <a href="about.html">About</a><br>
           <a href="events.html">Events</a><br>
-<br>
           <a href="books.html">Books</a><br>
           <a href="https://www.instagram.com/kingdomlifekrakow/">Instagram @kingdomlifekrakow</a><br>
           <a href="https://www.instagram.com/kingdomlifepl/">Poland family @kingdomlifepl</a><br>
@@ -505,6 +513,7 @@
     <div class="wrap legal">Społeczność Chrześcijańska Kingdom Life · © <span data-year></span> · Photographs belong to the church and the people in them.</div>
   </footer>
   <script src="js/site.js"></script>
+  <script type="module" src="js/scroll-motion.js"></script>
   <script src="js/verse.js"></script>
   <nav class="dock" aria-label="Shortcuts">
     <a class="dock-item" href="index.html" aria-current="page">Home</a>

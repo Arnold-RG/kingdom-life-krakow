@@ -6,7 +6,7 @@
   <title>Ask the Pastor | Kingdom Life Kraków</title>
   <meta name="description" content="Write Dr. Tammy Gbolubo and the Kraków campus team about faith, a Sunday visit, or joining Kingdom Life Kraków.">
   <link rel="canonical" href="https://arnold-rg.github.io/kingdom-life-krakow/pastor.html">
-  <meta name="theme-color" content="#fbfaf7">
+  <meta name="theme-color" content="#efeae2">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Ask the pastor | Kingdom Life Kraków">
   <meta property="og:description" content="Write Dr. Tammy Gbolubo, Resident Pastor of the Kraków campus.">
@@ -21,9 +21,14 @@
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+  document.documentElement.classList.add("js");
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("anime-scroll");
+  }
+</script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -115,6 +120,7 @@
     <div class="wrap legal">Społeczność Chrześcijańska Kingdom Life · © <span data-year></span> · Photographs belong to the church and the people in them.</div>
   </footer>
   <script src="js/site.js"></script>
+  <script type="module" src="js/scroll-motion.js"></script>
   <nav class="dock" aria-label="Shortcuts">
     <a class="dock-item" href="index.html">Home</a>
     <a class="dock-item" href="books.html">Books</a>
