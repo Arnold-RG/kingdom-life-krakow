@@ -1256,13 +1256,16 @@ address { font-style: normal; }
   opacity: 0;
   will-change: transform, opacity;
 }
+.anime-scroll main {
+  overflow-x: clip;
+}
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
   width: 100%;
-  height: 3px;
+  height: 4px;
   margin: 0;
   padding: 0;
   border: 0;

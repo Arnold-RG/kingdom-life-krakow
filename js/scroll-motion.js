@@ -1,240 +1,235 @@
 /**
- * Live scroll motion — Anime.js v4 Scroll Observer
- * Same pattern as https://animejs.com/ (onScroll + sync + stagger)
+ * Live scroll UI — Anime.js v4 (local), same engine as https://animejs.com/
+ * Uses onScroll({ sync: true }) so motion is scrubbed by the scrollbar.
  */
-import { animate, stagger, onScroll, createTimeline } from "https://cdn.jsdelivr.net/npm/animejs@4.0.2/+esm";
+import {
+  animate,
+  stagger,
+  onScroll,
+  createTimeline,
+} from "./vendor/anime.esm.js";
 
 (function () {
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (reduce.matches) {
     document.documentElement.classList.remove("anime-scroll");
-    document.querySelectorAll(".reveal").forEach(function (node) {
-      node.classList.add("is-visible");
+    document.querySelectorAll(".reveal, [data-scroll]").forEach(function (n) {
+      n.classList.add("is-visible");
+      n.style.opacity = "";
+      n.style.transform = "";
     });
     return;
   }
 
-  document.documentElement.classList.add("anime-scroll-ready");
+  document.documentElement.classList.add("anime-scroll", "anime-scroll-ready");
 
-  /* Safety: if something fails mid-way, never leave content invisible */
-  window.setTimeout(function () {
-    document.querySelectorAll(".reveal").forEach(function (node) {
-      if (getComputedStyle(node).opacity === "0") {
-        node.style.opacity = "1";
-        node.style.transform = "none";
-      }
-    });
-  }, 4000);
+  function scrub(targets, props, scrollOpts) {
+    return animate(targets, Object.assign({}, props, {
+      ease: props.ease || "linear",
+      autoplay: onScroll(Object.assign({ sync: true }, scrollOpts)),
+    }));
+  }
 
-  /* ── Progress bar scrubbed to page scroll ── */
-  var bar = document.createElement("div");
-  bar.className = "scroll-progress";
-  bar.setAttribute("aria-hidden", "true");
-  document.body.appendChild(bar);
-  animate(bar, {
-    scaleX: [0, 1],
-    ease: "linear",
-    autoplay: onScroll({
-      target: "body",
-      enter: "top top",
-      leave: "bottom bottom",
-      sync: true,
-    }),
+  /* ── 1. Page progress (animejs.com-style scrub) ── */
+  var bar = document.querySelector(".scroll-progress");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    bar.setAttribute("aria-hidden", "true");
+    document.body.prepend(bar);
+  }
+  scrub(bar, { scaleX: [0, 1] }, {
+    target: document.documentElement,
+    enter: "top top",
+    leave: "bottom bottom",
   });
 
-  /* ── Hero: load timeline + scroll-linked parallax ── */
+  /* ── 2. Hero: entrance + scroll-linked stage ── */
   var hero = document.querySelector(".hero");
   var heroImg = document.querySelector(".hero-bg img");
   var heroCopy = document.querySelector(".hero-copy");
-  var heroCrown = document.querySelector(".hero-crown");
+  var heroBits = heroCopy
+    ? heroCopy.querySelectorAll(".hero-crown, .kicker, h1, .hero-lede, .hero-actions")
+    : [];
 
-  if (heroCopy) {
-    createTimeline({ defaults: { ease: "out(4)" } })
-      .add(heroCrown || heroCopy, {
-        opacity: [0, 1],
-        scale: [0.86, 1],
-        duration: 900,
-      })
-      .add(
-        heroCopy.querySelectorAll(".kicker, h1, .hero-lede, .hero-actions"),
-        {
-          opacity: [0, 1],
-          y: [40, 0],
-          delay: stagger(90),
-          duration: 850,
-        },
-        "-=500"
-      );
+  if (heroBits.length) {
+    createTimeline({ defaults: { ease: "out(4)" } }).add(heroBits, {
+      opacity: [0, 1],
+      y: [60, 0],
+      delay: stagger(100),
+      duration: 1000,
+    });
   }
 
   if (hero && heroImg) {
-    animate(heroImg, {
-      y: ["0%", "18%"],
-      scale: [1.08, 1.18],
-      ease: "linear",
-      autoplay: onScroll({
-        target: hero,
-        enter: "top top",
-        leave: "bottom top",
-        sync: true,
-      }),
+    scrub(heroImg, {
+      y: ["0%", "22%"],
+      scale: [1.05, 1.22],
+    }, {
+      target: hero,
+      enter: "top top",
+      leave: "bottom top",
     });
   }
 
   if (hero && heroCopy) {
-    animate(heroCopy, {
-      y: [0, 80],
+    scrub(heroCopy, {
+      y: [0, 120],
       opacity: [1, 0],
-      ease: "linear",
-      autoplay: onScroll({
-        target: hero,
-        enter: "top top",
-        leave: "bottom top",
-        sync: true,
-      }),
+    }, {
+      target: hero,
+      enter: "top top",
+      leave: "bottom top",
     });
   }
 
-  /* ── Bulletin strip: staggered scroll sync ── */
+  /* ── 3. Sunday bulletin — staggered scrub ── */
   var bulletin = document.querySelector(".bulletin");
   if (bulletin && bulletin.children.length) {
-    animate(bulletin.children, {
+    scrub(bulletin.children, {
       opacity: [0, 1],
-      y: [64, 0],
-      delay: stagger(120),
+      y: [80, 0],
+      rotate: [1.5, 0],
+      delay: stagger(140),
       ease: "out(3)",
-      autoplay: onScroll({
-        target: bulletin,
-        enter: "top bottom",
-        leave: "center top",
-        sync: true,
-      }),
+    }, {
+      target: bulletin.closest(".bulletin-band") || bulletin,
+      enter: "top bottom",
+      leave: "center top",
     });
   }
 
-  var jumps = document.querySelectorAll(".home-jump a");
-  if (jumps.length) {
-    animate(jumps, {
+  var jumpLinks = document.querySelectorAll(".home-jump a");
+  if (jumpLinks.length) {
+    scrub(jumpLinks, {
       opacity: [0, 1],
-      y: [20, 0],
-      delay: stagger(60),
+      y: [28, 0],
+      delay: stagger(70),
       ease: "out(3)",
-      autoplay: onScroll({
-        target: ".home-jump",
-        enter: "top bottom",
-        leave: "bottom top",
-        sync: true,
-      }),
+    }, {
+      target: ".home-jump",
+      enter: "top bottom",
+      leave: "bottom top",
     });
   }
 
-  /* ── Every .reveal section: live scrub in / out ── */
-  document.querySelectorAll(".reveal").forEach(function (section) {
-    section.classList.add("is-visible");
+  /* ── 4. Sections: alternate slide + scale (live while scrolling) ── */
+  var sections = document.querySelectorAll("main .section, main .reveal, .welcome-split");
+  sections.forEach(function (section, i) {
+    section.setAttribute("data-scroll", "");
+    var fromX = i % 2 === 0 ? -48 : 48;
 
-    var head = section.querySelectorAll(".kicker, h2, .gallery-intro p, .lede");
-    if (head.length) {
-      animate(head, {
-        opacity: [0, 1],
-        y: [48, 0],
-        delay: stagger(70),
-        ease: "out(3)",
-        autoplay: onScroll({
-          target: section,
-          enter: "top bottom",
-          leave: "center top",
-          sync: true,
-        }),
-      });
-    }
-
-    var kids = section.querySelectorAll(
-      ".steps > li, .team-card, .photo-tile, .quote, .faq details, .facts > *, .find-photos figure, .split > div, .card, .socials a"
-    );
-    if (kids.length) {
-      animate(kids, {
-        opacity: [0, 1],
-        y: [56, 0],
-        scale: [0.96, 1],
-        delay: stagger(55, { from: "first" }),
-        ease: "out(3)",
-        autoplay: onScroll({
-          target: section,
-          enter: "top bottom-=5%",
-          leave: "bottom top+=10%",
-          sync: true,
-        }),
-      });
-    } else {
-      animate(section, {
-        opacity: [0, 1],
-        y: [72, 0],
-        ease: "out(3)",
-        autoplay: onScroll({
-          target: section,
-          enter: "top bottom",
-          leave: "bottom top",
-          sync: true,
-        }),
-      });
-    }
-  });
-
-  /* ── Worship list rows ── */
-  var worshipHost = document.querySelector("[data-sermons]");
-  if (worshipHost) {
-    var armWorship = function () {
-      var rows = worshipHost.querySelectorAll(".worship-item, .sermon-card, button, a");
-      if (!rows.length) return;
-      animate(rows, {
-        opacity: [0, 1],
-        x: [-24, 0],
-        delay: stagger(35),
-        ease: "out(3)",
-        autoplay: onScroll({
-          target: "#worship",
-          enter: "top bottom",
-          leave: "bottom top",
-          sync: true,
-        }),
-      });
-    };
-    window.setTimeout(armWorship, 600);
-  }
-
-  /* ── Footer ── */
-  var footer = document.querySelector(".site-footer");
-  if (footer) {
-    animate(footer.querySelectorAll(".foot-grid > div, .legal"), {
-      opacity: [0, 1],
-      y: [36, 0],
-      delay: stagger(100),
+    scrub(section, {
+      opacity: [0.15, 1],
+      y: [90, 0],
+      x: [fromX, 0],
       ease: "out(3)",
-      autoplay: onScroll({
-        target: footer,
-        enter: "top bottom",
-        leave: "top center",
-        sync: true,
-      }),
+    }, {
+      target: section,
+      enter: "top bottom",
+      leave: "bottom top",
     });
-  }
 
-  /* Inner pages without .reveal still get page mast + cards */
-  if (!document.querySelector(".reveal")) {
-    var mast = document.querySelector(".page-mast, main");
-    if (mast) {
-      animate(mast.querySelectorAll("h1, .lede, .kicker, .card, form, .socials a"), {
+    var heads = section.querySelectorAll(".kicker, h2, h3");
+    if (heads.length) {
+      scrub(heads, {
         opacity: [0, 1],
         y: [40, 0],
         delay: stagger(80),
         ease: "out(3)",
-        autoplay: onScroll({
-          target: mast,
-          enter: "top bottom",
-          leave: "bottom top",
-          sync: true,
-        }),
+      }, {
+        target: section,
+        enter: "top bottom-=8%",
+        leave: "center top",
+      });
+    }
+
+    var tiles = section.querySelectorAll(
+      ".photo-tile, .team-card, .steps > li, .quote, .faq details, .split > div, .card"
+    );
+    if (tiles.length) {
+      scrub(tiles, {
+        opacity: [0, 1],
+        y: [70, 0],
+        scale: [0.92, 1],
+        delay: stagger(45, { from: "first" }),
+        ease: "out(3)",
+      }, {
+        target: section,
+        enter: "top bottom-=5%",
+        leave: "bottom top+=8%",
+      });
+    }
+  });
+
+  /* ── 5. Photo mosaic: horizontal drift while the gallery is on screen ── */
+  var gallery = document.querySelector("#gallery .photo-grid, .photo-grid");
+  if (gallery) {
+    scrub(gallery, {
+      x: [40, -40],
+      ease: "linear",
+    }, {
+      target: "#gallery",
+      enter: "top bottom",
+      leave: "bottom top",
+    });
+  }
+
+  /* ── 6. Worship list rows after sermons render ── */
+  window.setTimeout(function () {
+    var rows = document.querySelectorAll(
+      "#worship .worship-item, #worship [data-sermon], #worship button.sermon, #worship .sermon-row, #worship li"
+    );
+    if (!rows.length) {
+      rows = document.querySelectorAll("#worship .worship-list > *, [data-sermons] a, [data-sermons] button");
+    }
+    if (rows.length) {
+      scrub(rows, {
+        opacity: [0, 1],
+        x: [-36, 0],
+        delay: stagger(28),
+        ease: "out(3)",
+      }, {
+        target: "#worship",
+        enter: "top bottom",
+        leave: "bottom top",
+      });
+    }
+  }, 700);
+
+  /* ── 7. Footer columns ── */
+  var footer = document.querySelector(".site-footer");
+  if (footer) {
+    var footParts = footer.querySelectorAll(".foot-grid > div, .legal");
+    if (footParts.length) {
+      scrub(footParts, {
+        opacity: [0, 1],
+        y: [50, 0],
+        delay: stagger(110),
+        ease: "out(3)",
+      }, {
+        target: footer,
+        enter: "top bottom",
+        leave: "top center",
       });
     }
   }
+
+  /* Inner pages */
+  if (!document.querySelector("main .reveal") && !document.querySelector("main .section")) {
+    var mast = document.querySelector(".page-mast, main");
+    if (mast) {
+      scrub(mast.querySelectorAll("h1, .lede, .kicker, .card, form, .socials a, article"), {
+        opacity: [0, 1],
+        y: [50, 0],
+        delay: stagger(70),
+        ease: "out(3)",
+      }, {
+        target: mast,
+        enter: "top bottom",
+        leave: "bottom top",
+      });
+    }
+  }
+
 })();
