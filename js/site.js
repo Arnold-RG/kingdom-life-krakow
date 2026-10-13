@@ -1821,7 +1821,7 @@ function renderSiteFooter() {
     '<div class="wrap foot-grid">' +
       '<div>' +
         '<div class="logo"><img src="assets/logo-white.png" alt="Kingdom Life"></div>' +
-        '<p>Kingdom Life Kraków · Church of Christ<br>English-speaking international church</p>' +
+        '<p><strong>Kingdom Life Kraków</strong><br>Church of Christ · English-speaking international church</p>' +
         '<p>Sunday worship 12:00–14:00<br>Hotel Centrum, Osiedle Centrum E 12<br>31-934 Kraków, Poland</p>' +
         '<p class="small">Daily prayer · 18:00</p>' +
       '</div>' +
@@ -1844,7 +1844,7 @@ function renderSiteFooter() {
           '<a href="join.html#feedback">Feedback</a>' +
           '<a href="events.html">Events</a>' +
           '<a href="about.html">About</a>' +
-          '<a href="index.html#worship">Worship</a>' +
+          '<a href="index.html#worship">Worship films</a>' +
         '</nav>' +
         '<strong>Follow</strong>' +
         '<p>' +

@@ -17,8 +17,9 @@
   --sea-deep: #0f4c51;
   --clay: #d3542f;
   --max: 1120px;
-  --measure: 66ch;
-  --gutter: clamp(1.2rem, 5.8vw, 1.65rem);
+  --measure: 38rem;
+  --copy: min(34rem, 100%);
+  --gutter: clamp(1.65rem, 8.5vw, 2.5rem);
   --content-inset: 0;
   --space-xs: 0.4rem;
   --space-sm: 0.75rem;
@@ -98,7 +99,7 @@ h1, h2, h3, h4 {
   line-height: 1.25;
   letter-spacing: -0.02em;
   margin: 0 0 0.65rem;
-  text-align: left;
+  text-align: center;
   text-wrap: wrap;
   overflow-wrap: anywhere;
   word-break: normal;
@@ -106,7 +107,14 @@ h1, h2, h3, h4 {
   color: var(--ink);
 }
 
-p, li, dd, dt, figcaption, label, th, td, blockquote {
+p, li, dd, dt, figcaption, blockquote {
+  text-align: center;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  max-width: 100%;
+}
+
+label, th, td {
   text-align: left;
   overflow-wrap: anywhere;
   word-break: normal;
@@ -118,7 +126,10 @@ p, li, dd, dt, figcaption, label, th, td, blockquote {
 .card p,
 .shelf-head p,
 .verse-box p,
-main > p { max-width: var(--measure); }
+main > p {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
 
 .section-gap { margin-top: var(--space-lg); }
 p { margin: 0 0 1rem; }
@@ -135,19 +146,54 @@ p { margin: 0 0 1rem; }
 
 main.wrap {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 main.wrap > .kicker,
 main.wrap > h1,
 main.wrap > h2,
 main.wrap > p,
-main.wrap > .split,
+main.wrap > ul,
+main.wrap > .stack-links,
 main.wrap > .card,
 main.wrap > .bible-banner,
+main.wrap > .verse-box,
 main.wrap > .library-index,
+main.wrap > .socials {
+  width: 100%;
+  max-width: var(--copy);
+  margin-inline: auto;
+}
+main.wrap > .split,
+main.wrap > .team-roster,
+main.wrap > table.meetings {
+  width: 100%;
+  max-width: min(44rem, 100%);
+  margin-inline: auto;
+}
 main.wrap > .shelf {
   width: 100%;
-  max-width: 100%;
+  max-width: min(56rem, 100%);
   margin-inline: auto;
+}
+main.wrap form,
+main.wrap label,
+main.wrap input,
+main.wrap textarea,
+main.wrap select,
+main.wrap .card form,
+main.wrap .split form {
+  text-align: left;
+}
+main.wrap .card h2,
+main.wrap .card p,
+main.wrap .split > div > h1,
+main.wrap .split > div > h2,
+main.wrap .split > div > p,
+main.wrap .split > div > .kicker {
+  text-align: center;
 }
 
 main,
@@ -351,6 +397,7 @@ main,
   flex-wrap: wrap;
   gap: 0.45rem;
   margin: 0.25rem auto 1.4rem;
+  justify-content: center;
 }
 .home-jump a {
   text-decoration: none;
@@ -382,9 +429,11 @@ main,
   max-width: var(--max);
 }
 .hero-copy {
-  max-width: 36rem;
+  max-width: var(--copy);
   width: 100%;
   min-width: 0;
+  margin-inline: auto;
+  text-align: center;
 }
 .hero .kicker { margin-bottom: 0.85rem; }
 .hero h1 {
@@ -394,22 +443,25 @@ main,
   letter-spacing: -0.02em;
   max-width: 100%;
   overflow-wrap: anywhere;
+  text-align: center;
 }
 .hero-lede {
   font-size: 1.12rem;
   line-height: 1.6;
   color: var(--mute);
-  max-width: 36rem;
+  max-width: var(--copy);
   width: 100%;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1.5rem;
   overflow-wrap: anywhere;
+  text-align: center;
 }
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-  margin: 0 0 0.25rem;
+  margin: 0 auto 0.25rem;
   max-width: 100%;
+  justify-content: center;
 }
 .hero-actions .btn { max-width: 100%; }
 .hero-meta {
@@ -418,12 +470,14 @@ main,
   min-width: 0;
   width: 100%;
   max-width: var(--max);
+  text-align: center;
 }
 .hero-meta p {
-  margin-bottom: 0.4rem;
-  max-width: 36rem;
+  margin: 0 auto 0.4rem;
+  max-width: var(--copy);
   width: 100%;
   overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .kicker {
@@ -433,6 +487,7 @@ main,
   font-size: 0.74rem;
   font-weight: 700;
   margin-bottom: 0.55rem;
+  text-align: center;
 }
 
 .hero-photo,
@@ -506,11 +561,13 @@ main,
   min-width: 0;
   max-width: 100%;
   overflow-wrap: anywhere;
+  text-align: center;
 }
 .bulletin p,
 .bulletin strong {
   max-width: 100%;
   overflow-wrap: anywhere;
+  text-align: center;
 }
 .bulletin > div:last-child { border-right: 0; }
 .bulletin h2 {
@@ -521,6 +578,7 @@ main,
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 0.45rem;
+  text-align: center;
 }
 .bulletin strong {
   display: block;
@@ -542,8 +600,17 @@ main,
   border-top: 1px solid rgba(143, 171, 165, 0.65);
   border-bottom: 1px solid rgba(143, 171, 165, 0.65);
 }
+.section > .wrap {
+  text-align: center;
+}
 .section > .wrap > h2,
-.section > .wrap > .kicker + h2 { max-width: 28ch; }
+.section > .wrap > .kicker + h2,
+.section > .wrap > .kicker,
+.section > .wrap > p {
+  max-width: var(--copy);
+  margin-inline: auto;
+  text-align: center;
+}
 
 .split {
   display: grid;
@@ -551,9 +618,10 @@ main,
   gap: clamp(1.5rem, 4vw, 3rem);
   align-items: start;
 }
-.split > * { min-width: 0; }
+.split > * { min-width: 0; text-align: center; }
 .welcome-split .split > div {
   padding-top: 0.25rem;
+  text-align: center;
 }
 .welcome-split .split > div:first-child {
   border-right: 1px solid var(--rule);
@@ -589,10 +657,17 @@ main,
 
 /* —— Team roster —— */
 .gallery-intro {
-  margin-bottom: var(--space-md);
+  margin: 0 auto var(--space-md);
+  max-width: var(--copy);
+  text-align: center;
 }
-.gallery-intro h2 { margin-bottom: 0.35rem; }
-.gallery-intro p { margin-bottom: 0; color: var(--mute); max-width: 48ch; }
+.gallery-intro h2 { margin-bottom: 0.35rem; text-align: center; }
+.gallery-intro p {
+  margin: 0 auto;
+  color: var(--mute);
+  max-width: var(--copy);
+  text-align: center;
+}
 
 .team-block { margin-bottom: var(--space-lg); }
 .team-block + .team-block { margin-top: 0; }
@@ -621,7 +696,7 @@ main,
   background: var(--card);
   border: 1px solid var(--rule);
   padding: 0.55rem 0.55rem 0.9rem;
-  text-align: left;
+  text-align: center;
 }
 .team-photo {
   aspect-ratio: 1 / 1;
@@ -641,7 +716,7 @@ main,
 .team-card h3 {
   font-size: 1rem;
   margin: 0;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   padding: 0 0.15rem;
 }
@@ -651,11 +726,13 @@ main,
   color: var(--mute);
   line-height: 1.4;
   padding: 0 0.15rem;
+  text-align: center;
 }
 .team-mail {
   margin: 0.35rem 0 0;
   font-size: 0.84rem;
   padding: 0 0.15rem;
+  text-align: center;
 }
 .team-mail a { word-break: break-word; }
 .team-card:not(:has(h3)) {
@@ -716,6 +793,7 @@ main,
   color: var(--mute);
   margin-top: 0.4rem;
   line-height: 1.35;
+  text-align: center;
 }
 
 .gallery {
@@ -741,6 +819,7 @@ main,
   font-size: 0.78rem;
   color: var(--mute);
   margin-top: 0.4rem;
+  text-align: center;
 }
 
 .added-links { margin-top: 1.2rem; }
@@ -802,11 +881,13 @@ main,
   grid-column: 1;
   grid-row: 3;
   margin: 0;
+  text-align: center;
 }
 .worship-now strong {
   display: block;
   font-family: var(--font-display);
   font-size: 1.15rem;
+  text-align: center;
 }
 .worship-list {
   grid-column: 2;
@@ -983,15 +1064,20 @@ table.meetings th {
   border: 1px solid var(--rule);
   border-top: 3px solid var(--forest);
   padding: 1.6rem 1.5rem;
+  text-align: center;
+  max-width: var(--copy);
+  margin-inline: auto;
+  width: 100%;
 }
 .verse-box blockquote {
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 2.2vw, 1.5rem);
   font-style: italic;
   font-weight: 500;
-  margin: 0 0 0.8rem;
+  margin: 0 auto 0.8rem;
   line-height: 1.4;
   color: var(--ink);
+  text-align: center;
 }
 
 .map-wrap iframe {
@@ -1005,6 +1091,7 @@ table.meetings th {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  justify-content: center;
 }
 .socials a {
   text-decoration: none;
@@ -1056,13 +1143,20 @@ form select:focus {
   font-family: var(--font-display);
   font-size: 1.15rem;
 }
-.faq details p { margin: 0.65rem 0 0; max-width: var(--measure); }
+.faq details p {
+  margin: 0.65rem auto 0;
+  max-width: var(--measure);
+  text-align: center;
+}
+.faq summary { text-align: center; }
 
 .library-index {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 0.2rem 0 1.6rem;
+  margin: 0.2rem auto 1.6rem;
+  justify-content: center;
+  max-width: var(--copy);
 }
 .library-index a {
   text-decoration: none;
@@ -1072,6 +1166,7 @@ form select:focus {
   padding: 0.4rem 0.75rem;
   font-weight: 600;
   border-radius: var(--radius);
+  text-align: center;
 }
 .library-index a:hover {
   border-color: var(--forest);
@@ -1088,22 +1183,28 @@ form select:focus {
   grid-template-columns: auto 1fr;
   gap: 0.85rem;
   align-items: baseline;
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
+  max-width: var(--copy);
+  text-align: center;
+  justify-items: center;
 }
 .shelf-num {
   margin: 0;
   font-family: var(--font-display);
   font-size: 1.35rem;
   color: var(--gold);
+  text-align: center;
 }
 .shelf-head h2,
 .shelf-head h3 {
   margin: 0;
   font-size: 1.45rem;
+  text-align: center;
 }
 .shelf-head p {
-  margin: 0.15rem 0 0;
+  margin: 0.15rem auto 0;
   color: var(--mute);
+  text-align: center;
 }
 
 .cover-grid {
@@ -1151,12 +1252,14 @@ form select:focus {
 .cover-card h3 {
   font-size: 1.05rem;
   margin: 0 0 0.15rem;
+  text-align: center;
 }
 .cover-grid p,
 .cover-card p {
   margin: 0;
   color: var(--mute);
   font-size: 0.92rem;
+  text-align: center;
 }
 .cover-cta {
   display: inline-block;
@@ -1166,6 +1269,8 @@ form select:focus {
   font-weight: 700;
   text-decoration: none;
   color: var(--sea-deep);
+  text-align: center;
+  width: 100%;
 }
 .cover-cta:hover { color: var(--clay); }
 
@@ -1175,22 +1280,25 @@ form select:focus {
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 1rem 1.5rem;
   align-items: center;
-  margin: 1.25rem 0 1.6rem;
+  margin: 1.25rem auto 1.6rem;
   padding: 1.2rem 1.25rem;
   background: linear-gradient(135deg, rgba(244, 248, 247, 0.95) 0%, rgba(201, 216, 212, 0.75) 100%);
   border: 1px solid var(--rule);
   border-left: 3px solid var(--sea);
+  text-align: center;
+  max-width: var(--copy);
+  width: 100%;
 }
 .bible-banner > * { min-width: 0; }
 .bible-banner .kicker { margin-bottom: 0.35rem; }
-.bible-banner p { margin: 0; max-width: 48ch; }
+.bible-banner p { margin: 0 auto; max-width: var(--copy); text-align: center; }
 .bible-banner-foot { margin-top: 2.5rem; }
 .bible-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-end;
 }
 .bible-actions .btn { text-align: center; }
 .verse-actions {
@@ -1211,7 +1319,7 @@ form select:focus {
     grid-template-columns: minmax(0, 1fr);
     padding: 1.1rem 1rem;
   }
-  .bible-actions { justify-content: flex-start; }
+  .bible-actions { justify-content: center; }
   .bible-actions .btn {
     flex: 1 1 auto;
     min-width: min(100%, 10rem);
@@ -1222,35 +1330,51 @@ form select:focus {
 .site-footer {
   background: var(--footer);
   color: #c5d0d8;
-  padding: 2.5rem 0 1.4rem;
+  padding: 2.75rem 0 1.6rem;
   margin-top: 0;
   font-size: 0.92rem;
   position: relative;
   z-index: 1;
+  text-align: left;
 }
 .site-footer a { color: #fff; }
 .site-footer a:hover { color: var(--gold-soft); }
+.site-footer p,
+.site-footer strong,
+.site-footer li,
+.site-footer .legal {
+  text-align: left;
+  margin-inline: 0;
+  max-width: none;
+}
 .foot-grid {
   display: grid;
   grid-template-columns: 1.35fr 1fr 1fr;
-  gap: 1.6rem 1.25rem;
+  gap: 1.75rem 1.5rem;
   align-items: start;
+  text-align: left;
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
 }
-.foot-grid > * { min-width: 0; }
-.foot-grid p { margin: 0 0 0.85rem; line-height: 1.55; }
+.foot-grid > * { min-width: 0; text-align: left; }
+.foot-grid p { margin: 0 0 0.85rem; line-height: 1.55; text-align: left; }
 .foot-grid strong {
   display: block;
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gold-soft);
-  margin-bottom: 0.35rem;
+  margin: 1rem 0 0.4rem;
+  text-align: left;
 }
+.foot-grid > div > strong:first-child { margin-top: 0; }
 .foot-nav {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem 0.85rem;
-  margin: 0.5rem 0 0;
+  margin: 0.35rem 0 0.85rem;
+  justify-content: flex-start;
 }
 .foot-nav a {
   text-decoration: none;
@@ -1262,15 +1386,52 @@ form select:focus {
 .site-footer .logo { margin-bottom: 0.65rem; }
 .site-footer .logo img { height: 40px; width: auto; max-width: 100%; }
 .legal {
-  margin-top: 1.6rem;
-  padding-top: 1.1rem;
+  margin-top: 1.75rem;
+  padding-top: 1.15rem;
   border-top: 1px solid #24333d;
   color: #8fa0ac;
   font-size: 0.85rem;
   line-height: 1.5;
+  text-align: left;
 }
 .legal a { color: #c5d0d8; }
 .legal a:hover { color: #fff; }
+
+/* —— Page shells: Books / Ask Pastor / Join —— */
+.page-books main.wrap,
+.page-pastor main.wrap,
+.page-join main.wrap {
+  gap: 0;
+  padding-top: 1.75rem;
+  padding-bottom: 2.5rem;
+}
+.page-books main.wrap > .shelf,
+.page-join main.wrap > .split,
+.page-pastor main.wrap > .split {
+  width: 100%;
+}
+.page-books .cover-grid {
+  width: 100%;
+  margin-inline: auto;
+}
+.page-pastor .people-ask {
+  justify-items: center;
+  text-align: center;
+}
+.page-pastor .people-ask img {
+  margin-inline: auto;
+}
+.page-pastor .people-ask h2,
+.page-pastor .people-ask p {
+  text-align: center;
+}
+.page-join .socials {
+  width: 100%;
+  max-width: var(--copy);
+}
+.page-join .socials a {
+  text-align: center;
+}
 
 /* —— Reveal motion —— */
 .reveal {
@@ -1300,7 +1461,9 @@ form select:focus {
 @media (max-width: 1024px) {
   :root {
     --dock-pad: calc(5.25rem + env(safe-area-inset-bottom, 0px));
-    --gutter: clamp(1.28rem, 6.2vw, 1.55rem);
+    --gutter: clamp(1.85rem, 11vw, 2.6rem);
+    --copy: min(30rem, 100%);
+    --measure: 32rem;
   }
   .nav-links { display: none !important; }
   .dock { display: flex; }
@@ -1332,7 +1495,10 @@ form select:focus {
 
 /* —— Responsive —— */
 @media (max-width: 900px) {
-  :root { --gutter: clamp(1.3rem, 6.5vw, 1.55rem); }
+  :root {
+    --gutter: clamp(1.9rem, 12vw, 2.75rem);
+    --copy: min(28rem, 100%);
+  }
   .nav-row {
     min-width: 0;
     align-items: flex-start;
@@ -1422,7 +1588,30 @@ form select:focus {
     grid-row: auto;
   }
   .worship-list { max-height: 50vh; }
-  .cover-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cover-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.85rem; }
+
+  .page-books main.wrap > .shelf,
+  .page-pastor main.wrap > .split,
+  .page-join main.wrap > .split {
+    max-width: 100%;
+  }
+.page-books .bible-banner,
+.page-books .library-index,
+.page-join .socials {
+  max-width: 100%;
+}
+.page-books .bible-banner {
+  text-align: center;
+}
+.page-books .bible-banner p {
+  text-align: center;
+  margin-inline: auto;
+}
+  .page-pastor .split,
+  .page-join .split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.15rem;
+  }
 }
 
 @media (max-width: 700px) {
@@ -1431,20 +1620,60 @@ form select:focus {
     grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
     align-items: start;
+    justify-items: center;
+    text-align: center;
   }
   .people img,
   .pastor-strip img {
     width: min(100%, 11rem);
     max-width: 11rem;
+    margin-inline: auto;
   }
   .pastor-strip {
     padding: 1.15rem 1.1rem;
+  }
+  .page-pastor .split > div,
+  .page-pastor .split > form,
+  .page-join .split > .card,
+  .page-join .split > form {
+    width: 100%;
+    max-width: 100%;
+  }
+  .page-pastor main.wrap > .split,
+  .page-join main.wrap > .split {
+    max-width: min(28rem, 100%);
+  }
+  .page-books .shelf-head {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+  .page-books .cover-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .page-books .cover-card {
+    padding: 0.55rem 0.55rem 0.75rem;
+  }
+  .page-books .cover-card h3 {
+    font-size: 0.98rem;
+  }
+  .page-books .cover-card p {
+    font-size: 0.86rem;
+  }
+  .foot-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.35rem;
+  }
+  .site-footer {
+    padding-top: 2.35rem;
   }
 }
 
 @media (max-width: 560px) {
   :root {
-    --gutter: clamp(1.22rem, 6.8vw, 1.45rem);
+    --gutter: clamp(1.85rem, 12.5vw, 2.4rem);
+    --copy: min(26rem, 100%);
     --dock-pad: calc(5.5rem + env(safe-area-inset-bottom, 0px));
   }
   .foot-grid { grid-template-columns: minmax(0, 1fr); }
@@ -1476,7 +1705,12 @@ form select:focus {
   .team-deacons,
   .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .photo-tile--wide { grid-column: span 1; }
-  .cover-grid { grid-template-columns: minmax(0, 1fr); }
+  /* Keep books as a steady 2-up grid on phones for even alignment */
+  .cover-grid,
+  .page-books .cover-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
   .hero-mark { min-height: 9rem; }
   .hero-mark img { width: min(100%, 10rem); }
   .bulletin > div { padding: 1.1rem 1rem; }
@@ -1487,11 +1721,54 @@ form select:focus {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.25rem;
   }
+  .page-books main.wrap,
+  .page-pastor main.wrap,
+  .page-join main.wrap {
+    padding-top: 1.35rem;
+    padding-bottom: 2rem;
+  }
+  .page-books h1,
+  .page-pastor h1,
+  .page-join h1 {
+    font-size: clamp(1.7rem, 7vw, 2.15rem);
+    max-width: 14ch;
+    margin-inline: auto;
+  }
+  .page-books main.wrap > p,
+  .page-pastor .split > div > p,
+  .page-join main.wrap > p {
+    max-width: 32ch;
+    margin-inline: auto;
+  }
+  .page-join .socials {
+    justify-content: center;
+  }
+  .page-join .socials a {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: min(100%, 9.5rem);
+  }
+  .site-footer .logo img { height: 36px; }
+  .legal { text-align: left; }
+}
+
+@media (max-width: 420px) {
+  /* One cover per row on small phones so titles stay readable */
+  .cover-grid,
+  .page-books .cover-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.85rem;
+    max-width: 17rem;
+    margin-inline: auto;
+  }
+  .page-books .cover-card {
+    padding: 0.55rem 0.55rem 0.75rem;
+  }
 }
 
 @media (max-width: 380px) {
   :root {
-    --gutter: 1.15rem;
+    --gutter: 1.35rem;
+    --copy: min(24rem, 100%);
     --dock-pad: calc(5.75rem + env(safe-area-inset-bottom, 0px));
   }
   .hero-actions .btn {
@@ -1506,6 +1783,42 @@ form select:focus {
   .team-deacons,
   .team-roster,
   .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cover-grid,
+  .page-books .cover-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.85rem;
+    max-width: 16.5rem;
+    margin-inline: auto;
+  }
+  .page-books .cover-card {
+    padding: 0.55rem 0.55rem 0.75rem;
+  }
+  .page-books .cover-cta {
+    font-size: 0.82rem;
+  }
+  .page-books .bible-banner,
+  .page-books .bible-actions {
+    text-align: center;
+  }
+  .page-books .bible-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .page-books .bible-actions .btn {
+    width: 100%;
+  }
+  .page-join .socials a {
+    flex-basis: 100%;
+  }
+  .site-footer,
+  .site-footer p,
+  .site-footer strong,
+  .legal {
+    text-align: left;
+  }
+  .foot-nav {
+    gap: 0.55rem 0.75rem;
+  }
 }
 
 @media (min-width: 1100px) {
