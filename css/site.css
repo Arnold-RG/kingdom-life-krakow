@@ -161,11 +161,6 @@ main,
   min-width: 0;
 }
 
-main.wrap,
-main.section {
-  padding-inline: var(--gutter);
-}
-
 .muted { color: var(--mute); }
 .small { font-size: 0.9rem; }
 
