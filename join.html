@@ -60,11 +60,33 @@
       </form>
     </div>
 
-    <h2 class="section-gap">Watch with us here</h2>
-    <p>Recent films play on this page. The full library, arranged by Kraków and Warsaw, is on the <a href="index.html#worship">home page</a>.</p>
-    <div class="sermons" data-sermons="6"></div>
+    <div class="split section-gap" id="feedback">
+      <div class="card">
+        <h2>Leave a message, review, or feedback</h2>
+        <p>Your note goes to the Kraków campus team by email. Tell us about your visit, a prayer request, or how we can improve this website.</p>
+        <p class="small muted">You can also leave a public review on <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps</a>.</p>
+      </div>
+      <form class="card" data-mailto="krakow@kingdomlifeonline.org,Pastor@kingdomlifeonline.org" data-subject="Website feedback — Kingdom Life Krakow">
+        <label for="fb-name">Your name</label>
+        <input id="fb-name" name="Name" required>
+        <label for="fb-email">Your email</label>
+        <input id="fb-email" name="Email" type="email" required>
+        <label for="fb-kind">This is</label>
+        <select id="fb-kind" name="Type">
+          <option>A message for the team</option>
+          <option>A review of my visit</option>
+          <option>Website feedback</option>
+          <option>A prayer request</option>
+          <option>Something else</option>
+        </select>
+        <label for="fb-msg">Your message</label>
+        <textarea id="fb-msg" name="Message" rows="6" required placeholder="Share what is on your heart…"></textarea>
+        <p><button class="btn" type="submit">Send feedback</button></p>
+        <p class="small muted">This opens your email app so the message goes directly to the campus inbox.</p>
+      </form>
+    </div>
 
-    <h2 style="margin-top:2rem">Official church pages</h2>
+    <h2 class="section-gap">Official church pages</h2>
     <p>These are the real Kingdom Life Poland accounts linked from kingdomlifeonline.org.</p>
     <div class="socials">
       <a href="https://www.instagram.com/kingdomlifekrakow/">Instagram · @kingdomlifekrakow</a>
@@ -76,12 +98,7 @@
       <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps · Kingdom Life Krakow</a>
     </div>
   </main>
-  <footer class="site-footer">
-    <div class="wrap">
-      <p>Kingdom Life Kraków · Hotel Centrum, Osiedle Centrum E 12, 31-934 Kraków</p>
-      <p><a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a></p>
-    </div>
-  </footer>
+  <footer class="site-footer"></footer>
   <script src="js/site.js"></script>
 
   <nav class="dock" aria-label="Main">

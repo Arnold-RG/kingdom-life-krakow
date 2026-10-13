@@ -18,7 +18,8 @@
   --clay: #d3542f;
   --max: 1120px;
   --measure: 66ch;
-  --gutter: clamp(1rem, 4.2vw, 1.5rem);
+  --gutter: clamp(1.2rem, 5.8vw, 1.65rem);
+  --content-inset: 0;
   --space-xs: 0.4rem;
   --space-sm: 0.75rem;
   --space-md: 1.25rem;
@@ -127,8 +128,26 @@ p { margin: 0 0 1rem; }
   width: 100%;
   max-width: var(--max);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
   min-width: 0;
+}
+
+main.wrap {
+  box-sizing: border-box;
+}
+main.wrap > .kicker,
+main.wrap > h1,
+main.wrap > h2,
+main.wrap > p,
+main.wrap > .split,
+main.wrap > .card,
+main.wrap > .bible-banner,
+main.wrap > .library-index,
+main.wrap > .shelf {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
 }
 
 main,
@@ -674,15 +693,16 @@ main.section {
   padding: 0;
   min-width: 0;
 }
-.photo-tile:nth-child(3n) { margin-top: 0.85rem; }
+.photo-tile:nth-child(3n),
 .photo-tile:nth-child(5n) { margin-top: 0; }
 .photo-tile--wide {
-  grid-column: span 2;
+  grid-column: span 1;
   margin-top: 0;
 }
-.photo-tile--wide .photo-frame { aspect-ratio: 16 / 10; }
+.photo-tile--wide .photo-frame { aspect-ratio: 3 / 4; }
 .photo-frame {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 4;
+  width: 100%;
   overflow: hidden;
   background: var(--paper-deep);
   border: 1px solid var(--rule);
@@ -1095,29 +1115,112 @@ form select:focus {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
-  align-items: start;
+  align-items: stretch;
 }
-.cover-grid figure {
+.cover-grid figure,
+.cover-card {
   margin: 0;
   background: var(--card);
   border: 1px solid var(--rule);
   padding: 0.65rem 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+}
+.cover-link {
+  display: block;
+  text-decoration: none;
+  outline-offset: 3px;
 }
 .cover-grid img {
   width: 100%;
   height: auto;
   object-fit: contain;
   background: var(--paper-deep);
+  transition: transform 0.45s var(--ease);
 }
-.cover-grid figcaption { padding-top: 0.7rem; }
-.cover-grid h3 {
+.cover-card:hover .cover-grid img,
+.cover-card:hover img {
+  transform: scale(1.02);
+}
+.cover-grid figcaption,
+.cover-card figcaption {
+  padding-top: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+.cover-grid h3,
+.cover-card h3 {
   font-size: 1.05rem;
   margin: 0 0 0.15rem;
 }
-.cover-grid p {
+.cover-grid p,
+.cover-card p {
   margin: 0;
   color: var(--mute);
   font-size: 0.92rem;
+}
+.cover-cta {
+  display: inline-block;
+  margin-top: auto;
+  padding-top: 0.7rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--sea-deep);
+}
+.cover-cta:hover { color: var(--clay); }
+
+/* Bible App integration */
+.bible-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1rem 1.5rem;
+  align-items: center;
+  margin: 1.25rem 0 1.6rem;
+  padding: 1.2rem 1.25rem;
+  background: linear-gradient(135deg, rgba(244, 248, 247, 0.95) 0%, rgba(201, 216, 212, 0.75) 100%);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--sea);
+}
+.bible-banner > * { min-width: 0; }
+.bible-banner .kicker { margin-bottom: 0.35rem; }
+.bible-banner p { margin: 0; max-width: 48ch; }
+.bible-banner-foot { margin-top: 2.5rem; }
+.bible-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+.bible-actions .btn { text-align: center; }
+.verse-actions {
+  justify-content: flex-start;
+  margin: 1rem 0 0.35rem;
+}
+.verse-meta-links,
+.stack-links {
+  margin-top: 0.85rem;
+}
+.verse-box .bible-actions .btn {
+  font-size: 0.9rem;
+  padding: 0.65rem 1rem;
+}
+
+@media (max-width: 700px) {
+  .bible-banner {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 1.1rem 1rem;
+  }
+  .bible-actions { justify-content: flex-start; }
+  .bible-actions .btn {
+    flex: 1 1 auto;
+    min-width: min(100%, 10rem);
+  }
 }
 
 /* —— Footer —— */
@@ -1134,17 +1237,45 @@ form select:focus {
 .site-footer a:hover { color: var(--gold-soft); }
 .foot-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 1.6rem;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  gap: 1.6rem 1.25rem;
+  align-items: start;
 }
-.site-footer .logo img { height: 40px; }
+.foot-grid > * { min-width: 0; }
+.foot-grid p { margin: 0 0 0.85rem; line-height: 1.55; }
+.foot-grid strong {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 0.35rem;
+}
+.foot-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
+  margin: 0.5rem 0 0;
+}
+.foot-nav a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.foot-nav a:hover { color: var(--gold-soft); }
+.site-footer .logo { margin-bottom: 0.65rem; }
+.site-footer .logo img { height: 40px; width: auto; max-width: 100%; }
 .legal {
   margin-top: 1.6rem;
   padding-top: 1.1rem;
   border-top: 1px solid #24333d;
   color: #8fa0ac;
   font-size: 0.85rem;
+  line-height: 1.5;
 }
+.legal a { color: #c5d0d8; }
+.legal a:hover { color: #fff; }
 
 /* —— Reveal motion —— */
 .reveal {
@@ -1169,11 +1300,12 @@ form select:focus {
   .team-card:hover .team-photo img { transform: none; }
 }
 
-/* —— Phones & tablets: bottom dock + auto photo slides —— */
+/* —— Phones & tablets: bottom dock —— */
 /* Desktop/PC (≥1025px): top nav stays in the header; dock stays hidden */
 @media (max-width: 1024px) {
   :root {
     --dock-pad: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+    --gutter: clamp(1.28rem, 6.2vw, 1.55rem);
   }
   .nav-links { display: none !important; }
   .dock { display: flex; }
@@ -1181,52 +1313,31 @@ form select:focus {
     background: rgba(201, 216, 212, 0.78);
   }
   .site-footer {
-    padding-bottom: calc(1.4rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(2rem + var(--dock-pad));
   }
 
   .photo-grid,
   .team-pastors,
   .team-deacons {
-    display: flex;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    padding: 0.15rem 0 0.65rem;
+    overflow: visible;
     margin-inline: 0;
+    padding: 0;
   }
-  .photo-grid::-webkit-scrollbar,
-  .team-pastors::-webkit-scrollbar,
-  .team-deacons::-webkit-scrollbar { height: 4px; }
-  .photo-grid::-webkit-scrollbar-thumb,
-  .team-pastors::-webkit-scrollbar-thumb,
-  .team-deacons::-webkit-scrollbar-thumb {
-    background: rgba(15, 76, 81, 0.35);
-    border-radius: 4px;
-  }
-
   .photo-grid .photo-tile,
-  .photo-grid .photo-tile--wide,
-  .team-pastors .team-card,
-  .team-deacons .team-card {
-    flex: 0 0 min(82vw, 17.5rem);
-    width: min(82vw, 17.5rem);
-    max-width: 17.5rem;
-    grid-column: auto;
+  .photo-grid .photo-tile--wide {
+    width: 100%;
+    max-width: none;
     margin: 0;
-    scroll-snap-align: center;
   }
-  .photo-grid .photo-tile--wide { flex-basis: min(90vw, 20rem); width: min(90vw, 20rem); max-width: 20rem; }
   .photo-frame { aspect-ratio: 3 / 4; }
-  .photo-tile:nth-child(3n) { margin-top: 0; }
 }
 
 /* —— Responsive —— */
 @media (max-width: 900px) {
-  :root { --gutter: 1.1rem; }
+  :root { --gutter: clamp(1.3rem, 6.5vw, 1.55rem); }
   .nav-row {
     min-width: 0;
     align-items: flex-start;
@@ -1307,7 +1418,7 @@ form select:focus {
   .team-deacons,
   .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .photo-tile:nth-child(3n) { margin-top: 0; }
-  .photo-tile--wide { grid-column: span 2; }
+  .photo-tile--wide { grid-column: span 1; }
   .worship-filters,
   .worship-stage .player,
   .worship-now,
@@ -1338,9 +1449,10 @@ form select:focus {
 
 @media (max-width: 560px) {
   :root {
-    --gutter: 1rem;
+    --gutter: clamp(1.22rem, 6.8vw, 1.45rem);
     --dock-pad: calc(5.5rem + env(safe-area-inset-bottom, 0px));
   }
+  .foot-grid { grid-template-columns: minmax(0, 1fr); }
   body { font-size: 1.05rem; }
   .hero {
     padding: 2rem 0 1.25rem;
@@ -1368,7 +1480,7 @@ form select:focus {
   .team-pastors,
   .team-deacons,
   .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .photo-tile--wide { grid-column: span 2; }
+  .photo-tile--wide { grid-column: span 1; }
   .cover-grid { grid-template-columns: minmax(0, 1fr); }
   .hero-mark { min-height: 9rem; }
   .hero-mark img { width: min(100%, 10rem); }
@@ -1384,7 +1496,7 @@ form select:focus {
 
 @media (max-width: 380px) {
   :root {
-    --gutter: 0.9rem;
+    --gutter: 1.15rem;
     --dock-pad: calc(5.75rem + env(safe-area-inset-bottom, 0px));
   }
   .hero-actions .btn {

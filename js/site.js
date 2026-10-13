@@ -1816,7 +1816,55 @@ window.KL = {
   ]
 };
 
+function renderSiteFooter() {
+  var html =
+    '<div class="wrap foot-grid">' +
+      '<div>' +
+        '<div class="logo"><img src="assets/logo-white.png" alt="Kingdom Life"></div>' +
+        '<p>Kingdom Life Kraków · Church of Christ<br>English-speaking international church</p>' +
+        '<p>Sunday worship 12:00–14:00<br>Hotel Centrum, Osiedle Centrum E 12<br>31-934 Kraków, Poland</p>' +
+        '<p class="small">Daily prayer · 18:00</p>' +
+      '</div>' +
+      '<div>' +
+        '<strong>Contact</strong>' +
+        '<p><a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a><br>' +
+        '<a href="mailto:Pastor@kingdomlifeonline.org">Pastor@kingdomlifeonline.org</a><br>' +
+        '<a href="https://kingdomlifeonline.org/">kingdomlifeonline.org</a></p>' +
+        '<strong>Warsaw family</strong>' +
+        '<p>Postępu 15C, 02-676 Warszawa<br><a href="mailto:hello@kingdomlifeonline.org">hello@kingdomlifeonline.org</a></p>' +
+      '</div>' +
+      '<div>' +
+        '<strong>Explore</strong>' +
+        '<nav class="foot-nav" aria-label="Footer">' +
+          '<a href="index.html">Home</a>' +
+          '<a href="books.html">Books</a>' +
+          '<a href="teaching.html">Daily Word</a>' +
+          '<a href="pastor.html">Ask Pastor</a>' +
+          '<a href="join.html">Join us</a>' +
+          '<a href="join.html#feedback">Feedback</a>' +
+          '<a href="events.html">Events</a>' +
+          '<a href="about.html">About</a>' +
+          '<a href="index.html#worship">Worship</a>' +
+        '</nav>' +
+        '<strong>Follow</strong>' +
+        '<p>' +
+          '<a href="https://www.instagram.com/kingdomlifekrakow/">Instagram @kingdomlifekrakow</a><br>' +
+          '<a href="https://www.facebook.com/kingdomlifepl">Facebook</a> · ' +
+          '<a href="https://www.tiktok.com/@kingdomlifepl">TikTok</a><br>' +
+          '<a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps</a>' +
+        '</p>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wrap legal">Społeczność Chrześcijańska Kingdom Life · © <span data-year></span> · ' +
+    '<a href="join.html#feedback">Send feedback</a> · Photos from the official church site unless noted.</div>';
+  document.querySelectorAll(".site-footer").forEach(function (foot) {
+    foot.innerHTML = html;
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+  renderSiteFooter();
+
   var btn = document.querySelector(".menu-btn");
   var links = document.querySelector(".nav-links");
   if (btn && links) {
@@ -2024,35 +2072,4 @@ document.addEventListener("DOMContentLoaded", function () {
     revealNodes.forEach(function (node) { node.classList.add("is-visible"); });
   }
 
-  /* Mobile/tablet: auto horizontal photo slides */
-  (function () {
-    var mq = window.matchMedia("(max-width: 1024px)");
-    var timers = [];
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    function stop() {
-      timers.forEach(function (id) { clearInterval(id); });
-      timers = [];
-    }
-
-    function start() {
-      stop();
-      if (!mq.matches || reduce.matches) return;
-      document.querySelectorAll(".photo-grid, .team-pastors, .team-deacons").forEach(function (track) {
-        if (!track || track.children.length < 2) return;
-        var id = setInterval(function () {
-          if (!mq.matches) return;
-          var step = Math.max(track.clientWidth * 0.82, 220);
-          var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 12;
-          if (atEnd) track.scrollTo({ left: 0, behavior: "smooth" });
-          else track.scrollBy({ left: step, behavior: "smooth" });
-        }, 3400);
-        timers.push(id);
-      });
-    }
-
-    start();
-    if (mq.addEventListener) mq.addEventListener("change", start);
-    else if (mq.addListener) mq.addListener(start);
-  })();
 });

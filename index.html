@@ -388,7 +388,11 @@
           <blockquote data-verse-text></blockquote>
           <p><strong data-verse-ref></strong></p>
           <p data-verse-note></p>
-          <p><a href="teaching.html">Read more daily teaching</a> · <a href="#worship">Play worship here</a></p>
+          <div class="bible-actions verse-actions">
+            <a class="btn" data-bible-more href="https://www.bible.com/verse-of-the-day" target="_blank" rel="noopener">Read in Bible App</a>
+            <a class="btn ghost" href="teaching.html">Daily teaching</a>
+          </div>
+          <p class="small muted verse-meta-links"><a href="books.html">Bible App books</a> · <a href="#worship">Play worship here</a></p>
         </div>
         <div>
           <p class="kicker">Coming up</p>
@@ -485,35 +489,8 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap foot-grid">
-      <div>
-        <div class="logo"><img src="assets/logo-white.png" alt="Kingdom Life"></div>
-        <p>Kingdom Life Kraków · Church of Christ<br>English-speaking international church</p>
-        <p>Hotel Centrum, Osiedle Centrum E 12<br>31-934 Kraków, Poland</p>
-      </div>
-      <div>
-        <p><strong>Campus</strong><br>
-        <a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a><br>
-        <a href="https://kingdomlifeonline.org/">kingdomlifeonline.org</a></p>
-        <p><strong>Warsaw family</strong><br>Postępu 15C, 02-676 Warszawa<br><a href="mailto:hello@kingdomlifeonline.org">hello@kingdomlifeonline.org</a></p>
-      </div>
-      <div>
-        <p><strong>On the internet</strong></p>
-        <p>
-          <a href="index.html#worship">Worship</a><br>
-          <a href="https://www.instagram.com/kingdomlifekrakow/">Instagram @kingdomlifekrakow</a><br>
-          <a href="https://www.instagram.com/kingdomlifepl/">Poland family @kingdomlifepl</a><br>
-          <a href="https://www.facebook.com/kingdomlifepl">Facebook</a><br>
-          <a href="https://www.tiktok.com/@kingdomlifepl">TikTok</a><br>
-          <a href="https://twitter.com/KingdomlifePL">X</a><br>
-          <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps</a><br>
-          <a href="admin.html">Admin</a>
-        </p>
-      </div>
-    </div>
-    <div class="wrap legal">Społeczność Chrześcijańska Kingdom Life · © <span data-year></span> · Photos from the official church site unless noted.</div>
-  </footer>
+  <footer class="site-footer"></footer>
+  <script src="js/bible.js"></script>
   <script src="js/site.js"></script>
   <script src="js/verse.js"></script>
 
