@@ -13,10 +13,14 @@ import {
 (function () {
   try {
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduce.matches) {
-      document.documentElement.classList.remove("anime-scroll");
+    var phone = window.matchMedia("(max-width: 1039px)");
+    /* Phones: no Anime.js layer — keep photos, text, and footer fully visible */
+    if (reduce.matches || phone.matches) {
+      document.documentElement.classList.remove("anime-scroll", "anime-scroll-ready");
       document.querySelectorAll(".reveal").forEach(function (n) {
         n.classList.add("is-visible");
+        n.style.opacity = "1";
+        n.style.transform = "none";
       });
       return;
     }
