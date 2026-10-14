@@ -2184,8 +2184,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   var revealNodes = document.querySelectorAll(".reveal");
-  /* Anime.js scroll-motion.js owns reveals when .anime-scroll is set */
-  if (!document.documentElement.classList.contains("anime-scroll")) {
+  /* Anime.js owns reveals only after the module marks .anime-scroll-ready */
+  if (!document.documentElement.classList.contains("anime-scroll-ready")) {
     if (revealNodes.length && !reduce.matches && "IntersectionObserver" in window) {
       var revealObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {

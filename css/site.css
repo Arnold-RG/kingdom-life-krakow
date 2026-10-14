@@ -257,6 +257,8 @@ p:last-child { margin-bottom: 0; }
 .nav-links a.nav-join:hover,
 .nav-links a.nav-join[aria-current="page"] {
   color: #fff !important;
+  background: var(--forest) !important;
+  border-color: var(--forest) !important;
 }
 
 .nav-join,
@@ -1223,7 +1225,7 @@ address { font-style: normal; }
 }
 .js .reveal.is-visible { opacity: 1; transform: none; }
 
-/* Anime.js Scroll Observer takes over when the module is active */
+/* Anime.js: never hide content in CSS — JS animates from values only */
 .anime-scroll .js .reveal {
   opacity: 1;
   transform: none;
@@ -1234,27 +1236,6 @@ address { font-style: normal; }
 }
 .anime-scroll .hero-bg img {
   will-change: transform;
-  transform: scale(1.08);
-}
-.anime-scroll .hero-copy .kicker,
-.anime-scroll .hero-copy h1,
-.anime-scroll .hero-copy .hero-lede,
-.anime-scroll .hero-copy .hero-actions,
-.anime-scroll .hero-crown {
-  opacity: 0;
-}
-.anime-scroll .bulletin > *,
-.anime-scroll .home-jump a,
-.anime-scroll .reveal .kicker,
-.anime-scroll .reveal h2,
-.anime-scroll .reveal .steps > li,
-.anime-scroll .reveal .team-card,
-.anime-scroll .reveal .photo-tile,
-.anime-scroll .reveal .quote,
-.anime-scroll .reveal .faq details,
-.anime-scroll .reveal .split > div {
-  opacity: 0;
-  will-change: transform, opacity;
 }
 .anime-scroll main {
   overflow-x: clip;
@@ -1265,7 +1246,7 @@ address { font-style: normal; }
   left: 0;
   z-index: 100;
   width: 100%;
-  height: 4px;
+  height: 3px;
   margin: 0;
   padding: 0;
   border: 0;
@@ -1280,22 +1261,7 @@ address { font-style: normal; }
   .hero-bg img { animation: none; transform: scale(1.04); }
   .hero-crown { animation: none; }
   .js .reveal,
-  .js .reveal.is-visible,
-  .anime-scroll .hero-copy .kicker,
-  .anime-scroll .hero-copy h1,
-  .anime-scroll .hero-copy .hero-lede,
-  .anime-scroll .hero-copy .hero-actions,
-  .anime-scroll .hero-crown,
-  .anime-scroll .bulletin > *,
-  .anime-scroll .home-jump a,
-  .anime-scroll .reveal .kicker,
-  .anime-scroll .reveal h2,
-  .anime-scroll .reveal .steps > li,
-  .anime-scroll .reveal .team-card,
-  .anime-scroll .reveal .photo-tile,
-  .anime-scroll .reveal .quote,
-  .anime-scroll .reveal .faq details,
-  .anime-scroll .reveal .split > div {
+  .js .reveal.is-visible {
     opacity: 1;
     transform: none;
     transition: none;
