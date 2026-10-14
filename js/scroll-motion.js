@@ -129,17 +129,11 @@ import {
       }
     });
 
-    var footer = document.querySelector(".site-footer");
-    if (footer) {
-      var parts = footer.querySelectorAll(".foot-grid > div, .legal");
-      if (parts.length) {
-        revealOnScroll(parts, { delay: stagger(80) }, footer);
-      }
-    }
+    /* Footer is last on the page — never animate it (leave range is unreachable) */
 
     /* Safety net: anything still invisible after 2s becomes visible */
     window.setTimeout(function () {
-      document.querySelectorAll(".bulletin > *, .home-jump a, .reveal .kicker, .reveal h2, .team-card, .photo-tile, .steps > li, .quote, .faq details, .split > div, .hero-copy .kicker, .hero-copy h1, .hero-copy .hero-lede, .hero-copy .hero-actions, .hero-crown").forEach(function (el) {
+      document.querySelectorAll(".bulletin > *, .home-jump a, .reveal .kicker, .reveal h2, .team-card, .photo-tile, .steps > li, .quote, .faq details, .split > div, .hero-copy .kicker, .hero-copy h1, .hero-copy .hero-lede, .hero-copy .hero-actions, .hero-crown, .foot-grid > div, .legal, .site-footer").forEach(function (el) {
         var op = parseFloat(getComputedStyle(el).opacity);
         if (op < 0.5) {
           el.style.opacity = "1";
