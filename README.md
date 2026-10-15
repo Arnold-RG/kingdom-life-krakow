@@ -58,7 +58,6 @@ On arrival, look for Kingdom Life posters and banners inside the hotel. They lea
 | `index.html` | Home. Gallery of people. Worship section with every film. Pastor, verse, map, FAQ. |
 | `about.html` | Church facts, campuses, leadership, and the films. |
 | `events.html` | Weekly Kraków meetings and conference posters. |
-| `teaching.html` | Daily verse and the full film set. |
 | `books.html` | A four-shelf library. Covers stay at their real shape. |
 | `pastor.html` | Ask Dr. Tammy Gbolubo. |
 | `join.html` | Membership and WhatsApp request, plus the films. |

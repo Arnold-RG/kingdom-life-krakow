@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Confirm the public pages are present
         run: |
-          for f in index.html about.html events.html teaching.html books.html pastor.html join.html 404.html css/site.css js/site.js js/verse.js sitemap.xml robots.txt .nojekyll content/additions.json; do
+          for f in index.html about.html events.html books.html pastor.html join.html 404.html css/site.css js/site.js js/verse.js sitemap.xml robots.txt .nojekyll content/additions.json; do
             test -f "$f" || { echo "missing $f"; exit 1; }
           done
 
