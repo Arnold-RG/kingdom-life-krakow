@@ -1828,7 +1828,29 @@ function syncChrome() {
 syncChrome();
 window.addEventListener("resize", syncChrome);
 
+function hardenExternalLinks(root) {
+  var scope = root || document;
+  scope.querySelectorAll('a[href^="http"]').forEach(function (el) {
+    var href = el.getAttribute("href") || "";
+    if (/^https?:\/\//i.test(href)) {
+      el.setAttribute("rel", "noopener noreferrer");
+      if (!el.hasAttribute("target")) el.setAttribute("target", "_blank");
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+  hardenExternalLinks(document);
+
+  var siteHeader = document.querySelector(".site-header");
+  if (siteHeader) {
+    var onScrollCompact = function () {
+      siteHeader.classList.toggle("is-compact", window.scrollY > 48);
+    };
+    onScrollCompact();
+    window.addEventListener("scroll", onScrollCompact, { passive: true });
+  }
+
   var btn = document.querySelector(".menu-btn");
   var links = document.querySelector(".nav-links");
   if (btn && links) {
@@ -1873,7 +1895,7 @@ document.addEventListener("DOMContentLoaded", function () {
       el.setAttribute("href", window.KL.whatsappGroup);
       if (/^https?:/i.test(window.KL.whatsappGroup)) {
         el.setAttribute("target", "_blank");
-        el.setAttribute("rel", "noopener");
+        el.setAttribute("rel", "noopener noreferrer");
       }
       el.textContent = el.getAttribute("data-whatsapp-ready") || "Join the WhatsApp group";
     } else {
@@ -2075,12 +2097,34 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.querySelector(".lightbox")) return;
     var dialog = document.createElement("dialog");
     dialog.className = "lightbox";
-    dialog.innerHTML = '<div class="lightbox-bar"><button type="button" class="lightbox-close">Close</button></div><p class="lightbox-cap"></p><div class="lightbox-nav"><button type="button" data-dir="-1">Previous</button><button type="button" data-dir="1">Next</button></div>';
-    document.body.appendChild(dialog);
+    var bar = document.createElement("div");
+    bar.className = "lightbox-bar";
+    var closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "lightbox-close";
+    closeBtn.textContent = "Close";
+    bar.appendChild(closeBtn);
+    var cap = document.createElement("p");
+    cap.className = "lightbox-cap";
+    var nav = document.createElement("div");
+    nav.className = "lightbox-nav";
+    var prevBtn = document.createElement("button");
+    prevBtn.type = "button";
+    prevBtn.setAttribute("data-dir", "-1");
+    prevBtn.textContent = "Previous";
+    var nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.setAttribute("data-dir", "1");
+    nextBtn.textContent = "Next";
+    nav.appendChild(prevBtn);
+    nav.appendChild(nextBtn);
+    dialog.appendChild(bar);
     var picture = document.createElement("img");
     picture.alt = "";
-    dialog.querySelector(".lightbox-bar").insertAdjacentElement("afterend", picture);
-    var cap = dialog.querySelector(".lightbox-cap");
+    dialog.appendChild(picture);
+    dialog.appendChild(cap);
+    dialog.appendChild(nav);
+    document.body.appendChild(dialog);
     var sources = [];
     var index = 0;
 
@@ -2110,7 +2154,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    dialog.querySelector(".lightbox-close").addEventListener("click", function () { dialog.close(); });
+    closeBtn.addEventListener("click", function () { dialog.close(); });
     dialog.querySelectorAll("[data-dir]").forEach(function (button) {
       button.addEventListener("click", function () {
         show(index + parseInt(button.getAttribute("data-dir"), 10));
@@ -2157,7 +2201,7 @@ document.addEventListener("DOMContentLoaded", function () {
           link.textContent = item.label || item.url;
           if (/^https?:/i.test(item.url)) {
             link.target = "_blank";
-            link.rel = "noopener";
+            link.rel = "noopener noreferrer";
           }
           host.appendChild(link);
         });

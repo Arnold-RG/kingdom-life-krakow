@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Ask the Pastor | Kingdom Life Kraków</title>
   <meta name="description" content="Write Dr. Tammy Gbolubo and the Kraków campus team about faith, a Sunday visit, or joining Kingdom Life Kraków.">
   <link rel="canonical" href="https://arnold-rg.github.io/kingdom-life-krakow/pastor.html">
-  <meta name="theme-color" content="#efeae2">
+  <meta name="theme-color" content="#1a3d32">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://maps.google.com https://www.google.com; connect-src 'self' https://api.github.com https://i.ytimg.com; base-uri 'self'; form-action 'self' mailto:;">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Ask the pastor | Kingdom Life Kraków">
   <meta property="og:description" content="Write Dr. Tammy Gbolubo, Resident Pastor of the Kraków campus.">
@@ -21,7 +23,7 @@
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,560&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
   <script>
   document.documentElement.classList.add("js");
@@ -65,9 +67,9 @@
       </div>
       <form class="card" data-mailto="Pastor@kingdomlifeonline.org,krakow@kingdomlifeonline.org" data-subject="Ask the Pastor — Kingdom Life Krakow">
         <label for="name">Your name</label>
-        <input id="name" name="Name" autocomplete="name" required>
+        <input id="name" name="Name" autocomplete="name" required maxlength="120">
         <label for="email">Your email</label>
-        <input id="email" name="Email" type="email" autocomplete="email" required>
+        <input id="email" name="Email" type="email" autocomplete="email" required maxlength="200">
         <label for="kind">This is about</label>
         <select id="kind" name="Topic">
           <option>A question about God or the Bible</option>
@@ -77,7 +79,7 @@
           <option>Something else</option>
         </select>
         <label for="q">Your question</label>
-        <textarea id="q" name="Question" rows="6" required></textarea>
+        <textarea id="q" name="Question" rows="6" required maxlength="4000"></textarea>
         <p class="actions"><button class="btn" type="submit">Send to the pastor</button></p>
         <p class="small muted">This opens your email app. If nothing opens, write directly to Pastor@kingdomlifeonline.org.</p>
       </form>
@@ -93,7 +95,7 @@
       <div>
         <p><strong>Campus</strong><br>
         <a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a><br>
-        <a href="https://kingdomlifeonline.org/">kingdomlifeonline.org</a></p>
+        <a href="https://kingdomlifeonline.org/" rel="noopener noreferrer" target="_blank">kingdomlifeonline.org</a></p>
         <p><strong>Warsaw family</strong><br>Postępu 15C, 02-676 Warszawa<br><a href="mailto:hello@kingdomlifeonline.org">hello@kingdomlifeonline.org</a></p>
       </div>
       <div>
@@ -103,12 +105,12 @@
           <a href="about.html">About</a><br>
           <a href="events.html">Events</a><br>
           <a href="books.html">Books</a><br>
-          <a href="https://www.instagram.com/kingdomlifekrakow/">Instagram @kingdomlifekrakow</a><br>
-          <a href="https://www.instagram.com/kingdomlifepl/">Poland family @kingdomlifepl</a><br>
-          <a href="https://www.facebook.com/kingdomlifepl">Facebook</a><br>
-          <a href="https://www.tiktok.com/@kingdomlifepl">TikTok</a><br>
-          <a href="https://twitter.com/KingdomlifePL">X</a><br>
-          <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps</a>
+          <a href="https://www.instagram.com/kingdomlifekrakow/" rel="noopener noreferrer" target="_blank">Instagram @kingdomlifekrakow</a><br>
+          <a href="https://www.instagram.com/kingdomlifepl/" rel="noopener noreferrer" target="_blank">Poland family @kingdomlifepl</a><br>
+          <a href="https://www.facebook.com/kingdomlifepl" rel="noopener noreferrer" target="_blank">Facebook</a><br>
+          <a href="https://www.tiktok.com/@kingdomlifepl" rel="noopener noreferrer" target="_blank">TikTok</a><br>
+          <a href="https://twitter.com/KingdomlifePL" rel="noopener noreferrer" target="_blank">X</a><br>
+          <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z" rel="noopener noreferrer" target="_blank">Google Maps</a>
         </p>
         <p class="foot-quiet"><a href="admin.html">Admin</a></p>
       </div>
