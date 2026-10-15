@@ -56,7 +56,7 @@ import {
     var heroImg = document.querySelector(".hero-bg img");
     var heroCopy = document.querySelector(".hero-copy");
     var heroBits = heroCopy
-      ? heroCopy.querySelectorAll(".hero-crown, .hero-brand, .kicker, h1, .hero-lede, .hero-actions")
+      ? heroCopy.querySelectorAll(".hero-crown, .kicker, h1, .hero-lede, .hero-actions")
       : [];
 
     if (heroBits.length) {
