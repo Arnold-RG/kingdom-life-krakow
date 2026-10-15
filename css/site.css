@@ -1595,3 +1595,54 @@ address { font-style: normal; }
   .site-footer { background: #fff; color: #000; }
   .site-footer a { color: #000; }
 }
+
+/* —— Arnova kit bridge + section craft (original motion) —— */
+:root {
+  --arn-accent: var(--forest);
+  --arn-accent-2: var(--gold);
+  --arn-hero-bg: var(--forest-deep);
+}
+
+.arn-reveal.is-visible,
+.arn-reveal.is-in,
+.js .reveal.arn-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.section {
+  padding-block: clamp(2.75rem, 6vw, 5.5rem);
+}
+
+.team-card,
+.photo-tile,
+.quote,
+.steps > li,
+.bulletin > div {
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .team-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(12, 18, 16, 0.12);
+  }
+  .photo-tile:hover {
+    transform: translateY(-3px);
+  }
+  .quote:hover,
+  .steps > li:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (min-width: 1040px) and (max-width: 1279px) {
+  .wrap { --max: 62rem; }
+  .team-pastors,
+  .team-deacons { gap: 1rem; }
+}
+
+@media (min-width: 1600px) {
+  .wrap { --max: 78rem; }
+  .hero h1 { font-size: clamp(2.6rem, 4.2vw, 4.6rem); }
+}

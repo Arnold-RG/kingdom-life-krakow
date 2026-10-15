@@ -1829,6 +1829,10 @@ syncChrome();
 window.addEventListener("resize", syncChrome);
 
 function hardenExternalLinks(root) {
+  if (window.ArnovaSecure && typeof window.ArnovaSecure.hardenExternalLinks === "function") {
+    window.ArnovaSecure.hardenExternalLinks(root || document);
+    return;
+  }
   var scope = root || document;
   scope.querySelectorAll('a[href^="http"]').forEach(function (el) {
     var href = el.getAttribute("href") || "";
@@ -2234,13 +2238,13 @@ document.addEventListener("DOMContentLoaded", function () {
       var revealObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
+          entry.target.classList.add("is-visible", "is-in");
           revealObserver.unobserve(entry.target);
         });
       }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
       revealNodes.forEach(function (node) { revealObserver.observe(node); });
     } else {
-      revealNodes.forEach(function (node) { node.classList.add("is-visible"); });
+      revealNodes.forEach(function (node) { node.classList.add("is-visible", "is-in"); });
     }
   }
 

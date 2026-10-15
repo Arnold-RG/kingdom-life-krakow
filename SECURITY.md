@@ -1,46 +1,29 @@
 # Security Policy
 
-## Supported site
+## Supported versions
 
-Kingdom Life Kraków is a static public website hosted on GitHub Pages:
+Security updates apply to the latest commit on the default branch of this repository.
 
-- Live: https://arnold-rg.github.io/kingdom-life-krakow/
-- Repository: https://github.com/Arnold-RG/kingdom-life-krakow
+Live site: https://arnold-rg.github.io/kingdom-life-krakow/
 
 ## Reporting a vulnerability
 
-Please report security issues privately to the campus team:
+Email **rurangwaarnold32@gmail.com** with:
 
-- **Campus:** krakow@kingdomlifeonline.org
-- **Pastor:** Pastor@kingdomlifeonline.org
+- Repository name and affected URL/path
+- Description and impact
+- Steps to reproduce (proof of concept if available)
 
-Include what you found, how to reproduce it, and impact. Do not open a public GitHub issue for credential or auth problems.
+Please do **not** open a public issue for unpatched vulnerabilities.
 
-We aim to acknowledge reports within a few business days.
+We aim to acknowledge reports within 7 days and publish a fix or mitigation when confirmed.
 
-## Scope
+Campus contacts for non-security church matters: krakow@kingdomlifeonline.org · Pastor@kingdomlifeonline.org
 
-In scope:
+## Practice
 
-- Cross-site scripting (XSS) via dynamic content injection
-- Broken access control on `admin.html` (GitHub token gate)
-- Sensitive data exposure in client-side code
-- Open redirects or unsafe external link handling
-
-Out of scope:
-
-- Denial of service against GitHub Pages
-- Issues in third-party embeds (YouTube, Google Maps) outside our markup
-- Social engineering against church staff
-
-## Hardening already in place
-
+- No secrets in source; use `.env.example` only
+- Prefer `textContent` over `innerHTML` for untrusted data
 - External links use `rel="noopener noreferrer"`
-- Referrer policy: `strict-origin-when-cross-origin`
-- Dynamic DOM updates prefer `textContent` over `innerHTML`
-- Admin tools require a GitHub token with push access to this repository; tokens are not stored in the site
-- No secrets ship in source; `.env` and credentials are gitignored
-
-## Preferred disclosure
-
-Coordinated disclosure. Please give us a reasonable window to patch before public write-ups.
+- CSP meta on public pages; ArnovaSecure escape helpers for dynamic DOM
+- Dependabot / Actions least privilege where applicable
