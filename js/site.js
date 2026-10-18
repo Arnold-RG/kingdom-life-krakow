@@ -1816,6 +1816,30 @@ window.KL = {
   ]
 };
 
+var SERMON_ID = /^[A-Za-z0-9_-]{11}$/;
+var NO_EMBED = { oCB15LydpO4: true };
+
+function allowedUrl(value, options) {
+  options = options || {};
+  var raw = String(value == null ? "" : value).replace(/^\s+|\s+$/g, "");
+  if (!raw || /[\u0000-\u001F\u007F]/.test(raw) || raw.indexOf("\\") !== -1) return "";
+  var scheme = /^([a-z][a-z0-9+.-]*):/i.exec(raw);
+  if (scheme) {
+    var protocol = scheme[1].toLowerCase();
+    var parsed;
+    try { parsed = new URL(raw); } catch (error) { return ""; }
+    if (protocol === "https" && parsed.protocol === "https:") return parsed.href;
+    if (options.mailto && protocol === "mailto" && parsed.protocol === "mailto:") {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(parsed.pathname)) return "";
+      return parsed.href;
+    }
+    return "";
+  }
+  if (!options.relative || raw.slice(0, 2) === "//" || raw.indexOf("..") !== -1) return "";
+  if (!/^(?:[A-Za-z0-9._-]+\/)*[A-Za-z0-9._-]+$/.test(raw)) return "";
+  return raw;
+}
+
 function syncChrome() {
   var topbar = document.querySelector(".topbar");
   var header = document.querySelector(".site-header");
@@ -1869,12 +1893,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.querySelectorAll("[data-whatsapp]").forEach(function (el) {
-    if (window.KL.whatsappGroup) {
-      el.setAttribute("href", window.KL.whatsappGroup);
-      if (/^https?:/i.test(window.KL.whatsappGroup)) {
-        el.setAttribute("target", "_blank");
-        el.setAttribute("rel", "noopener");
-      }
+    var group = allowedUrl(window.KL.whatsappGroup, {});
+    if (group) {
+      el.setAttribute("href", group);
+      el.setAttribute("target", "_blank");
+      el.setAttribute("rel", "noopener noreferrer");
       el.textContent = el.getAttribute("data-whatsapp-ready") || "Join the WhatsApp group";
     } else {
       el.setAttribute("href", "join.html#whatsapp");
@@ -1882,7 +1905,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.querySelectorAll("[data-sermons]").forEach(function (mount) {
-    var list = (window.KL.sermons || []).slice();
+    var list = (window.KL.sermons || []).filter(function (sermon) {
+      return sermon && SERMON_ID.test(String(sermon.id || ""));
+    });
     var limit = mount.getAttribute("data-sermons");
     if (limit && limit !== "all") {
       var count = parseInt(limit, 10);
@@ -1933,11 +1958,18 @@ document.addEventListener("DOMContentLoaded", function () {
     poster.appendChild(posterText);
     var frame = document.createElement("iframe");
     frame.hidden = true;
+    frame.title = list[0].title;
     frame.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
     frame.setAttribute("allowfullscreen", "");
     frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    var outbound = document.createElement("a");
+    outbound.className = "player-outbound";
+    outbound.target = "_blank";
+    outbound.rel = "noopener noreferrer";
+    outbound.hidden = true;
     player.appendChild(poster);
     player.appendChild(frame);
+    player.appendChild(outbound);
 
     var now = document.createElement("p");
     now.className = "worship-now";
@@ -1956,9 +1988,25 @@ document.addEventListener("DOMContentLoaded", function () {
     menu.className = "worship-list";
     var buttons = [];
 
+    function youtubePoster(id) {
+      if (!SERMON_ID.test(id)) return "";
+      return "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+    }
+
+    function youtubeEmbed(id) {
+      if (!SERMON_ID.test(id) || NO_EMBED[id]) return "";
+      return "https://www.youtube-nocookie.com/embed/" + id + "?rel=0&autoplay=1";
+    }
+
     function setPoster(sermon) {
-      posterImg.hidden = false;
-      posterImg.src = "https://i.ytimg.com/vi/" + sermon.id + "/hqdefault.jpg";
+      var posterSrc = youtubePoster(sermon.id);
+      if (!posterSrc) {
+        posterImg.removeAttribute("src");
+        posterImg.hidden = true;
+      } else {
+        posterImg.hidden = false;
+        posterImg.src = posterSrc;
+      }
       poster.setAttribute("aria-label", "Play " + sermon.title);
     }
 
@@ -1966,19 +2014,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function show(index, autoplay) {
       var sermon = list[index];
-      if (!sermon) return;
+      if (!sermon || !SERMON_ID.test(String(sermon.id || ""))) return;
       current = index;
       nowTitle.textContent = sermon.title;
       nowWho.textContent = sermon.speaker || "";
       buttons.forEach(function (button, i) {
+        if (!button) return;
         if (i === index) button.setAttribute("aria-current", "true");
         else button.removeAttribute("aria-current");
       });
+      frame.title = sermon.title;
+      if (NO_EMBED[sermon.id]) {
+        frame.removeAttribute("src");
+        frame.hidden = true;
+        poster.hidden = true;
+        outbound.hidden = false;
+        outbound.href = "https://www.youtube.com/watch?v=" + sermon.id;
+        outbound.textContent = "Watch on YouTube: " + sermon.title;
+        return;
+      }
+      outbound.hidden = true;
       if (autoplay) {
+        var embed = youtubeEmbed(sermon.id);
+        if (!embed) return;
         frame.hidden = false;
         poster.hidden = true;
-        frame.title = sermon.title;
-        frame.src = "https://www.youtube-nocookie.com/embed/" + sermon.id + "?rel=0&autoplay=1";
+        frame.src = embed;
       } else {
         frame.removeAttribute("src");
         frame.hidden = true;
@@ -2029,31 +2090,57 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     var lastGroup = "";
-    list.forEach(function (sermon, index) {
-      if (sermon.group && sermon.group !== lastGroup) {
-        var label = document.createElement("li");
-        label.className = "worship-group";
-        label.textContent = sermon.group;
-        menu.appendChild(label);
-        lastGroup = sermon.group;
+    var built = 0;
+
+    function buildChunk() {
+      var frag = document.createDocumentFragment();
+      var end = Math.min(built + 24, list.length);
+      var index;
+      for (index = built; index < end; index++) {
+        var sermon = list[index];
+        if (sermon.group && sermon.group !== lastGroup) {
+          var label = document.createElement("li");
+          label.className = "worship-group";
+          label.textContent = sermon.group;
+          frag.appendChild(label);
+          lastGroup = sermon.group;
+        }
+        var item = document.createElement("li");
+        item.setAttribute("data-group", sermon.group || "");
+        var title = document.createElement("span");
+        title.className = "worship-title";
+        title.textContent = sermon.title;
+        var who = document.createElement("span");
+        who.className = "worship-who";
+        who.textContent = sermon.speaker || "";
+        if (NO_EMBED[sermon.id]) {
+          var anchor = document.createElement("a");
+          anchor.href = "https://www.youtube.com/watch?v=" + sermon.id;
+          anchor.target = "_blank";
+          anchor.rel = "noopener noreferrer";
+          anchor.appendChild(title);
+          anchor.appendChild(who);
+          item.appendChild(anchor);
+          buttons[index] = null;
+        } else {
+          var button = document.createElement("button");
+          button.type = "button";
+          button.appendChild(title);
+          button.appendChild(who);
+          button.addEventListener("click", (function (rowIndex) {
+            return function () { show(rowIndex, true); };
+          })(index));
+          if (index === current) button.setAttribute("aria-current", "true");
+          buttons[index] = button;
+          item.appendChild(button);
+        }
+        frag.appendChild(item);
       }
-      var item = document.createElement("li");
-      item.setAttribute("data-group", sermon.group || "");
-      var button = document.createElement("button");
-      button.type = "button";
-      var title = document.createElement("span");
-      title.className = "worship-title";
-      title.textContent = sermon.title;
-      var who = document.createElement("span");
-      who.className = "worship-who";
-      who.textContent = sermon.speaker || "";
-      button.appendChild(title);
-      button.appendChild(who);
-      button.addEventListener("click", function () { show(index, true); });
-      buttons.push(button);
-      item.appendChild(button);
-      menu.appendChild(item);
-    });
+      menu.appendChild(frag);
+      built = end;
+      if (built < list.length) requestAnimationFrame(buildChunk);
+      else applyView();
+    }
 
     search.addEventListener("input", function () {
       query = search.value;
@@ -2068,7 +2155,8 @@ document.addEventListener("DOMContentLoaded", function () {
     mount.appendChild(now);
     mount.appendChild(empty);
     mount.appendChild(menu);
-    applyView();
+    tally.textContent = list.length === 1 ? "1 film" : list.length + " films";
+    requestAnimationFrame(buildChunk);
   });
 
   function bindLightbox() {
@@ -2131,13 +2219,14 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!data) return;
       var gallery = document.querySelector("[data-gallery-add]") || document.querySelector(".photo-grid");
       (data.images || []).forEach(function (item) {
-        if (!gallery || !item.src) return;
+        var src = allowedUrl(item.src, { relative: true });
+        if (!gallery || !src) return;
         var figure = document.createElement("figure");
         figure.className = "photo-tile";
         var frame = document.createElement("div");
         frame.className = "photo-frame";
         var img = document.createElement("img");
-        img.src = item.src;
+        img.src = src;
         img.alt = item.caption || "Kingdom Life";
         img.loading = "lazy";
         frame.appendChild(img);
@@ -2150,14 +2239,16 @@ document.addEventListener("DOMContentLoaded", function () {
         var heading = document.createElement("h3");
         heading.textContent = title;
         host.appendChild(heading);
+        var allowRelative = selector === "[data-admin-files]";
         items.forEach(function (item) {
-          if (!item.url) return;
+          var href = allowedUrl(item.url, { mailto: !allowRelative, relative: allowRelative });
+          if (!href) return;
           var link = document.createElement("a");
-          link.href = item.url;
-          link.textContent = item.label || item.url;
-          if (/^https?:/i.test(item.url)) {
+          link.href = href;
+          link.textContent = item.label || href;
+          if (/^https:\/\//i.test(href)) {
             link.target = "_blank";
-            link.rel = "noopener";
+            link.rel = "noopener noreferrer";
           }
           host.appendChild(link);
         });
@@ -2229,5 +2320,29 @@ document.addEventListener("DOMContentLoaded", function () {
     start();
     if (mq.addEventListener) mq.addEventListener("change", start);
     else if (mq.addListener) mq.addListener(start);
+
+  window.addEventListener("load", function () {
+    var wide = window.matchMedia("(min-width: 1040px)");
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!wide.matches || reduceMotion.matches) return;
+    var motion = document.createElement("script");
+    motion.type = "module";
+    motion.src = "js/scroll-motion.js";
+    document.body.appendChild(motion);
+  });
+
+  document.querySelectorAll("[data-map-src]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var src = allowedUrl(button.getAttribute("data-map-src"), {});
+      if (!src) return;
+      var frame = document.createElement("iframe");
+      frame.title = button.getAttribute("data-map-title") || "Map";
+      frame.setAttribute("referrerpolicy", "no-referrer");
+      frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox");
+      frame.src = src;
+      button.replaceWith(frame);
+    });
+  });
+
   })();
 });

@@ -1,4 +1,6 @@
-/* Kingdom Life Kraków — warm sanctuary
+/* Public pages inline this file together with css/fonts.css.
+   After editing either file, refresh the <style> block in each public page.
+   Kingdom Life Kraków — warm sanctuary
    Cream · deep burgundy · soft gold · human church feel */
 
 :root {
@@ -855,7 +857,8 @@ p:last-child { margin-bottom: 0; }
   font-size: 1.05rem;
   color: var(--ember);
 }
-.worship-list button {
+.worship-list button,
+.worship-list a {
   display: block;
   width: 100%;
   text-align: left;
@@ -865,8 +868,10 @@ p:last-child { margin-bottom: 0; }
   border-bottom: 1px solid var(--rule);
   padding: 0.7rem 0.85rem;
   transition: background 0.15s var(--ease);
+  text-decoration: none;
 }
-.worship-list button:hover { background: rgba(228, 221, 210, 0.65); }
+.worship-list button:hover,
+.worship-list a:hover { background: rgba(228, 221, 210, 0.65); }
 .worship-list button[aria-current="true"] {
   background: rgba(36, 70, 58, 0.08);
   box-shadow: inset 3px 0 0 var(--forest);
@@ -947,11 +952,38 @@ p:last-child { margin-bottom: 0; }
   color: var(--mute);
   font-size: 0.86rem;
 }
-.map-wrap iframe {
+.map-wrap { min-width: 0; }
+.map-wrap iframe,
+.map-load {
   width: 100%;
   height: clamp(18rem, 48vh, 30rem);
   border: 1px solid var(--rule);
 }
+.map-load {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+.map-load:hover { background: var(--paper-2); }
+.player-outbound {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  background: #1a1816;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+.player-outbound[hidden] { display: none; }
 .facts {
   display: grid;
   grid-template-columns: minmax(8rem, auto) minmax(0, 1fr);
@@ -1093,7 +1125,7 @@ p:last-child { margin-bottom: 0; }
 }
 
 .table-hint { display: none; }
-.table-scroll { overflow-x: auto; margin: 0.5rem 0 1.2rem; }
+.table-scroll { overflow-x: auto; margin: 0.5rem 0 1.2rem; max-width: 100%; }
 table.meetings {
   width: 100%;
   min-width: 42rem;
@@ -1247,6 +1279,10 @@ address { font-style: normal; }
 .player-poster:focus-visible,
 .lightbox :focus-visible { outline-color: var(--ember); }
 
+.reveal {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 32rem;
+}
 .js .reveal {
   opacity: 0;
   transform: translateY(1rem);
@@ -1494,6 +1530,7 @@ address { font-style: normal; }
 
 @media print {
   .topbar, .site-header, .dock, .menu-btn, .home-jump, .worship-stage, .hero-actions, .actions { display: none !important; }
+  .reveal { content-visibility: visible; }
   body { padding: 0; background: #fff; color: #000; }
   .hero { display: block; min-height: 0; color: #000; }
   .hero-bg, .hero::after { display: none; }

@@ -13,18 +13,18 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the site
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Confirm the public pages are present
         run: |
-          for f in index.html about.html events.html books.html pastor.html join.html 404.html css/site.css js/site.js js/verse.js sitemap.xml robots.txt .nojekyll content/additions.json; do
+          for f in index.html about.html events.html books.html pastor.html join.html 404.html css/site.css css/fonts.css js/site.js js/admin.js js/verse.js sitemap.xml robots.txt .nojekyll content/additions.json fonts/figtree-latin.woff2 fonts/figtree-latin-ext.woff2 fonts/figtree-italic-latin.woff2 fonts/figtree-italic-latin-ext.woff2 fonts/newsreader-latin.woff2 fonts/newsreader-latin-ext.woff2 fonts/newsreader-regular-latin.woff2 fonts/newsreader-regular-latin-ext.woff2 fonts/newsreader-italic-latin.woff2 fonts/newsreader-italic-latin-ext.woff2 fonts/Figtree-OFL.txt fonts/Newsreader-OFL.txt; do
             test -f "$f" || { echo "missing $f"; exit 1; }
           done
 
@@ -37,7 +37,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out the site
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Assemble the folder GitHub Pages will serve
         run: |
           mkdir -p _site
@@ -49,9 +49,9 @@ jobs:
           test -f _site/index.html
           test -f _site/.nojekyll
       - name: Upload the site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: _site
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
