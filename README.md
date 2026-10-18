@@ -56,11 +56,11 @@ On arrival, look for Kingdom Life posters and banners inside the hotel. They lea
 | File | What it is |
 | --- | --- |
 | `index.html` | Home. Gallery of people. Worship section with every film. Pastor, verse, map, FAQ. |
-| `about.html` | Church facts, campuses, leadership, and the films. |
+| `about.html` | Church facts, campuses, and leadership. Films play on the home page. |
 | `events.html` | Weekly Kraków meetings and conference posters. |
 | `books.html` | A four-shelf library. Covers stay at their real shape. |
 | `pastor.html` | Ask Dr. Tammy Gbolubo. |
-| `join.html` | Membership and WhatsApp request, plus the films. |
+| `join.html` | Membership and WhatsApp request. Films play on the home page. |
 | `css/site.css` | Layout and the video player. |
 | `js/site.js` | Menu, forms, WhatsApp setting, and the sermon list. |
 | `js/verse.js` | The verse that changes with the date. |
@@ -70,7 +70,7 @@ On arrival, look for Kingdom Life posters and banners inside the hotel. They lea
 
 ## Worship films
 
-Films are listed once, in `js/site.js`, under `sermons`. Home and About show the full list, with shelves and a search box. Daily Word and Join show the first six. Choosing a title plays it in the same player and stops the film already playing. Pressing play does not send the visitor to YouTube. The player waits until someone presses play, so the page does not load a film in the background.
+Films are listed once, in `js/site.js`, under `sermons`. The home page shows the full list, with shelves and a search box. About and Join do not show films; they point visitors to the home worship stage. Choosing a title plays it in the same player and stops the film already playing. Pressing play does not send the visitor to YouTube. The player waits until someone presses play, so the page does not load a film in the background.
 
 Gallery photographs keep their real proportions on every screen size. Select one to see it larger. They are not cropped into a short strip.
 

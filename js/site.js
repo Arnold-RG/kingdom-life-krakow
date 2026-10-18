@@ -2007,7 +2007,7 @@ document.addEventListener("DOMContentLoaded", function () {
         posterImg.hidden = false;
         posterImg.src = posterSrc;
       }
-      poster.setAttribute("aria-label", "Play " + sermon.title);
+      poster.setAttribute("aria-label", "Play: " + sermon.title);
     }
 
     posterImg.addEventListener("error", function () { posterImg.hidden = true; });
