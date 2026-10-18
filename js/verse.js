@@ -38,11 +38,36 @@
     return verses[day % verses.length];
   }
 
+  var OSIS = {
+    "Genesis": "GEN", "Exodus": "EXO", "Leviticus": "LEV", "Numbers": "NUM", "Deuteronomy": "DEU",
+    "Joshua": "JOS", "Judges": "JDG", "Ruth": "RUT", "1 Samuel": "1SA", "2 Samuel": "2SA",
+    "1 Kings": "1KI", "2 Kings": "2KI", "1 Chronicles": "1CH", "2 Chronicles": "2CH",
+    "Ezra": "EZR", "Nehemiah": "NEH", "Esther": "EST", "Job": "JOB", "Psalm": "PSA", "Psalms": "PSA",
+    "Proverbs": "PRO", "Ecclesiastes": "ECC", "Song of Solomon": "SNG", "Isaiah": "ISA",
+    "Jeremiah": "JER", "Lamentations": "LAM", "Ezekiel": "EZK", "Daniel": "DAN",
+    "Hosea": "HOS", "Joel": "JOL", "Amos": "AMO", "Obadiah": "OBA", "Jonah": "JON",
+    "Micah": "MIC", "Nahum": "NAM", "Habakkuk": "HAB", "Zephaniah": "ZEP", "Haggai": "HAG",
+    "Zechariah": "ZEC", "Malachi": "MAL", "Matthew": "MAT", "Mark": "MRK", "Luke": "LUK",
+    "John": "JHN", "Acts": "ACT", "Romans": "ROM", "1 Corinthians": "1CO", "2 Corinthians": "2CO",
+    "Galatians": "GAL", "Ephesians": "EPH", "Philippians": "PHP", "Colossians": "COL",
+    "1 Thessalonians": "1TH", "2 Thessalonians": "2TH", "1 Timothy": "1TI", "2 Timothy": "2TI",
+    "Titus": "TIT", "Philemon": "PHM", "Hebrews": "HEB", "James": "JAS", "1 Peter": "1PE",
+    "2 Peter": "2PE", "1 John": "1JN", "2 John": "2JN", "3 John": "3JN", "Jude": "JUD",
+    "Revelation": "REV"
+  };
+
+  function verseUrl(ref) {
+    var match = String(ref).match(/^((?:\d\s)?[A-Za-z]+)\s+(\d+):(\d+)/);
+    if (!match || !OSIS[match[1]]) return "https://www.bible.com";
+    return "https://www.bible.com/bible/1/" + OSIS[match[1]] + "." + match[2] + "." + match[3];
+  }
+
   function render() {
     var v = pick();
     document.querySelectorAll("[data-verse-text]").forEach(function (el) { el.textContent = "“" + v.text + "”"; });
     document.querySelectorAll("[data-verse-ref]").forEach(function (el) { el.textContent = v.ref; });
     document.querySelectorAll("[data-verse-note]").forEach(function (el) { el.textContent = v.note; });
+    document.querySelectorAll("[data-verse-app]").forEach(function (el) { el.href = verseUrl(v.ref); });
     var d = new Date();
     document.querySelectorAll("[data-verse-date]").forEach(function (el) {
       el.textContent = d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });

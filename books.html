@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Reading Room | Kingdom Life Kraków</title>
   <meta name="description" content="Christian readings for Kingdom Life Kraków on Jesus, the Bible, daily life, and the heart. Each cover is shown whole.">
   <link rel="canonical" href="https://arnold-rg.github.io/kingdom-life-krakow/books.html">
@@ -139,6 +139,7 @@
   --max: 70rem;
   --measure: 38rem;
   --space-xl: 3.5rem;
+  --gutter: 1.25rem;
   --dock-pad: 0px;
   --radius: 6px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -218,9 +219,11 @@ p:last-child { margin-bottom: 0; }
 .verse-box p,
 .faq p { max-width: var(--measure); }
 
-.wrap {
-  width: min(100% - 2.5rem, var(--max));
+.wrap,
+.hero-inner {
+  width: min(100%, var(--max));
   margin-inline: auto;
+  padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 
 .muted { color: var(--mute); }
@@ -269,7 +272,7 @@ p:last-child { margin-bottom: 0; }
   font-size: 0.84rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  padding: 0.5rem 0;
+  padding: max(0.5rem, env(safe-area-inset-top, 0px)) 0 0.5rem;
   border-bottom: 0;
   box-shadow: none;
 }
@@ -426,7 +429,7 @@ p:last-child { margin-bottom: 0; }
   left: 50%;
   bottom: max(0.55rem, env(safe-area-inset-bottom));
   transform: translateX(-50%);
-  width: min(36rem, calc(100% - 0.9rem));
+  width: min(36rem, calc(100% - 0.9rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
   padding: 0.35rem;
   gap: 0.15rem;
   border-radius: 1.15rem;
@@ -513,8 +516,6 @@ p:last-child { margin-bottom: 0; }
 .hero-inner {
   position: relative;
   z-index: 2;
-  width: min(100% - 2.5rem, var(--max));
-  margin-inline: auto;
   padding-top: clamp(5rem, 14vw, 8rem);
   padding-bottom: clamp(2.25rem, 6vw, 3.75rem);
 }
@@ -1211,6 +1212,32 @@ p:last-child { margin-bottom: 0; }
 }
 .cover-grid p,
 .event-card p { margin: 0 0 0.5rem; color: var(--mute); }
+.cover-link { display: block; color: inherit; text-decoration: none; }
+.cover-link:focus-visible img,
+.cover-link:hover img { outline: 2px solid var(--ember); outline-offset: 3px; }
+.cover-grid .cover-cta {
+  margin-top: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  min-height: 44px;
+  max-width: 100%;
+  font-size: 0.78rem;
+  white-space: normal;
+  text-align: center;
+}
+.bible-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem 1.4rem;
+  margin: 0 0 1.6rem;
+  padding: 1.05rem 1.15rem;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--forest);
+}
+.bible-banner p { margin: 0; max-width: var(--measure); }
+.bible-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .event-card {
   padding-top: 1rem;
   border-top: 1px solid var(--rule);
@@ -1451,7 +1478,7 @@ address { font-style: normal; }
 
 /* —— Phones & tablets: bottom dock only (no top Menu nav) —— */
 @media (max-width: 1039px) {
-  :root { --dock-pad: 6.4rem; }
+  :root { --dock-pad: calc(5.25rem + env(safe-area-inset-bottom, 0px)); }
   .dock { display: flex; }
 
   /* Remove top navbar / Menu — navigation lives only in the dock */
@@ -1554,9 +1581,16 @@ address { font-style: normal; }
 }
 
 /* Stack welcome columns + swap border only here (kills orphan hairline) */
+@media (max-width: 640px) {
+  .cover-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 0.75rem;
+  }
+  .cover-grid h3 { font-size: 1.02rem; }
+}
+
 @media (max-width: 560px) {
-  .wrap,
-  .hero-inner { width: min(100% - 1.8rem, var(--max)); }
+  :root { --gutter: 0.9rem; }
   .welcome-split .split,
   .split,
   .bulletin,
@@ -1600,7 +1634,7 @@ address { font-style: normal; }
   .hero-actions .btn,
   .actions .btn { flex-basis: 100%; }
   .dock {
-    width: calc(100% - 0.6rem);
+    width: calc(100% - 0.6rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
     padding: 0.28rem;
     gap: 0.1rem;
   }
@@ -1612,7 +1646,7 @@ address { font-style: normal; }
 }
 
 @media (max-height: 480px) and (orientation: landscape) {
-  :root { --dock-pad: 4.8rem; }
+  :root { --dock-pad: calc(4.2rem + env(safe-area-inset-bottom, 0px)); }
   .dock-item { min-height: 38px; font-size: 0.58rem; }
   .hero { min-height: 0; }
   .hero-inner { padding-top: 3rem; padding-bottom: calc(var(--dock-pad) + 0.75rem); }
@@ -1653,7 +1687,7 @@ address { font-style: normal; }
   document.documentElement.classList.add("js");
 </script>
 </head>
-<body>
+<body class="page-books">
   <a class="skip" href="#main">Skip to content</a>
   <div class="topbar"><div class="wrap"><span>Reading · Kingdom Life Kraków</span><span><a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a></span></div></div>
   <header class="site-header">
@@ -1688,6 +1722,13 @@ address { font-style: normal; }
   </header>
   <main id="main" class="section">
     <div class="wrap">
+      <div class="bible-banner">
+        <div>
+          <p class="kicker">YouVersion Bible App</p>
+          <p>Each cover opens its reading in the Bible App. If the app is not installed, get it free and continue the same plan.</p>
+        </div>
+        <p class="bible-actions"><a class="btn" href="https://apps.apple.com/app/id282935706" target="_blank" rel="noopener noreferrer">Get the Bible App</a></p>
+      </div>
       <section class="shelf" id="start">
         <header class="shelf-head">
           <p class="shelf-num">01</p>
@@ -1697,12 +1738,12 @@ address { font-style: normal; }
           </div>
         </header>
         <div class="cover-grid">
-          <figure><img src="assets/books/who-is-jesus.jpg" alt="Cover of Who Is Jesus by Louie Giglio" width="1280" height="720"><figcaption><h3>Who Is Christ Jesus</h3><p>Who Is Jesus? · Louie Giglio</p></figcaption></figure>
-          <figure><img src="assets/books/how-to-be-christian-1280.webp" srcset="assets/books/how-to-be-christian-320.webp 320w, assets/books/how-to-be-christian-480.webp 480w, assets/books/how-to-be-christian-720.webp 720w, assets/books/how-to-be-christian-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of The Basics of Being Christian" width="1280" height="720" decoding="async"><figcaption><h3>How to Be a Christian</h3><p>The Basics of Being Christian</p></figcaption></figure>
-          <figure><img src="assets/books/love-like-jesus-1280.webp" srcset="assets/books/love-like-jesus-320.webp 320w, assets/books/love-like-jesus-480.webp 480w, assets/books/love-like-jesus-720.webp 720w, assets/books/love-like-jesus-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Love Like Jesus" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Love Like Jesus</h3><p>Life.Church</p></figcaption></figure>
-          <figure><img src="assets/books/first-steps.jpg" alt="Cover of Start Here, First Steps with Jesus" width="1280" height="720"><figcaption><h3>First Steps with Jesus</h3><p>Start here</p></figcaption></figure>
-          <figure><img src="assets/books/new-believers-1280.webp" srcset="assets/books/new-believers-320.webp 320w, assets/books/new-believers-480.webp 480w, assets/books/new-believers-720.webp 720w, assets/books/new-believers-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of New Believers: 7 Steps for New Christians by Greg Laurie" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>7 Steps for New Christians</h3><p>Greg Laurie</p></figcaption></figure>
-          <figure><img src="assets/books/jesus-words-1280.webp" srcset="assets/books/jesus-words-320.webp 320w, assets/books/jesus-words-480.webp 480w, assets/books/jesus-words-720.webp 720w, assets/books/jesus-words-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Jesus in His Own Words by John Matthew" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Jesus in His Own Words</h3><p>John Matthew</p></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/11494-who-is-jesus" target="_blank" rel="noopener noreferrer"><img src="assets/books/who-is-jesus.jpg" alt="Cover of Who Is Jesus by Louie Giglio" width="1280" height="720"></a><figcaption><h3>Who Is Christ Jesus</h3><p>Who Is Jesus? · Louie Giglio</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/11494-who-is-jesus" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/search/plans?query=The%20Basics%20of%20Being%20Christian" target="_blank" rel="noopener noreferrer"><img src="assets/books/how-to-be-christian-1280.webp" srcset="assets/books/how-to-be-christian-320.webp 320w, assets/books/how-to-be-christian-480.webp 480w, assets/books/how-to-be-christian-720.webp 720w, assets/books/how-to-be-christian-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of The Basics of Being Christian" width="1280" height="720" decoding="async"></a><figcaption><h3>How to Be a Christian</h3><p>The Basics of Being Christian</p><a class="btn cover-cta" href="https://www.bible.com/search/plans?query=The%20Basics%20of%20Being%20Christian" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/2391-love-like-jesus" target="_blank" rel="noopener noreferrer"><img src="assets/books/love-like-jesus-1280.webp" srcset="assets/books/love-like-jesus-320.webp 320w, assets/books/love-like-jesus-480.webp 480w, assets/books/love-like-jesus-720.webp 720w, assets/books/love-like-jesus-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Love Like Jesus" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Love Like Jesus</h3><p>Life.Church</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/2391-love-like-jesus" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/13502-start-here-first-steps-with-jesus" target="_blank" rel="noopener noreferrer"><img src="assets/books/first-steps.jpg" alt="Cover of Start Here, First Steps with Jesus" width="1280" height="720"></a><figcaption><h3>First Steps with Jesus</h3><p>Start here</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/13502-start-here-first-steps-with-jesus" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/19459-new-believers-7-steps-for-new-christians" target="_blank" rel="noopener noreferrer"><img src="assets/books/new-believers-1280.webp" srcset="assets/books/new-believers-320.webp 320w, assets/books/new-believers-480.webp 480w, assets/books/new-believers-720.webp 720w, assets/books/new-believers-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of New Believers: 7 Steps for New Christians by Greg Laurie" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>7 Steps for New Christians</h3><p>Greg Laurie</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/19459-new-believers-7-steps-for-new-christians" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/68199-jesus-in-his-own-words" target="_blank" rel="noopener noreferrer"><img src="assets/books/jesus-words-1280.webp" srcset="assets/books/jesus-words-320.webp 320w, assets/books/jesus-words-480.webp 480w, assets/books/jesus-words-720.webp 720w, assets/books/jesus-words-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Jesus in His Own Words by John Matthew" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Jesus in His Own Words</h3><p>John Matthew</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/68199-jesus-in-his-own-words" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
         </div>
       </section>
       <section class="shelf" id="scripture">
@@ -1714,9 +1755,9 @@ address { font-style: normal; }
           </div>
         </header>
         <div class="cover-grid">
-          <figure><img src="assets/books/power-of-bible-1280.webp" srcset="assets/books/power-of-bible-320.webp 320w, assets/books/power-of-bible-480.webp 480w, assets/books/power-of-bible-720.webp 720w, assets/books/power-of-bible-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Building Your Life on the Word" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>The Power of the Bible</h3><p>Building Your Life on the Word</p></figcaption></figure>
-          <figure><img src="assets/books/psalms-faith-1280.webp" srcset="assets/books/psalms-faith-320.webp 320w, assets/books/psalms-faith-480.webp 480w, assets/books/psalms-faith-720.webp 720w, assets/books/psalms-faith-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Building a Stronger Faith with the Psalms" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Building a Stronger Faith with the Psalms</h3><p>A reading on honest prayer</p></figcaption></figure>
-          <figure><img src="assets/books/gospel-john-1280.webp" srcset="assets/books/gospel-john-320.webp 320w, assets/books/gospel-john-480.webp 480w, assets/books/gospel-john-720.webp 720w, assets/books/gospel-john-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of the Gospel of John with J. Vernon McGee" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>The Gospel of John</h3><p>J. Vernon McGee</p></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/search/plans?query=Building%20Your%20Life%20on%20the%20Word" target="_blank" rel="noopener noreferrer"><img src="assets/books/power-of-bible-1280.webp" srcset="assets/books/power-of-bible-320.webp 320w, assets/books/power-of-bible-480.webp 480w, assets/books/power-of-bible-720.webp 720w, assets/books/power-of-bible-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Building Your Life on the Word" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>The Power of the Bible</h3><p>Building Your Life on the Word</p><a class="btn cover-cta" href="https://www.bible.com/search/plans?query=Building%20Your%20Life%20on%20the%20Word" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/search/plans?query=Building%20a%20Stronger%20Faith%20with%20the%20Psalms" target="_blank" rel="noopener noreferrer"><img src="assets/books/psalms-faith-1280.webp" srcset="assets/books/psalms-faith-320.webp 320w, assets/books/psalms-faith-480.webp 480w, assets/books/psalms-faith-720.webp 720w, assets/books/psalms-faith-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Building a Stronger Faith with the Psalms" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Building a Stronger Faith with the Psalms</h3><p>A reading on honest prayer</p><a class="btn cover-cta" href="https://www.bible.com/search/plans?query=Building%20a%20Stronger%20Faith%20with%20the%20Psalms" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/13877-thru-the-bible-gospel-of-john" target="_blank" rel="noopener noreferrer"><img src="assets/books/gospel-john-1280.webp" srcset="assets/books/gospel-john-320.webp 320w, assets/books/gospel-john-480.webp 480w, assets/books/gospel-john-720.webp 720w, assets/books/gospel-john-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of the Gospel of John with J. Vernon McGee" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>The Gospel of John</h3><p>J. Vernon McGee</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/13877-thru-the-bible-gospel-of-john" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
         </div>
       </section>
       <section class="shelf" id="daily">
@@ -1728,12 +1769,12 @@ address { font-style: normal; }
           </div>
         </header>
         <div class="cover-grid">
-          <figure><img src="assets/books/daily-life-1280.webp" srcset="assets/books/daily-life-320.webp 320w, assets/books/daily-life-480.webp 480w, assets/books/daily-life-720.webp 720w, assets/books/daily-life-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Finding Joy in Everyday Life from Philippians" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Daily Life of a Christian</h3><p>Finding Joy in Everyday Life · Dr. Timothy Brown</p></figcaption></figure>
-          <figure><img src="assets/books/christian-habits-1280.webp" srcset="assets/books/christian-habits-320.webp 320w, assets/books/christian-habits-480.webp 480w, assets/books/christian-habits-720.webp 720w, assets/books/christian-habits-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Holy Habits" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Habits of Christians</h3><p>Holy Habits · Dr. Timothy Brown</p></figcaption></figure>
-          <figure><img src="assets/books/rest-in-god-1280.webp" srcset="assets/books/rest-in-god-320.webp 320w, assets/books/rest-in-god-480.webp 480w, assets/books/rest-in-god-720.webp 720w, assets/books/rest-in-god-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Resting in God" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Resting in God</h3><p>Hope Media</p></figcaption></figure>
-          <figure><img src="assets/books/love-purpose-1280.webp" srcset="assets/books/love-purpose-320.webp 320w, assets/books/love-purpose-480.webp 480w, assets/books/love-purpose-720.webp 720w, assets/books/love-purpose-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of What Is My Purpose? Learning to Love God and Love Others" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Love and Purpose</h3><p>Learning to love God and love others</p></figcaption></figure>
-          <figure><img src="assets/books/prayer-life-1280.webp" srcset="assets/books/prayer-life-320.webp 320w, assets/books/prayer-life-480.webp 480w, assets/books/prayer-life-720.webp 720w, assets/books/prayer-life-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Building Your Prayer Life" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Building Your Prayer Life</h3><p>Cru</p></figcaption></figure>
-          <figure><img src="assets/books/armor-of-god-1280.webp" srcset="assets/books/armor-of-god-320.webp 320w, assets/books/armor-of-god-480.webp 480w, assets/books/armor-of-god-720.webp 720w, assets/books/armor-of-god-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Armor of God with Vladimir Savchuk" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Armor of God</h3><p>Vladimir Savchuk</p></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/76025-joyful-finding-joy-in-everyday-life-from-" target="_blank" rel="noopener noreferrer"><img src="assets/books/daily-life-1280.webp" srcset="assets/books/daily-life-320.webp 320w, assets/books/daily-life-480.webp 480w, assets/books/daily-life-720.webp 720w, assets/books/daily-life-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Finding Joy in Everyday Life from Philippians" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Daily Life of a Christian</h3><p>Finding Joy in Everyday Life · Dr. Timothy Brown</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/76025-joyful-finding-joy-in-everyday-life-from-" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/40519-holy-habits-5-lifechanging-spiritual-disciplines" target="_blank" rel="noopener noreferrer"><img src="assets/books/christian-habits-1280.webp" srcset="assets/books/christian-habits-320.webp 320w, assets/books/christian-habits-480.webp 480w, assets/books/christian-habits-720.webp 720w, assets/books/christian-habits-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Holy Habits" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Habits of Christians</h3><p>Holy Habits · Dr. Timothy Brown</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/40519-holy-habits-5-lifechanging-spiritual-disciplines" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/61555-rest-in-god" target="_blank" rel="noopener noreferrer"><img src="assets/books/rest-in-god-1280.webp" srcset="assets/books/rest-in-god-320.webp 320w, assets/books/rest-in-god-480.webp 480w, assets/books/rest-in-god-720.webp 720w, assets/books/rest-in-god-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Resting in God" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Resting in God</h3><p>Hope Media</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/61555-rest-in-god" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/search/plans?query=What%20Is%20My%20Purpose%20Learning%20to%20Love%20God" target="_blank" rel="noopener noreferrer"><img src="assets/books/love-purpose-1280.webp" srcset="assets/books/love-purpose-320.webp 320w, assets/books/love-purpose-480.webp 480w, assets/books/love-purpose-720.webp 720w, assets/books/love-purpose-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of What Is My Purpose? Learning to Love God and Love Others" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Love and Purpose</h3><p>Learning to love God and love others</p><a class="btn cover-cta" href="https://www.bible.com/search/plans?query=What%20Is%20My%20Purpose%20Learning%20to%20Love%20God" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/search/plans?query=Building%20Your%20Prayer%20Life%20Cru" target="_blank" rel="noopener noreferrer"><img src="assets/books/prayer-life-1280.webp" srcset="assets/books/prayer-life-320.webp 320w, assets/books/prayer-life-480.webp 480w, assets/books/prayer-life-720.webp 720w, assets/books/prayer-life-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Building Your Prayer Life" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Building Your Prayer Life</h3><p>Cru</p><a class="btn cover-cta" href="https://www.bible.com/search/plans?query=Building%20Your%20Prayer%20Life%20Cru" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/23188-armor-of-god" target="_blank" rel="noopener noreferrer"><img src="assets/books/armor-of-god-1280.webp" srcset="assets/books/armor-of-god-320.webp 320w, assets/books/armor-of-god-480.webp 480w, assets/books/armor-of-god-720.webp 720w, assets/books/armor-of-god-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Armor of God with Vladimir Savchuk" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Armor of God</h3><p>Vladimir Savchuk</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/23188-armor-of-god" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
         </div>
       </section>
       <section class="shelf" id="heart">
@@ -1745,13 +1786,13 @@ address { font-style: normal; }
           </div>
         </header>
         <div class="cover-grid">
-          <figure><img src="assets/books/when-grace-1280.webp" srcset="assets/books/when-grace-320.webp 320w, assets/books/when-grace-480.webp 480w, assets/books/when-grace-720.webp 720w, assets/books/when-grace-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of When Grace Feels Impossible" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>When Grace Feels Impossible</h3><p>Scott Savage</p></figcaption></figure>
-          <figure><img src="assets/books/god-sees-you-1280.webp" srcset="assets/books/god-sees-you-320.webp 320w, assets/books/god-sees-you-480.webp 480w, assets/books/god-sees-you-720.webp 720w, assets/books/god-sees-you-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of God Sees You" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>God Sees You</h3><p>Déborah Rosenkranz</p></figcaption></figure>
-          <figure><img src="assets/books/i-am-happy-1280.webp" srcset="assets/books/i-am-happy-320.webp 320w, assets/books/i-am-happy-480.webp 480w, assets/books/i-am-happy-720.webp 720w, assets/books/i-am-happy-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of I Am Happy: Finding Joy in Who God Says I Am" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>I Am Happy</h3><p>Finding joy in who God says I am · Roland Heersink</p></figcaption></figure>
-          <figure><img src="assets/books/facing-your-giants.jpg" alt="Cover of Facing Your Giants by Max Lucado" width="328" height="499"><figcaption><h3>Facing Your Giants</h3><p>Max Lucado</p></figcaption></figure>
-          <figure><img src="assets/books/heal-body-1280.webp" srcset="assets/books/heal-body-320.webp 320w, assets/books/heal-body-480.webp 480w, assets/books/heal-body-720.webp 720w, assets/books/heal-body-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Heal Your Body" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Heal Your Body</h3><p>Seek the Healer and receive your healing</p></figcaption></figure>
-          <figure><img src="assets/books/forgiveness-1280.webp" srcset="assets/books/forgiveness-320.webp 320w, assets/books/forgiveness-480.webp 480w, assets/books/forgiveness-720.webp 720w, assets/books/forgiveness-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Forgiveness, a First 15 plan" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Forgiveness</h3><p>First 15</p></figcaption></figure>
-          <figure><img src="assets/books/goliath-1280.webp" srcset="assets/books/goliath-320.webp 320w, assets/books/goliath-480.webp 480w, assets/books/goliath-720.webp 720w, assets/books/goliath-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Goliath Must Fall by Louie Giglio" width="1280" height="720" loading="lazy" decoding="async"><figcaption><h3>Goliath Must Fall</h3><p>Louie Giglio</p></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/65650-when-grace-becomes-real-receiving-w" target="_blank" rel="noopener noreferrer"><img src="assets/books/when-grace-1280.webp" srcset="assets/books/when-grace-320.webp 320w, assets/books/when-grace-480.webp 480w, assets/books/when-grace-720.webp 720w, assets/books/when-grace-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of When Grace Feels Impossible" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>When Grace Feels Impossible</h3><p>Scott Savage</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/65650-when-grace-becomes-real-receiving-w" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/41286-god-sees-you" target="_blank" rel="noopener noreferrer"><img src="assets/books/god-sees-you-1280.webp" srcset="assets/books/god-sees-you-320.webp 320w, assets/books/god-sees-you-480.webp 480w, assets/books/god-sees-you-720.webp 720w, assets/books/god-sees-you-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of God Sees You" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>God Sees You</h3><p>Déborah Rosenkranz</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/41286-god-sees-you" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/63996-i-am-happy-finding-joy-in-who-god-says-i-am" target="_blank" rel="noopener noreferrer"><img src="assets/books/i-am-happy-1280.webp" srcset="assets/books/i-am-happy-320.webp 320w, assets/books/i-am-happy-480.webp 480w, assets/books/i-am-happy-720.webp 720w, assets/books/i-am-happy-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of I Am Happy: Finding Joy in Who God Says I Am" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>I Am Happy</h3><p>Finding joy in who God says I am · Roland Heersink</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/63996-i-am-happy-finding-joy-in-who-god-says-i-am" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/search/plans?query=Facing%20Your%20Giants%20Max%20Lucado" target="_blank" rel="noopener noreferrer"><img src="assets/books/facing-your-giants.jpg" alt="Cover of Facing Your Giants by Max Lucado" width="328" height="499"></a><figcaption><h3>Facing Your Giants</h3><p>Max Lucado</p><a class="btn cover-cta" href="https://www.bible.com/search/plans?query=Facing%20Your%20Giants%20Max%20Lucado" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/search/plans?query=Heal%20Your%20Body%20Seek%20the%20Healer" target="_blank" rel="noopener noreferrer"><img src="assets/books/heal-body-1280.webp" srcset="assets/books/heal-body-320.webp 320w, assets/books/heal-body-480.webp 480w, assets/books/heal-body-720.webp 720w, assets/books/heal-body-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Heal Your Body" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Heal Your Body</h3><p>Seek the Healer and receive your healing</p><a class="btn cover-cta" href="https://www.bible.com/search/plans?query=Heal%20Your%20Body%20Seek%20the%20Healer" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/4812-forgiveness" target="_blank" rel="noopener noreferrer"><img src="assets/books/forgiveness-1280.webp" srcset="assets/books/forgiveness-320.webp 320w, assets/books/forgiveness-480.webp 480w, assets/books/forgiveness-720.webp 720w, assets/books/forgiveness-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Forgiveness, a First 15 plan" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Forgiveness</h3><p>First 15</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/4812-forgiveness" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
+          <figure><a class="cover-link" href="https://www.bible.com/reading-plans/4024-goliath-must-fall-winning-the-battle-against-your" target="_blank" rel="noopener noreferrer"><img src="assets/books/goliath-1280.webp" srcset="assets/books/goliath-320.webp 320w, assets/books/goliath-480.webp 480w, assets/books/goliath-720.webp 720w, assets/books/goliath-1280.webp 1280w" sizes="(max-width: 640px) 46vw, 14rem" alt="Cover of Goliath Must Fall by Louie Giglio" width="1280" height="720" loading="lazy" decoding="async"></a><figcaption><h3>Goliath Must Fall</h3><p>Louie Giglio</p><a class="btn cover-cta" href="https://www.bible.com/reading-plans/4024-goliath-must-fall-winning-the-battle-against-your" target="_blank" rel="noopener noreferrer">Open in Bible App</a></figcaption></figure>
         </div>
       </section>
     </div>
@@ -1761,11 +1802,13 @@ address { font-style: normal; }
       <div>
         <a class="logo" href="index.html"><img src="assets/logo-black.png" alt="Kingdom Life" width="1024" height="377"></a>
         <p>Kingdom Life Kraków · Church of Christ<br>English-speaking international church</p>
+        <p>Sunday 12:00–14:00 · Daily prayer 18:00</p>
         <address>Hotel Centrum, Osiedle Centrum E 12<br>31-934 Kraków, Poland</address>
       </div>
       <div>
         <p><strong>Campus</strong><br>
         <a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a><br>
+        <a href="mailto:Pastor@kingdomlifeonline.org">Pastor@kingdomlifeonline.org</a><br>
         <a href="https://kingdomlifeonline.org/">kingdomlifeonline.org</a></p>
         <p><strong>Warsaw family</strong><br>Postępu 15C, 02-676 Warszawa<br><a href="mailto:hello@kingdomlifeonline.org">hello@kingdomlifeonline.org</a></p>
       </div>
