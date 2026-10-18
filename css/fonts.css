@@ -1,0 +1,83 @@
+/* Figtree and Newsreader, self-hosted under the SIL Open Font License.
+   Licences: /fonts/Figtree-OFL.txt and /fonts/Newsreader-OFL.txt.
+   Subsets cover the characters this site renders, with font-display: swap. */
+@font-face {
+  font-family: "Figtree";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/figtree-italic-latin-ext.woff2") format("woff2");
+  unicode-range: U+0041, U+0107, U+0119, U+0142, U+0144, U+015B, U+2020;
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/figtree-italic-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A3, U+00A7, U+00A9, U+00AB, U+00AE, U+00B0-00B1, U+00B7, U+00BB, U+00D7, U+00E9, U+00EB, U+00F3, U+00F7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+20AC, U+2122;
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("../fonts/figtree-latin-ext.woff2") format("woff2");
+  unicode-range: U+0041, U+0107, U+0119, U+0142, U+0144, U+015B, U+2020;
+}
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url("../fonts/figtree-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A3, U+00A7, U+00A9, U+00AB, U+00AE, U+00B0-00B1, U+00B7, U+00BB, U+00D7, U+00E9, U+00EB, U+00F3, U+00F7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+20AC, U+2122;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/newsreader-italic-latin-ext.woff2") format("woff2");
+  unicode-range: U+0020, U+0107, U+0119, U+0142, U+0144, U+015B, U+2020;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/newsreader-italic-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A3, U+00A7, U+00A9, U+00AB, U+00AE, U+00B0-00B1, U+00B7, U+00BB, U+00D7, U+00E9, U+00EB, U+00F3, U+00F7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+20AC, U+2122;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/newsreader-regular-latin-ext.woff2") format("woff2");
+  unicode-range: U+0020, U+0107, U+0119, U+0142, U+0144, U+015B, U+2020;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/newsreader-regular-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A3, U+00A7, U+00A9, U+00AB, U+00AE, U+00B0-00B1, U+00B7, U+00BB, U+00D7, U+00E9, U+00EB, U+00F3, U+00F7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+20AC, U+2122;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/newsreader-latin-ext.woff2") format("woff2");
+  unicode-range: U+0020, U+0107, U+0119, U+0142, U+0144, U+015B, U+2020;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/newsreader-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A3, U+00A7, U+00A9, U+00AB, U+00AE, U+00B0-00B1, U+00B7, U+00BB, U+00D7, U+00E9, U+00EB, U+00F3, U+00F7, U+2013-2014, U+2018-2019, U+201C-201D, U+2022, U+2026, U+20AC, U+2122;
+}
