@@ -14,6 +14,8 @@ Anyone can open the site. No GitHub account and no login are required.
 | YouTube | Kingdom Life Poland, played inside this site |
 | Campus email | krakow@kingdomlifeonline.org |
 
+[![Kingdom Life Kraków](docs/screenshot.jpg)](https://arnold-rg.github.io/kingdom-life-krakow/)
+
 ## Who can use it
 
 The GitHub repository is **public**. GitHub Pages for this repository is **public**. Any person, on any browser, can open the live address above.
@@ -152,3 +154,7 @@ Until then, the button asks the campus team by email.
 ## Ownership
 
 Sermons, photographs, names, and the Kingdom Life mark belong to the church and the people who made them. This repository hosts the campus website. It does not transfer ownership of that material.
+
+## Author
+
+Arnold Rurangwa
