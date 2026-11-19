@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site admin | Kingdom Life Kraków</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#F7F1E6">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+  <script>
+  document.documentElement.classList.add("js");
+</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="topbar"><div class="wrap">Site admin · only the repository owner can save changes</div></div>
+  <header class="site-header">
+    <div class="wrap nav-row">
+      <a class="logo" href="index.html">
+        <img src="assets/logo-black.png" alt="Kingdom Life" width="1024" height="377">
+        <span class="logo-campus">Kraków campus</span>
+      </a>
+      <div class="nav-end">
+        <span class="nav-here">Admin</span>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-label">Menu</span></button>
+        <nav id="site-nav" class="nav-links" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="events.html">Events</a>
+          <a href="books.html">Books</a>
+          <a href="pastor.html">Ask Pastor</a>
+          <a class="nav-join" href="join.html">Join us</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main id="main" class="section">
+    <div class="wrap">
+    <p class="kicker">Creator only</p>
+    <h1>Add a photo, file, or link</h1>
+    <p>Visitors can read the site. Saving anything here is checked by GitHub. Only a token that can edit <strong>Arnold-RG/kingdom-life-krakow</strong> is accepted. The token stays in this browser tab. It is not stored in the website.</p>
+
+    <form id="gate" class="card">
+      <label for="token">GitHub token with permission to edit this repository</label>
+      <input id="token" type="password" autocomplete="off" required>
+      <p class="small muted">On GitHub: Settings → Developer settings → Personal access tokens. Give it access to this repository’s contents.</p>
+      <p><button class="btn" type="submit">Unlock admin</button></p>
+      <p id="gate-msg" class="small" role="status"></p>
+    </form>
+
+    <div id="tools" hidden>
+      <p id="who" class="small muted"></p>
+      <div class="grid-2">
+        <form id="photo-form" class="card">
+          <h2>Photo</h2>
+          <label for="photo">Image file</label>
+          <input id="photo" type="file" accept="image/*" required>
+          <label for="photo-cap">Caption</label>
+          <input id="photo-cap" required placeholder="Who is in the photo">
+          <p><button class="btn" type="submit">Add to the gallery</button></p>
+        </form>
+        <form id="link-form" class="card">
+          <h2>Link</h2>
+          <label for="link-label">Label</label>
+          <input id="link-label" required>
+          <label for="link-url">Web address</label>
+          <input id="link-url" type="url" required placeholder="https://">
+          <p><button class="btn" type="submit">Add the link</button></p>
+        </form>
+        <form id="file-form" class="card">
+          <h2>File</h2>
+          <label for="file">File</label>
+          <input id="file" type="file" required>
+          <label for="file-label">Label</label>
+          <input id="file-label" required>
+          <p><button class="btn" type="submit">Add the file</button></p>
+        </form>
+      </div>
+      <p id="save-msg" class="small" role="status"></p>
+    </div>
+    </div>
+  </main>
+  <script src="js/site.js"></script>
+  <script type="module" src="js/scroll-motion.js"></script>
+  <script>
+    var REPO = "Arnold-RG/kingdom-life-krakow";
+    var token = "";
+
+    function api(path, options) {
+      options = options || {};
+      options.headers = options.headers || {};
+      options.headers.Authorization = "Bearer " + token;
+      options.headers.Accept = "application/vnd.github+json";
+      return fetch("https://api.github.com" + path, options).then(function (response) {
+        return response.json().then(function (body) {
+          if (!response.ok) throw new Error(body.message || "GitHub refused the request");
+          return body;
+        });
+      });
+    }
+
+    function safeName(name) {
+      return String(name || "file").replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80) || "file";
+    }
+
+    function readFile(file) {
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function () {
+          var text = String(reader.result || "");
+          var comma = text.indexOf(",");
+          resolve(comma >= 0 ? text.slice(comma + 1) : text);
+        };
+        reader.onerror = function () { reject(new Error("Could not read the file")); };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function loadAdditions() {
+      return api("/repos/" + REPO + "/contents/content/additions.json?ref=main").then(function (file) {
+        var binary = atob(file.content.replace(/\n/g, ""));
+        var bytes = new Uint8Array(binary.length);
+        for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        var json = JSON.parse(new TextDecoder().decode(bytes));
+        json.images = json.images || [];
+        json.links = json.links || [];
+        json.files = json.files || [];
+        return { data: json, sha: file.sha };
+      });
+    }
+
+    function saveAdditions(record, message) {
+      return api("/repos/" + REPO + "/contents/content/additions.json", {
+        method: "PUT",
+        body: JSON.stringify({
+          message: message,
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(record.data, null, 2) + "\n"))),
+          sha: record.sha,
+          branch: "main"
+        })
+      });
+    }
+
+    function putFile(path, base64, message) {
+      return api("/repos/" + REPO + "/contents/" + path, {
+        method: "PUT",
+        body: JSON.stringify({
+          message: message,
+          content: base64,
+          branch: "main"
+        })
+      });
+    }
+
+    document.getElementById("gate").addEventListener("submit", function (event) {
+      event.preventDefault();
+      token = document.getElementById("token").value.trim();
+      var msg = document.getElementById("gate-msg");
+      msg.textContent = "Checking permission…";
+      api("/repos/" + REPO).then(function (repo) {
+        if (!repo.permissions || !repo.permissions.push) {
+          throw new Error("This token cannot edit the repository.");
+        }
+        return api("/user");
+      }).then(function (user) {
+        document.getElementById("tools").hidden = false;
+        document.getElementById("who").textContent = "Signed in as " + user.login + ". GitHub confirmed this account can edit the site.";
+        msg.textContent = "";
+      }).catch(function (error) {
+        token = "";
+        msg.textContent = error.message;
+      });
+    });
+
+    document.getElementById("photo-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var input = document.getElementById("photo");
+      var file = input.files[0];
+      var caption = document.getElementById("photo-cap").value.trim();
+      var status = document.getElementById("save-msg");
+      if (!file || file.size > 4000000) {
+        status.textContent = "Choose an image under 4 MB.";
+        return;
+      }
+      status.textContent = "Saving the photo…";
+      var path = "assets/uploads/" + Date.now() + "-" + safeName(file.name);
+      readFile(file).then(function (base64) {
+        return putFile(path, base64, "Add gallery photo from site admin").then(function () {
+          return loadAdditions();
+        }).then(function (record) {
+          record.data.images.push({ src: path, caption: caption });
+          return saveAdditions(record, "List the new gallery photo");
+        });
+      }).then(function () {
+        status.textContent = "The photo is saved. It appears in the gallery after GitHub Pages refreshes.";
+        event.target.reset();
+      }).catch(function (error) {
+        status.textContent = error.message;
+      });
+    });
+
+    document.getElementById("link-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var status = document.getElementById("save-msg");
+      status.textContent = "Saving the link…";
+      loadAdditions().then(function (record) {
+        record.data.links.push({
+          label: document.getElementById("link-label").value.trim(),
+          url: document.getElementById("link-url").value.trim()
+        });
+        return saveAdditions(record, "Add a link from site admin");
+      }).then(function () {
+        status.textContent = "The link is saved. It appears under the gallery after GitHub Pages refreshes.";
+        event.target.reset();
+      }).catch(function (error) {
+        status.textContent = error.message;
+      });
+    });
+
+    document.getElementById("file-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var input = document.getElementById("file");
+      var file = input.files[0];
+      var status = document.getElementById("save-msg");
+      if (!file || file.size > 4000000) {
+        status.textContent = "Choose a file under 4 MB.";
+        return;
+      }
+      status.textContent = "Saving the file…";
+      var path = "assets/uploads/" + Date.now() + "-" + safeName(file.name);
+      readFile(file).then(function (base64) {
+        return putFile(path, base64, "Add a file from site admin").then(function () {
+          return loadAdditions();
+        }).then(function (record) {
+          record.data.files.push({
+            label: document.getElementById("file-label").value.trim(),
+            url: path
+          });
+          return saveAdditions(record, "List the new file");
+        });
+      }).then(function () {
+        status.textContent = "The file is saved. It appears under the gallery after GitHub Pages refreshes.";
+        event.target.reset();
+      }).catch(function (error) {
+        status.textContent = error.message;
+      });
+    });
+  </script>
+
+    <nav class="dock" aria-label="Main">
+    <a class="dock-item" href="index.html">Home</a>
+    <a class="dock-item" href="about.html">About</a>
+    <a class="dock-item" href="events.html">Events</a>
+    <a class="dock-item" href="books.html">Books</a>
+    <a class="dock-item" href="pastor.html">Ask Pastor</a>
+    <a class="dock-item dock-join" href="join.html">Join us</a>
+  </nav>
+
+      <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <a class="logo" href="index.html"><img src="assets/logo-black.png" alt="Kingdom Life" width="1024" height="377"></a>
+        <p>Kingdom Life Kraków · Church of Christ<br>English-speaking international church</p>
+        <address>Hotel Centrum, Osiedle Centrum E 12<br>31-934 Kraków, Poland</address>
+      </div>
+      <div>
+        <p><strong>Campus</strong><br>
+        <a href="mailto:krakow@kingdomlifeonline.org">krakow@kingdomlifeonline.org</a><br>
+        <a href="https://kingdomlifeonline.org/">kingdomlifeonline.org</a></p>
+        <p><strong>Warsaw family</strong><br>Postępu 15C, 02-676 Warszawa<br><a href="mailto:hello@kingdomlifeonline.org">hello@kingdomlifeonline.org</a></p>
+      </div>
+      <div>
+        <p><strong>On the internet</strong></p>
+        <p>
+          <a href="index.html#worship">Worship</a><br>
+          <a href="about.html">About</a><br>
+          <a href="events.html">Events</a><br>
+          <a href="books.html">Books</a><br>
+          <a href="https://www.instagram.com/kingdomlifekrakow/">Instagram @kingdomlifekrakow</a><br>
+          <a href="https://www.instagram.com/kingdomlifepl/">Poland family @kingdomlifepl</a><br>
+          <a href="https://www.facebook.com/kingdomlifepl">Facebook</a><br>
+          <a href="https://www.tiktok.com/@kingdomlifepl">TikTok</a><br>
+          <a href="https://twitter.com/KingdomlifePL">X</a><br>
+          <a href="https://www.google.com/maps/place/Kingdom+Life+Krakow/@50.0705027,20.0396688,17z">Google Maps</a>
+        </p>
+        <p class="foot-quiet"><a href="admin.html">Admin</a></p>
+      </div>
+    </div>
+    <div class="wrap legal">Społeczność Chrześcijańska Kingdom Life · © <span data-year></span> · Photographs belong to the church and the people in them.</div>
+  </footer>
+</body>
+</html>
