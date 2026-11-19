@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the site
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Confirm the public pages are present
         run: |
           for f in index.html about.html events.html books.html pastor.html join.html 404.html css/site.css js/site.js js/verse.js sitemap.xml robots.txt .nojekyll content/additions.json; do
@@ -37,7 +37,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out the site
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Assemble the folder GitHub Pages will serve
         run: |
           mkdir -p _site
