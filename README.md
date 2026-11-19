@@ -66,12 +66,6 @@ Review secrets, trust boundaries, external services and permission handling. Use
 
 **These are intended gates, not an assertion of passing tests.** Kubernetes is unnecessary for purely static pages; reassess it only where multi-service infrastructure warrants the complexity.
 
-## Next engineering milestones
-
-1. Verify leadership images, bios and campus separation.
-2. Check keyboard/mobile navigation and working links.
-3. Document publishing steps and editorial approval procedure.
-
 ## Contributions and release policy
 
 Use reviewable branches and pull requests. Don't add unlicensed visual assets, mock client testimonials, private customer data or unverified integrations. Owners approve public releases; note remaining limitations in the release report.
