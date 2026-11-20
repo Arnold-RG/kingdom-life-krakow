@@ -159,6 +159,7 @@
     document.getElementById("gate").addEventListener("submit", function (event) {
       event.preventDefault();
       token = document.getElementById("token").value.trim();
+      document.getElementById("token").value = "";
       var msg = document.getElementById("gate-msg");
       msg.textContent = "Checking permission…";
       api("/repos/" + REPO).then(function (repo) {
